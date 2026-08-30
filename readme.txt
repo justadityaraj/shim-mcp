@@ -49,6 +49,10 @@ MCP (Model Context Protocol) is an open standard that allows AI clients like Cla
 
 No. Shim MCP is self-contained: it bundles its own MCP server, and the Abilities API it registers against is part of WordPress from 6.9 onwards. Nothing else is required.
 
+= Can it edit wp-config.php? =
+
+Only if you let it. The ability that rewrites the WP_DEBUG constants is switched off until you add `define( 'SHIM_MCP_ALLOW_CONFIG_WRITES', true );` to wp-config.php yourself. Without that line the ability refuses, and it is refused again if DISALLOW_FILE_EDIT or DISALLOW_FILE_MODS is set, if the file is not writable, or if the rewritten contents fail a sanity check.
+
 = It warns me about another MCP plugin. Why? =
 
 Two MCP server plugins running at once can register competing abilities and endpoints, which produces confusing results for the connected AI client. If Shim MCP detects another MCP server or a standalone Abilities API plugin, it shows a notice suggesting you run only one. This is a compatibility warning, not a judgement about the other plugin.

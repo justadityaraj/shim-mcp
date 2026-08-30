@@ -48,6 +48,7 @@ The name is a promise about scope. It is not an AI product. It does not bundle a
 - **Per-object permission checks, not just blanket ones.** Every ability declares a capability, and every ability that touches a specific object re-checks the per-object capability (`edit_post`, `delete_post`, `read_post`, `edit_user`, `delete_user`, `edit_comment`) against that object before reading or mutating it. A contributor's client cannot edit an editor's post. Holding `edit_posts` is not treated as permission to edit *any* post.
 - **58 abilities, deliberately.** This is not a race to the largest tool count. Every ability is documented with its required capability in the [abilities reference](docs/ABILITIES.md).
 - **Nothing leaves your server.** No proxy, no relay, no telemetry, no vendor account.
+- **The one dangerous ability is off by default.** Rewriting `wp-config.php` stays disabled unless you opt in explicitly with `define( 'SHIM_MCP_ALLOW_CONFIG_WRITES', true );`.
 
 ## Quick start
 

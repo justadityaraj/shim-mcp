@@ -5,6 +5,10 @@ namespace ShimMcp\Abilities\System;
 
 class System {
 
+	private static function config_writes_allowed(): bool {
+		return defined( 'SHIM_MCP_ALLOW_CONFIG_WRITES' ) && SHIM_MCP_ALLOW_CONFIG_WRITES;
+	}
+
 	public static function register(): void {
 		wp_register_ability(
 			'shim-mcp/system-environment',
@@ -235,7 +239,7 @@ class System {
 			'shim-mcp/system-set-debug-constants',
 			array(
 				'label'               => 'Change Debug Constants',
-				'description'         => 'Rewrites the WP_DEBUG, WP_DEBUG_LOG and WP_DEBUG_DISPLAY constants inside wp-config.php. Send only the constants you want changed; anything left out keeps its current value. The write is refused when file editing has been locked down, when the file is not writable, or when the rewritten contents fail a safety check.',
+				'description'         => 'Rewrites the WP_DEBUG, WP_DEBUG_LOG and WP_DEBUG_DISPLAY constants inside wp-config.php. Switched off unless SHIM_MCP_ALLOW_CONFIG_WRITES is defined as true in wp-config.php. Send only the constants you want changed; anything left out keeps its current value. The write is also refused when file editing has been locked down, when the file is not writable, or when the rewritten contents fail a safety check.',
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -279,6 +283,13 @@ class System {
 				'execute_callback'    => function ( $input = array() ): array {
 					if ( ! is_array( $input ) ) {
 						$input = array();
+					}
+
+					if ( ! self::config_writes_allowed() ) {
+						return array(
+							'success' => false,
+							'message' => esc_html__( 'Writing to wp-config.php is switched off. Define SHIM_MCP_ALLOW_CONFIG_WRITES as true in wp-config.php to enable it.', 'shim-mcp' ),
+						);
 					}
 
 					if ( ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) || ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) ) {
@@ -436,8 +447,8 @@ class System {
 						'message' => esc_html__( 'The debug constants were updated in wp-config.php.', 'shim-mcp' ),
 					);
 				},
-				'permission_callback' => function (): bool {
-					return current_user_can( 'manage_options' );
+				'permission_callback' => static function (): bool {
+					return current_user_can( 'manage_options' ) && self::config_writes_allowed();
 				},
 				'meta'                => array(
 					'annotations' => array(
