@@ -1,0 +1,7 @@
+vendor/
+node_modules/
+*.log
+.DS_Store
+build/
+test-results/
+playwright-report/
