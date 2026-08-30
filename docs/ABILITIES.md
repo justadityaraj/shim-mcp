@@ -1,6 +1,6 @@
 # Abilities Reference
 
-Shim MCP registers **58 abilities** across **13 domains**.
+Shim MCP registers **56 abilities** across **13 domains**.
 
 Every ability is exposed to MCP clients through the three meta-tools (`discover-abilities`, `get-ability-info`, `execute-ability`), so a client discovers the full set at runtime rather than needing one tool per operation.
 
@@ -17,13 +17,13 @@ Each ability declares a blanket capability in its permission callback. Abilities
 | Revisions | 2 |
 | Media | 5 |
 | Users | 6 |
-| Plugins | 6 |
+| Plugins | 4 |
 | Menus | 7 |
 | Widgets | 3 |
 | Comments | 6 |
 | Options | 3 |
 | System | 3 |
-| **Total** | **58** |
+| **Total** | **56** |
 
 ---
 
@@ -111,8 +111,6 @@ Each ability declares a blanket capability in its permission callback. Abilities
 | Ability | Capability | Read-only | Description |
 |---------|-----------|-----------|-------------|
 | `shim-mcp/plugins-list` | `activate_plugins` | yes | Returns every plugin present in the plugins directory together with its name, version, author, whether it is currently active and whether a newer version is waiting to be installed. Optionally narrows the result to a text match on the plugin name or folder. |
-| `shim-mcp/plugins-install-from-zip` | `install_plugins` | no | Takes the raw bytes of a plugin zip archive encoded as base64, writes them to a temporary file and runs the WordPress plugin installer against it. The plugin is left inactive unless activation is requested. |
-| `shim-mcp/plugins-install-from-url` | `install_plugins` | no | Downloads a plugin zip from an http or https address and installs it. The archive is fetched to a temporary file which is removed once the installer finishes. Activation after install is optional. |
 | `shim-mcp/plugins-activate` | `activate_plugins` | no | Switches on an installed plugin identified by its file path relative to the plugins directory, for example akismet/akismet.php. On multisite the plugin can be turned on for the whole network. |
 | `shim-mcp/plugins-deactivate` | `activate_plugins` | no | Turns off a running plugin identified by its file path relative to the plugins directory. The plugin files stay on disk and its settings are untouched. |
 | `shim-mcp/plugins-delete` | `delete_plugins` | no | Removes an installed plugin and its folder from the server permanently. An active plugin is refused unless you ask for it to be deactivated first, and the caller must confirm the removal. |

@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       Shim MCP
  * Plugin URI:        https://github.com/justadityaraj/shim-mcp
- * Description:       Connect WordPress to AI in one click. Full MCP server with 58 WordPress abilities, no other plugins needed.
+ * Description:       Connect WordPress to AI in one click. Full MCP server with 56 WordPress abilities, no other plugins needed.
  * Requires at least: 6.9
  * Version:           1.0.0
  * Requires PHP:      8.0

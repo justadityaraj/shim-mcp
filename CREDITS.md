@@ -18,7 +18,7 @@ Every ability in this plugin is registered through the Abilities API (`wp_regist
 
 ## Original to this plugin
 
-- `includes/Abilities/` — all 58 WordPress abilities, written directly against the WordPress core API
+- `includes/Abilities/` — all 56 WordPress abilities, written directly against the WordPress core API
 - `includes/Admin/` — the admin dashboard, application password management, and client config export
 - `includes/Server/Cli/` — the WP-CLI command and stdio transport bridge
 - The packaging that makes the MCP server and the abilities work as one install with no companion plugins
