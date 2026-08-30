@@ -105,7 +105,23 @@ wp shim-mcp list  [--format=<format>]                                # list regi
 
 ## Status
 
-Early release. The plugin is feature-complete and the abilities are documented, but it has not yet been through a broad range of hosting environments. Issues and reports are welcome.
+Early release, and **submitted to the WordPress.org plugin directory — awaiting review.** Approval is not granted yet, so for now install it from the [releases page](https://github.com/justadityaraj/shim-mcp/releases) or by cloning this repository.
+
+It is feature-complete and the abilities are documented, but it has not yet run across a broad range of hosting environments. Issues and reports are welcome.
+
+### Verification
+
+Verified on WordPress 7.1 / PHP 8.5.9 — activation, the admin dashboard, the MCP handshake, all 56 abilities registering through core's native Abilities API, and a full create, update, patch, read and delete cycle.
+
+| Check | Result |
+|---|---|
+| WordPress Plugin Check (all categories) | 0 errors, 0 warnings |
+| PHP_CodeSniffer, WordPress-Extra | 0 violations |
+| PHPStan level 5 with WordPress stubs | 0 issues |
+| `php -l`, all files | pass |
+| PHPCompatibility, PHP 8.0 to 8.5 | 0 issues |
+
+Plugin Check is an automated scan of the directory's coding requirements. Passing it says the code meets those standards; it is not a review outcome and implies no endorsement by WordPress.org.
 
 ## Maintainer
 
