@@ -32,12 +32,6 @@
 
 	<rule ref="PHPCompatibilityWP"/>
 
-	<!-- The Abilities API polyfill must ship core's classes and their companion
-	     functions together in one class_exists-guarded file. -->
-	<rule ref="Universal.Files.SeparateFunctionsFromOO">
-		<exclude-pattern>includes/Compat/AbilitiesApi.php</exclude-pattern>
-	</rule>
-
 	<!-- includes/Server/ is vendored from WordPress/mcp-adapter. Upstream owns its
 	     formatting; we sniff it for correctness and security, not house style. -->
 	<rule ref="Universal.Operators.DisallowShortTernary">
@@ -53,7 +47,6 @@
 	     them; a read-only ability legitimately ignores its $input argument. -->
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter">
 		<exclude-pattern>includes/Server/*</exclude-pattern>
-		<exclude-pattern>includes/Compat/*</exclude-pattern>
 		<exclude-pattern>includes/Abilities/*</exclude-pattern>
 	</rule>
 </ruleset>

@@ -14,11 +14,11 @@ Files derived from this project retain their original `@package McpAdapter` docb
 
 Source: <https://github.com/WordPress/abilities-api> (GPL-2.0)
 
-`includes/Compat/AbilitiesApi.php` is a polyfill of the Abilities API for WordPress 6.7 and 6.8, which do not ship it. Every class and function is guarded so the file becomes a no-op once the site runs a WordPress version that provides the API natively. The public interface it reproduces (`WP_Ability`, `WP_Abilities_Registry`, `wp_register_ability()` and companions) is upstream's design, and a polyfill has to match it exactly to be useful.
+Every ability in this plugin is registered through the Abilities API (`wp_register_ability()` and companions), which WordPress ships as part of core from 6.9. Shim MCP requires WordPress 6.9 for that reason and carries no copy of the API itself.
 
 ## Original to this plugin
 
 - `includes/Abilities/` — all 58 WordPress abilities, written directly against the WordPress core API
 - `includes/Admin/` — the admin dashboard, application password management, and client config export
 - `includes/Server/Cli/` — the WP-CLI command and stdio transport bridge
-- The packaging that makes the MCP server, the abilities and the polyfill work as one install with no companion plugins
+- The packaging that makes the MCP server and the abilities work as one install with no companion plugins

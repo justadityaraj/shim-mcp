@@ -1,0 +1,8 @@
+.git
+.gitignore
+.distignore
+.wp-env.json
+package.json
+phpcs.xml.dist
+bin
+CREDITS.md

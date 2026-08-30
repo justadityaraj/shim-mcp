@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 defined( 'ABSPATH' ) || exit();
 
-$user_id   = get_current_user_id();
-$has_key   = (bool) get_user_meta( $user_id, 'shim_mcp_app_password', true );
-$site_url  = site_url();
-$rest_base = rest_url( 'mcp/shim-mcp' );
+$shim_user_id   = get_current_user_id();
+$shim_has_key   = (bool) get_user_meta( $shim_user_id, 'shim_mcp_app_password', true );
+$shim_site_url  = site_url();
+$shim_rest_base = rest_url( 'mcp/shim-mcp' );
 
 // Health checks.
 global $wp_version;
-$checks = [
+$shim_checks = [
 	[
 		'label'  => 'PHP Version',
 		'ok'     => PHP_VERSION_ID >= 80000,
@@ -34,11 +34,11 @@ $checks = [
 ];
 
 // Ability count.
-$ability_count = function_exists( 'wp_get_abilities' ) ? count( wp_get_abilities() ) : null;
+$shim_ability_count = function_exists( 'wp_get_abilities' ) ? count( wp_get_abilities() ) : null;
 
 // Config placeholders.
-$auth_placeholder   = '[username]:[password]';
-$base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
+$shim_auth_placeholder   = '[username]:[password]';
+$shim_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 ?>
 
 <div class="wrap">
@@ -49,14 +49,14 @@ $base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 	<div class="mcp-card">
 		<h2>Health Check</h2>
 		<div class="mcp-health-grid">
-			<?php foreach ( $checks as $check ) : ?>
+			<?php foreach ( $shim_checks as $shim_check ) : ?>
 				<div class="mcp-health-item">
-					<span class="mcp-status-icon <?php echo $check['ok'] ? 'mcp-status-ok' : 'mcp-status-error'; ?>">
-						<?php echo $check['ok'] ? '&#10003;' : '&#10007;'; ?>
+					<span class="mcp-status-icon <?php echo $shim_check['ok'] ? 'mcp-status-ok' : 'mcp-status-error'; ?>">
+						<?php echo $shim_check['ok'] ? '&#10003;' : '&#10007;'; ?>
 					</span>
 					<div>
-						<strong><?php echo esc_html( $check['label'] ); ?></strong><br>
-						<span class="mcp-health-detail"><?php echo esc_html( $check['detail'] ); ?></span>
+						<strong><?php echo esc_html( $shim_check['label'] ); ?></strong><br>
+						<span class="mcp-health-detail"><?php echo esc_html( $shim_check['detail'] ); ?></span>
 					</div>
 				</div>
 			<?php endforeach; ?>
@@ -69,7 +69,7 @@ $base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		<p>Application passwords authenticate MCP clients with your WordPress site.</p>
 
 		<div id="mcp-key-status">
-			<?php if ( $has_key ) : ?>
+			<?php if ( $shim_has_key ) : ?>
 				<span class="mcp-badge mcp-badge-active">API Key Active</span>
 				<button type="button" class="button button-secondary" id="mcp-revoke-key">Revoke Key</button>
 			<?php else : ?>
@@ -100,9 +100,9 @@ $base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 				<pre><code id="mcp-config-claude-code">{
 	"mcpServers": {
 	"shim-mcp": {
-		"url": "<?php echo esc_url( $rest_base ); ?>",
+		"url": "<?php echo esc_url( $shim_rest_base ); ?>",
 		"headers": {
-		"Authorization": "Basic <span class="mcp-placeholder"><?php echo esc_html( $base64_placeholder ); ?></span>"
+		"Authorization": "Basic <span class="mcp-placeholder"><?php echo esc_html( $shim_base64_placeholder ); ?></span>"
 		}
 	}
 	}
@@ -122,9 +122,9 @@ $base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		"args": [
 		"-y",
 		"mcp-remote",
-		"<?php echo esc_url( $rest_base ); ?>",
+		"<?php echo esc_url( $shim_rest_base ); ?>",
 		"--header",
-		"Authorization: Basic <span class="mcp-placeholder"><?php echo esc_html( $base64_placeholder ); ?></span>"
+		"Authorization: Basic <span class="mcp-placeholder"><?php echo esc_html( $shim_base64_placeholder ); ?></span>"
 		]
 	}
 	}
@@ -144,9 +144,9 @@ $base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		"args": [
 		"-y",
 		"mcp-remote",
-		"<?php echo esc_url( $rest_base ); ?>",
+		"<?php echo esc_url( $shim_rest_base ); ?>",
 		"--header",
-		"Authorization: Basic <span class="mcp-placeholder"><?php echo esc_html( $base64_placeholder ); ?></span>"
+		"Authorization: Basic <span class="mcp-placeholder"><?php echo esc_html( $shim_base64_placeholder ); ?></span>"
 		]
 	}
 	}
@@ -160,15 +160,15 @@ $base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 	<div class="mcp-card">
 		<h2>Status</h2>
 		<div class="mcp-status-row">
-			<span id="mcp-connection-dot" class="mcp-dot <?php echo $has_key ? 'mcp-dot-unknown' : 'mcp-dot-inactive'; ?>"></span>
-			<span id="mcp-connection-text"><?php echo $has_key ? 'Key configured &mdash; test to verify' : 'No API key configured'; ?></span>
+			<span id="mcp-connection-dot" class="mcp-dot <?php echo $shim_has_key ? 'mcp-dot-unknown' : 'mcp-dot-inactive'; ?>"></span>
+			<span id="mcp-connection-text"><?php echo $shim_has_key ? 'Key configured &mdash; test to verify' : 'No API key configured'; ?></span>
 		</div>
 
-		<?php if ( null !== $ability_count ) : ?>
-			<p class="mcp-ability-count"><?php echo (int) $ability_count; ?> abilities registered.</p>
+		<?php if ( null !== $shim_ability_count ) : ?>
+			<p class="mcp-ability-count"><?php echo (int) $shim_ability_count; ?> abilities registered.</p>
 		<?php endif; ?>
 
-		<button type="button" class="button button-secondary" id="mcp-test-connection" <?php echo $has_key ? '' : 'disabled'; ?>>
+		<button type="button" class="button button-secondary" id="mcp-test-connection" <?php echo $shim_has_key ? '' : 'disabled'; ?>>
 			Test Connection
 		</button>
 	</div>

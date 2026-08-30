@@ -20,9 +20,9 @@ final class Plugin {
 	}
 
 	private function setup(): void {
-		// Load Abilities API polyfill if needed (WordPress < 6.9)
 		if ( ! function_exists( 'wp_register_ability' ) ) {
-			require_once SHIM_MCP_DIR . 'includes/Compat/AbilitiesApi.php';
+			add_action( 'admin_notices', array( $this, 'render_unsupported_notice' ) );
+			return;
 		}
 
 		// Register all WordPress abilities
@@ -50,6 +50,13 @@ final class Plugin {
 
 		// First-time activation redirect
 		add_action( 'admin_init', [ $this, 'maybe_redirect_to_dashboard' ] );
+	}
+
+	public function render_unsupported_notice(): void {
+		printf(
+			'<div class="notice notice-error"><p>%s</p></div>',
+			esc_html__( 'Shim MCP needs the WordPress Abilities API, which ships with WordPress 6.9 and later. Please update WordPress to use this plugin.', 'shim-mcp' )
+		);
 	}
 
 	public function check_conflicts(): void {

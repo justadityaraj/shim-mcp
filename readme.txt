@@ -1,7 +1,7 @@
 === Shim MCP ===
 Contributors: justadityaraj
 Tags: mcp, ai, claude, model-context-protocol, automation
-Requires at least: 6.7
+Requires at least: 6.9
 Tested up to: 7.1
 Stable tag: 1.0.0
 Requires PHP: 8.0
@@ -12,9 +12,9 @@ Connect WordPress to AI in one click. Full MCP server with 58 abilities.
 
 == Description ==
 
-Shim MCP is a self-contained MCP (Model Context Protocol) server plugin for WordPress. It provides 58 abilities that let any MCP-compatible AI client manage your WordPress site -- posts, pages, media, users, plugins, menus, widgets, comments, options, and system settings. It bundles the MCP server, the abilities, and an Abilities API polyfill for WordPress 6.7 and 6.8, so no companion plugins are required.
+Shim MCP is a self-contained MCP (Model Context Protocol) server plugin for WordPress. It provides 58 abilities that let any MCP-compatible AI client manage your WordPress site -- posts, pages, media, users, plugins, menus, widgets, comments, options, and system settings. The MCP server and every ability ship in the one plugin, so no companion plugins are required.
 
-The MCP protocol layer is built on the WordPress project's own work: the server layer is derived from the WordPress MCP Adapter and the polyfill reproduces the WordPress Abilities API, both GPL-2.0. See the Credits section below.
+The MCP protocol layer is derived from the WordPress project's own MCP Adapter (GPL-2.0), and abilities are registered through WordPress's Abilities API, which core ships from 6.9. See the Credits section below.
 
 Key features:
 
@@ -23,7 +23,6 @@ Key features:
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, and Cursor
 * Conflict detection for legacy MCP plugins
-* Abilities API polyfill for WordPress < 6.9
 
 == Installation ==
 
@@ -36,7 +35,7 @@ Key features:
 Shim MCP builds its MCP protocol layer on two GPL-2.0 projects published by the WordPress project:
 
 * [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) - everything under `includes/Server/` (transport, JSON-RPC routing, session management, tools/resources/prompts handlers, schema transformation, error and observability infrastructure) is derived from it.
-* [WordPress Abilities API](https://github.com/WordPress/abilities-api) - `includes/Compat/AbilitiesApi.php` polyfills it for WordPress 6.7 and 6.8.
+* [WordPress Abilities API](https://github.com/WordPress/abilities-api) - every ability is registered through this core API, which WordPress ships from 6.9.
 
 The 58 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. Full breakdown in CREDITS.md.
 
@@ -48,7 +47,7 @@ MCP (Model Context Protocol) is an open standard that allows AI clients like Cla
 
 = Do I need MCP Adapter or the Abilities API installed alongside this? =
 
-No. Shim MCP is self-contained: it bundles its MCP server and, on WordPress 6.7 and 6.8, a polyfill of the Abilities API. Nothing else is required.
+No. Shim MCP is self-contained: it bundles its own MCP server, and the Abilities API it registers against is part of WordPress from 6.9 onwards. Nothing else is required.
 
 = It warns me about another MCP plugin. Why? =
 
@@ -73,5 +72,4 @@ Different abilities require different WordPress capabilities. For example, conte
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, Cursor
 * Conflict detection for legacy MCP plugins
-* Abilities API polyfill for WordPress < 6.9
 * SSE transport with MCP protocol v2025-06-18

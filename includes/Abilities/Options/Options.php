@@ -161,6 +161,7 @@ final class Options {
 
 					$like = '%' . $wpdb->esc_like( $fragment ) . '%';
 
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- searching option names by pattern has no core API, and the result must be live rather than cached.
 					$total = (int) $wpdb->get_var(
 						$wpdb->prepare(
 							"SELECT COUNT(*) FROM {$wpdb->options} WHERE option_name LIKE %s",
@@ -168,6 +169,7 @@ final class Options {
 						)
 					);
 
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- searching option names by pattern has no core API, and the result must be live rather than cached.
 					$rows = $wpdb->get_results(
 						$wpdb->prepare(
 							"SELECT option_name, option_value, autoload FROM {$wpdb->options} WHERE option_name LIKE %s ORDER BY option_name ASC LIMIT %d OFFSET %d",
@@ -415,6 +417,7 @@ final class Options {
 	private static function autoload_flag( string $name ): string {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- reads the autoload flag, which core exposes no accessor for.
 		$flag = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT autoload FROM {$wpdb->options} WHERE option_name = %s LIMIT 1",

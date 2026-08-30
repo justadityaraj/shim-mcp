@@ -43,7 +43,7 @@ The name is a promise about scope. It is not an AI product. It does not bundle a
 ## What makes it different
 
 - **The MCP server runs over stdio.** Others expose WP-CLI as a tool reachable through a remote HTTP connection; here WP-CLI *is* the transport, running locally with no port, no token and no HTTP layer at all.
-- **Genuinely self-contained.** The MCP server, the abilities, and an Abilities API polyfill for WordPress 6.7 and 6.8 all ship in one plugin. Nothing else to install, on any supported version.
+- **Genuinely self-contained.** The MCP server and all 58 abilities ship in one plugin. No companion plugin, no framework, no service to sign up for.
 - **Abilities API native.** Every ability is registered through WordPress's own `wp_register_ability()`. Nothing lives in a private tool registry, so abilities registered by *other* plugins are exposed too, automatically, with no adapter code.
 - **Per-object permission checks, not just blanket ones.** Every ability declares a capability, and every ability that touches a specific object re-checks the per-object capability (`edit_post`, `delete_post`, `read_post`, `edit_user`, `delete_user`, `edit_comment`) against that object before reading or mutating it. A contributor's client cannot edit an editor's post. Holding `edit_posts` is not treated as permission to edit *any* post.
 - **58 abilities, deliberately.** This is not a race to the largest tool count. Every ability is documented with its required capability in the [abilities reference](docs/ABILITIES.md).
@@ -87,12 +87,11 @@ wp shim-mcp list  [--format=<format>]                                # list regi
 - Two transports: stdio over WP-CLI, and Streamable HTTP
 - Admin dashboard with application password generation and revocation
 - Config export for Claude Code, Claude Desktop and Cursor
-- Abilities API polyfill for WordPress 6.7 and 6.8
 - Detects other MCP server plugins and warns when two would compete
 
 ## Requirements
 
-- WordPress 6.7 or higher
+- WordPress 6.9 or higher (for the Abilities API, which core ships from 6.9)
 - PHP 8.0 or higher
 - WP-CLI, for the stdio transport only
 
@@ -112,7 +111,7 @@ Built and maintained by [Aditya Raj Singh](https://adityarajsingh.com) at [BNCW 
 
 ## Credits
 
-Shim MCP builds its protocol layer on WordPress's own MCP work. The server layer under `includes/Server/` comes from the [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) (GPL-2.0), and `includes/Compat/AbilitiesApi.php` polyfills the [WordPress Abilities API](https://github.com/WordPress/abilities-api) (GPL-2.0) for WordPress 6.7 and 6.8. The 58 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. See [CREDITS.md](CREDITS.md) for the full breakdown.
+Shim MCP builds its protocol layer on WordPress's own MCP work: everything under `includes/Server/` is derived from the [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) (GPL-2.0). The abilities are registered through WordPress's own [Abilities API](https://github.com/WordPress/abilities-api), which core ships from 6.9. The 58 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. See [CREDITS.md](CREDITS.md) for the full breakdown.
 
 ## License
 

@@ -30,7 +30,7 @@ use ShimMcp\Abilities\System\System;
 
 /**
  * Registry that wires all ability categories and abilities into the
- * WordPress Abilities API (native 6.9+ or polyfill).
+ * WordPress Abilities API.
  *
  * @since 1.0.0
  */

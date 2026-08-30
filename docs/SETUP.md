@@ -131,7 +131,7 @@ Running two MCP servers at once lets both register abilities and endpoints, whic
 - MCP Expose Abilities
 - Abilities API
 
-Shim MCP already bundles its own MCP server, and polyfills the Abilities API on WordPress 6.7 and 6.8, so it does not need any of them alongside it. Deactivate whichever you are not using.
+Shim MCP bundles its own MCP server and uses the Abilities API that ships with WordPress 6.9 and later, so it does not need any of them alongside it. Deactivate whichever you are not using.
 
 ### REST API disabled
 
