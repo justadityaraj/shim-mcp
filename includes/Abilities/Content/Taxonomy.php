@@ -81,8 +81,8 @@ class Taxonomy {
 		};
 
 		$list_input = array(
-			'type'       => 'object',
-			'properties' => array(
+			'type'                 => 'object',
+			'properties'           => array(
 				'search'     => array(
 					'type'        => 'string',
 					'description' => 'Restrict the results to terms whose name or slug contains this text.',

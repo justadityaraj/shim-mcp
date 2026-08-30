@@ -120,7 +120,17 @@ class Comments {
 						}
 					}
 
-					$found = get_comments( array_merge( $args, array( 'count' => true, 'number' => 0, 'offset' => 0, 'orderby' => '' ) ) );
+					$found = get_comments(
+						array_merge(
+							$args,
+							array(
+								'count'   => true,
+								'number'  => 0,
+								'offset'  => 0,
+								'orderby' => '',
+							)
+						)
+					);
 
 					$comments = get_comments( $args );
 					$rows     = array();

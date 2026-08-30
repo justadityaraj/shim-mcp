@@ -9,10 +9,10 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-list',
 			array(
-				'label'        => 'List Media Library Items',
-				'description'  => 'Returns a page of attachments from the media library, newest first. You can narrow the results to a single MIME type such as image/png or to a whole family such as image.',
-				'category'     => 'site',
-				'input_schema' => array(
+				'label'               => 'List Media Library Items',
+				'description'         => 'Returns a page of attachments from the media library, newest first. You can narrow the results to a single MIME type such as image/png or to a whole family such as image.',
+				'category'            => 'site',
+				'input_schema'        => array(
 					'type'                 => 'object',
 					'required'             => array(),
 					'properties'           => array(
@@ -121,10 +121,10 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-get',
 			array(
-				'label'        => 'Read One Media Item',
-				'description'  => 'Loads a single attachment by its numeric ID and reports its file URL, MIME type, pixel dimensions where the file is an image, alternative text, caption and description.',
-				'category'     => 'site',
-				'input_schema' => array(
+				'label'               => 'Read One Media Item',
+				'description'         => 'Loads a single attachment by its numeric ID and reports its file URL, MIME type, pixel dimensions where the file is an image, alternative text, caption and description.',
+				'category'            => 'site',
+				'input_schema'        => array(
 					'type'                 => 'object',
 					'required'             => array( 'id' ),
 					'properties'           => array(
@@ -224,10 +224,10 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-upload',
 			array(
-				'label'        => 'Add a File to the Media Library',
-				'description'  => 'Decodes base64 file bytes, writes them into the WordPress uploads folder under the filename you give, creates the attachment record and builds its thumbnails and metadata. Files whose extension and contents are not allowed by the site are rejected.',
-				'category'     => 'site',
-				'input_schema' => array(
+				'label'               => 'Add a File to the Media Library',
+				'description'         => 'Decodes base64 file bytes, writes them into the WordPress uploads folder under the filename you give, creates the attachment record and builds its thumbnails and metadata. Files whose extension and contents are not allowed by the site are rejected.',
+				'category'            => 'site',
+				'input_schema'        => array(
 					'type'                 => 'object',
 					'required'             => array( 'filename', 'data' ),
 					'properties'           => array(
@@ -300,6 +300,7 @@ class Media {
 						);
 					}
 
+					// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- MCP carries binary uploads as base64; strict mode rejects malformed payloads.
 					$bytes = base64_decode( $input['data'], true );
 
 					if ( false === $bytes || '' === $bytes ) {
@@ -341,6 +342,7 @@ class Media {
 					$unique      = wp_unique_filename( $uploads['path'], $filename );
 					$destination = trailingslashit( $uploads['path'] ) . $unique;
 
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- writes decoded bytes to a path just resolved inside the uploads directory.
 					$written = file_put_contents( $destination, $bytes );
 
 					if ( false === $written ) {
@@ -365,6 +367,7 @@ class Media {
 						$corrected = wp_unique_filename( $uploads['path'], $checked['proper_filename'] );
 						$renamed   = trailingslashit( $uploads['path'] ) . $corrected;
 
+						// phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- deduplicates a filename inside the uploads directory.
 						if ( rename( $destination, $renamed ) ) {
 							$destination = $renamed;
 							$unique      = $corrected;
@@ -443,10 +446,10 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-update',
 			array(
-				'label'        => 'Edit Media Item Details',
-				'description'  => 'Changes the stored title, caption, description or alternative text on an existing attachment. Fields you leave out keep their current values, and the file itself is untouched.',
-				'category'     => 'site',
-				'input_schema' => array(
+				'label'               => 'Edit Media Item Details',
+				'description'         => 'Changes the stored title, caption, description or alternative text on an existing attachment. Fields you leave out keep their current values, and the file itself is untouched.',
+				'category'            => 'site',
+				'input_schema'        => array(
 					'type'                 => 'object',
 					'required'             => array( 'id' ),
 					'properties'           => array(
@@ -580,10 +583,10 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-delete',
 			array(
-				'label'        => 'Remove a Media Item',
-				'description'  => 'Deletes an attachment together with the file and any generated image sizes on disk. Set force to false to send it to the trash instead, where trashing attachments is enabled.',
-				'category'     => 'site',
-				'input_schema' => array(
+				'label'               => 'Remove a Media Item',
+				'description'         => 'Deletes an attachment together with the file and any generated image sizes on disk. Set force to false to send it to the trash instead, where trashing attachments is enabled.',
+				'category'            => 'site',
+				'input_schema'        => array(
 					'type'                 => 'object',
 					'required'             => array( 'id' ),
 					'properties'           => array(

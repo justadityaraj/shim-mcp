@@ -42,11 +42,11 @@ class Search {
 				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
-						'success'  => array( 'type' => 'boolean' ),
-						'message'  => array( 'type' => 'string' ),
-						'keyword'  => array( 'type' => 'string' ),
-						'count'    => array( 'type' => 'integer' ),
-						'results'  => array(
+						'success' => array( 'type' => 'boolean' ),
+						'message' => array( 'type' => 'string' ),
+						'keyword' => array( 'type' => 'string' ),
+						'count'   => array( 'type' => 'integer' ),
+						'results' => array(
 							'type'  => 'array',
 							'items' => array(
 								'type'       => 'object',

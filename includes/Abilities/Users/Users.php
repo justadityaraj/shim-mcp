@@ -351,50 +351,50 @@ final class Users {
 					'type'                 => 'object',
 					'required'             => array( 'username', 'email', 'password' ),
 					'properties'           => array(
-						'username'          => array(
+						'username'        => array(
 							'type'        => 'string',
 							'minLength'   => 1,
 							'description' => __( 'Login name for the new account. It must not already be taken.', 'shim-mcp' ),
 						),
-						'email'             => array(
+						'email'           => array(
 							'type'        => 'string',
 							'minLength'   => 3,
 							'description' => __( 'Email address for the new account. It must not already be in use.', 'shim-mcp' ),
 						),
-						'password'          => array(
+						'password'        => array(
 							'type'        => 'string',
 							'minLength'   => 6,
 							'description' => __( 'Plain text password to set on the new account.', 'shim-mcp' ),
 						),
-						'role'              => array(
+						'role'            => array(
 							'type'        => 'string',
 							'description' => __( 'Role slug to assign. Leave it out to use the site default role.', 'shim-mcp' ),
 						),
-						'first_name'        => array(
+						'first_name'      => array(
 							'type'        => 'string',
 							'description' => __( 'Given name shown on the profile.', 'shim-mcp' ),
 						),
-						'last_name'         => array(
+						'last_name'       => array(
 							'type'        => 'string',
 							'description' => __( 'Family name shown on the profile.', 'shim-mcp' ),
 						),
-						'nickname'          => array(
+						'nickname'        => array(
 							'type'        => 'string',
 							'description' => __( 'Nickname stored alongside the profile.', 'shim-mcp' ),
 						),
-						'display_name'      => array(
+						'display_name'    => array(
 							'type'        => 'string',
 							'description' => __( 'Name shown publicly next to this account.', 'shim-mcp' ),
 						),
-						'description'       => array(
+						'description'     => array(
 							'type'        => 'string',
 							'description' => __( 'Biographical text shown on author pages.', 'shim-mcp' ),
 						),
-						'url'               => array(
+						'url'             => array(
 							'type'        => 'string',
 							'description' => __( 'Website address to store on the profile.', 'shim-mcp' ),
 						),
-						'notify_new_user'   => array(
+						'notify_new_user' => array(
 							'type'        => 'boolean',
 							'default'     => false,
 							'description' => __( 'Send WordPress the standard welcome email to the new account.', 'shim-mcp' ),

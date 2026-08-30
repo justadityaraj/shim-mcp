@@ -167,6 +167,7 @@ class System {
 						$size = 0;
 					}
 
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- the log is read as a stream so a large debug.log is never loaded into memory; WP_Filesystem has no streaming read.
 					$handle = fopen( $path, 'rb' );
 					if ( false === $handle ) {
 						return array(
@@ -179,6 +180,7 @@ class System {
 					$offset = $size > $chunk ? $size - $chunk : 0;
 					fseek( $handle, $offset );
 					$blob = stream_get_contents( $handle );
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- closes the streamed log handle opened above.
 					fclose( $handle );
 
 					if ( ! is_string( $blob ) ) {
@@ -328,6 +330,7 @@ class System {
 						);
 					}
 
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- pre-flight check before the guarded wp-config.php write below.
 					if ( ! is_writable( $path ) ) {
 						return array(
 							'success' => false,
@@ -363,7 +366,7 @@ class System {
 
 					foreach ( $wanted as $constant => $value ) {
 						$literal = $value ? 'true' : 'false';
-						$line    = "define( '" . $constant . "', " . $literal . " );";
+						$line    = "define( '" . $constant . "', " . $literal . ' );';
 						$pattern = "/^[ \t]*define\s*\(\s*(['\"])" . preg_quote( $constant, '/' ) . "\\1\s*,.*?\)\s*;[ \t]*$/mi";
 
 						$result = preg_replace( $pattern, $line, $updated, 1, $hits );

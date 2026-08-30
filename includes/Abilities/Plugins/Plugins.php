@@ -17,11 +17,11 @@ class Plugins {
 					'type'                 => 'object',
 					'required'             => array(),
 					'properties'           => array(
-						'search'      => array(
+						'search'       => array(
 							'type'        => 'string',
 							'description' => 'Case-insensitive substring matched against the plugin name and its file path.',
 						),
-						'status'      => array(
+						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'all', 'active', 'inactive', 'update-available' ),
 							'description' => 'Restricts the listing to plugins in the given state. Defaults to all.',
@@ -166,19 +166,19 @@ class Plugins {
 					'type'                 => 'object',
 					'required'             => array( 'zip_base64' ),
 					'properties'           => array(
-						'zip_base64'       => array(
+						'zip_base64' => array(
 							'type'        => 'string',
 							'description' => 'The complete zip archive encoded with standard base64.',
 						),
-						'filename'         => array(
+						'filename'   => array(
 							'type'        => 'string',
 							'description' => 'A name to give the temporary archive, useful for readable error output. Defaults to a generated name.',
 						),
-						'activate'         => array(
+						'activate'   => array(
 							'type'        => 'boolean',
 							'description' => 'Set to true to activate the plugin once the files are in place.',
 						),
-						'overwrite'        => array(
+						'overwrite'  => array(
 							'type'        => 'boolean',
 							'description' => 'Allow the installer to replace a plugin that already occupies the same folder.',
 						),
@@ -212,6 +212,7 @@ class Plugins {
 						);
 					}
 
+					// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- MCP carries the uploaded plugin zip as base64; strict mode rejects malformed payloads.
 					$bytes = base64_decode( $encoded, true );
 					if ( false === $bytes || '' === $bytes ) {
 						return array(
@@ -249,6 +250,7 @@ class Plugins {
 						);
 					}
 
+					// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- writes the zip to a wp_tempnam() path before handing it to the core upgrader.
 					$written = file_put_contents( $tmp_file, $bytes );
 					if ( false === $written ) {
 						wp_delete_file( $tmp_file );
@@ -437,10 +439,12 @@ class Plugins {
 						);
 					}
 
+					// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- reads the first two bytes to confirm a zip signature before the file reaches the upgrader.
 					$handle = fopen( $downloaded, 'rb' );
 					$magic  = $handle ? fread( $handle, 2 ) : '';
 					if ( $handle ) {
 						fclose( $handle );
+					// phpcs:enable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 					}
 
 					if ( 'PK' !== $magic ) {
@@ -794,11 +798,11 @@ class Plugins {
 					'type'                 => 'object',
 					'required'             => array( 'plugin_file', 'confirm' ),
 					'properties'           => array(
-						'plugin_file'       => array(
+						'plugin_file'      => array(
 							'type'        => 'string',
 							'description' => 'Path of the main plugin file relative to wp-content/plugins.',
 						),
-						'confirm'           => array(
+						'confirm'          => array(
 							'type'        => 'boolean',
 							'description' => 'Must be true. Files are erased from disk and cannot be recovered from WordPress.',
 						),

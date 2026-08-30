@@ -21,22 +21,22 @@ class Widgets {
 				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
-						'success'   => array( 'type' => 'boolean' ),
-						'count'     => array( 'type' => 'integer' ),
-						'sidebars'  => array(
+						'success'  => array( 'type' => 'boolean' ),
+						'count'    => array( 'type' => 'integer' ),
+						'sidebars' => array(
 							'type'  => 'array',
 							'items' => array(
 								'type'       => 'object',
 								'properties' => array(
-									'id'          => array( 'type' => 'string' ),
-									'name'        => array( 'type' => 'string' ),
-									'description' => array( 'type' => 'string' ),
-									'class'       => array( 'type' => 'string' ),
+									'id'           => array( 'type' => 'string' ),
+									'name'         => array( 'type' => 'string' ),
+									'description'  => array( 'type' => 'string' ),
+									'class'        => array( 'type' => 'string' ),
 									'widget_count' => array( 'type' => 'integer' ),
 								),
 							),
 						),
-						'message'   => array( 'type' => 'string' ),
+						'message'  => array( 'type' => 'string' ),
 					),
 				),
 				'execute_callback'    => function ( $input = array() ): array {

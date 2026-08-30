@@ -17,39 +17,39 @@ class Posts {
 					'type'                 => 'object',
 					'required'             => array(),
 					'properties'           => array(
-						'status'    => array(
+						'status'   => array(
 							'type'        => 'string',
 							'description' => 'Publication status to match, such as publish, draft, pending, future, private, trash, or any.',
 						),
-						'author'    => array(
+						'author'   => array(
 							'type'        => 'integer',
 							'description' => 'Numeric user ID of the author whose posts you want.',
 						),
-						'search'    => array(
+						'search'   => array(
 							'type'        => 'string',
 							'description' => 'Keyword matched against post titles and bodies.',
 						),
-						'category'  => array(
+						'category' => array(
 							'type'        => 'string',
 							'description' => 'A category slug to restrict the results to.',
 						),
-						'tag'       => array(
+						'tag'      => array(
 							'type'        => 'string',
 							'description' => 'A tag slug to restrict the results to.',
 						),
-						'per_page'  => array(
+						'per_page' => array(
 							'type'        => 'integer',
 							'description' => 'How many posts to return, from 1 up to 100. Defaults to 20.',
 						),
-						'page'      => array(
+						'page'     => array(
 							'type'        => 'integer',
 							'description' => 'Which page of results to return, starting at 1.',
 						),
-						'orderby'   => array(
+						'orderby'  => array(
 							'type'        => 'string',
 							'description' => 'Sort field: date, modified, title, ID, or menu_order.',
 						),
-						'order'     => array(
+						'order'    => array(
 							'type'        => 'string',
 							'description' => 'Sort direction, either ASC or DESC.',
 						),
@@ -382,7 +382,7 @@ class Posts {
 					if ( isset( $input['author'] ) ) {
 						$author_id = absint( $input['author'] );
 						if ( $author_id > 0 ) {
-							if ( $author_id !== get_current_user_id() && ! current_user_can( 'edit_others_posts' ) ) {
+							if ( get_current_user_id() !== $author_id && ! current_user_can( 'edit_others_posts' ) ) {
 								return array(
 									'success' => false,
 									'message' => esc_html__( 'You are not allowed to assign posts to another user.', 'shim-mcp' ),
@@ -872,11 +872,8 @@ class Posts {
 						$modifiers = 's' . ( $ignore_case ? 'i' : '' );
 						$pattern   = '#' . str_replace( '#', '\\#', $input['search'] ) . '#' . $modifiers;
 
-						set_error_handler( static function () {
-							return true;
-						} );
-						$compiles = preg_match( $pattern, '' );
-						restore_error_handler();
+						// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a malformed user pattern must fail as a return value, not a PHP warning.
+						$compiles = @preg_match( $pattern, '' );
 
 						if ( false === $compiles ) {
 							return array(

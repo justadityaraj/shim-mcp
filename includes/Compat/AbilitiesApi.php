@@ -17,7 +17,7 @@
 
 declare(strict_types=1);
 
-defined('ABSPATH') || exit();
+defined( 'ABSPATH' ) || exit();
 
 /*
 |--------------------------------------------------------------------------
@@ -29,230 +29,230 @@ defined('ABSPATH') || exit();
 |
 */
 
-if (!class_exists('WP_Ability')) {
-    /**
-     * Represents a single WordPress ability.
-     *
-     * An ability encapsulates a discrete piece of functionality that can be
-     * discovered and invoked programmatically.  Each ability carries metadata
-     * (label, description, category), JSON-schema definitions for its input
-     * and output, a callable that performs the work, and an optional
-     * permission callback.
-     *
-     * @since 6.9.0 (WordPress core)
-     * @since 1.0.0 (polyfill)
-     */
-    class WP_Ability {
+if ( ! class_exists( 'WP_Ability' ) ) {
+	/**
+	 * Represents a single WordPress ability.
+	 *
+	 * An ability encapsulates a discrete piece of functionality that can be
+	 * discovered and invoked programmatically.  Each ability carries metadata
+	 * (label, description, category), JSON-schema definitions for its input
+	 * and output, a callable that performs the work, and an optional
+	 * permission callback.
+	 *
+	 * @since 6.9.0 (WordPress core)
+	 * @since 1.0.0 (polyfill)
+	 */
+	class WP_Ability {
 
-        /**
-         * Unique machine-readable name for this ability.
-         *
-         * @var string
-         */
-        private string $name;
+		/**
+		 * Unique machine-readable name for this ability.
+		 *
+		 * @var string
+		 */
+		private string $name;
 
-        /**
-         * Human-readable label.
-         *
-         * @var string
-         */
-        private string $label;
+		/**
+		 * Human-readable label.
+		 *
+		 * @var string
+		 */
+		private string $label;
 
-        /**
-         * Human-readable description of what the ability does.
-         *
-         * @var string
-         */
-        private string $description;
+		/**
+		 * Human-readable description of what the ability does.
+		 *
+		 * @var string
+		 */
+		private string $description;
 
-        /**
-         * Category slug this ability belongs to.
-         *
-         * @var string
-         */
-        private string $category;
+		/**
+		 * Category slug this ability belongs to.
+		 *
+		 * @var string
+		 */
+		private string $category;
 
-        /**
-         * JSON Schema describing the expected input.
-         *
-         * @var array
-         */
-        private array $input_schema;
+		/**
+		 * JSON Schema describing the expected input.
+		 *
+		 * @var array
+		 */
+		private array $input_schema;
 
-        /**
-         * JSON Schema describing the output.
-         *
-         * @var array
-         */
-        private array $output_schema;
+		/**
+		 * JSON Schema describing the output.
+		 *
+		 * @var array
+		 */
+		private array $output_schema;
 
-        /**
-         * The callable that performs the ability's work.
-         *
-         * @var callable|null
-         */
-        private $callback;
+		/**
+		 * The callable that performs the ability's work.
+		 *
+		 * @var callable|null
+		 */
+		private $callback;
 
-        /**
-         * Optional callable that checks whether the current user has
-         * permission to execute this ability.  Receives the input array
-         * and must return a boolean.  When null the ability is considered
-         * public.
-         *
-         * @var callable|null
-         */
-        private $permission_callback;
+		/**
+		 * Optional callable that checks whether the current user has
+		 * permission to execute this ability.  Receives the input array
+		 * and must return a boolean.  When null the ability is considered
+		 * public.
+		 *
+		 * @var callable|null
+		 */
+		private $permission_callback;
 
-        /**
-         * Arbitrary metadata attached to this ability.
-         *
-         * @var array
-         */
-        private array $meta;
+		/**
+		 * Arbitrary metadata attached to this ability.
+		 *
+		 * @var array
+		 */
+		private array $meta;
 
-        /**
-         * Constructor.
-         *
-         * @param string $name Unique ability name.
-         * @param array  $args {
-         *     Ability arguments.
-         *
-         *     @type string        $label               Human-readable label.
-         *     @type string        $description          Description of the ability.
-         *     @type string        $category             Category slug.
-         *     @type array         $input_schema         JSON Schema for input.
-         *     @type array         $output_schema        JSON Schema for output.
-         *     @type callable|null $callback             The execution callback.
-         *     @type callable|null $permission_callback  Permission check callback.
-         *     @type array         $meta                 Arbitrary metadata.
-         * }
-         */
-        public function __construct(string $name, array $args) {
-            $this->name                = $name;
-            $this->label               = (string) ($args['label'] ?? '');
-            $this->description         = (string) ($args['description'] ?? '');
-            $this->category            = (string) ($args['category'] ?? '');
-            $this->input_schema        = (array) ($args['input_schema'] ?? []);
-            $this->output_schema       = (array) ($args['output_schema'] ?? []);
-            $this->callback            = $args['execute_callback'] ?? $args['callback'] ?? null;
-            $this->permission_callback = $args['permission_callback'] ?? null;
-            $this->meta                = (array) ($args['meta'] ?? []);
-        }
+		/**
+		 * Constructor.
+		 *
+		 * @param string $name Unique ability name.
+		 * @param array  $args {
+		 *     Ability arguments.
+		 *
+		 *     @type string        $label               Human-readable label.
+		 *     @type string        $description          Description of the ability.
+		 *     @type string        $category             Category slug.
+		 *     @type array         $input_schema         JSON Schema for input.
+		 *     @type array         $output_schema        JSON Schema for output.
+		 *     @type callable|null $callback             The execution callback.
+		 *     @type callable|null $permission_callback  Permission check callback.
+		 *     @type array         $meta                 Arbitrary metadata.
+		 * }
+		 */
+		public function __construct( string $name, array $args ) {
+			$this->name                = $name;
+			$this->label               = (string) ( $args['label'] ?? '' );
+			$this->description         = (string) ( $args['description'] ?? '' );
+			$this->category            = (string) ( $args['category'] ?? '' );
+			$this->input_schema        = (array) ( $args['input_schema'] ?? [] );
+			$this->output_schema       = (array) ( $args['output_schema'] ?? [] );
+			$this->callback            = $args['execute_callback'] ?? $args['callback'] ?? null;
+			$this->permission_callback = $args['permission_callback'] ?? null;
+			$this->meta                = (array) ( $args['meta'] ?? [] );
+		}
 
-        /**
-         * Get the ability name.
-         *
-         * @return string
-         */
-        public function get_name(): string {
-            return $this->name;
-        }
+		/**
+		 * Get the ability name.
+		 *
+		 * @return string
+		 */
+		public function get_name(): string {
+			return $this->name;
+		}
 
-        /**
-         * Get the human-readable label.
-         *
-         * @return string
-         */
-        public function get_label(): string {
-            return $this->label;
-        }
+		/**
+		 * Get the human-readable label.
+		 *
+		 * @return string
+		 */
+		public function get_label(): string {
+			return $this->label;
+		}
 
-        /**
-         * Get the description.
-         *
-         * @return string
-         */
-        public function get_description(): string {
-            return $this->description;
-        }
+		/**
+		 * Get the description.
+		 *
+		 * @return string
+		 */
+		public function get_description(): string {
+			return $this->description;
+		}
 
-        /**
-         * Get the category slug.
-         *
-         * @return string
-         */
-        public function get_category(): string {
-            return $this->category;
-        }
+		/**
+		 * Get the category slug.
+		 *
+		 * @return string
+		 */
+		public function get_category(): string {
+			return $this->category;
+		}
 
-        /**
-         * Get the input JSON Schema.
-         *
-         * @return array
-         */
-        public function get_input_schema(): array {
-            return $this->input_schema;
-        }
+		/**
+		 * Get the input JSON Schema.
+		 *
+		 * @return array
+		 */
+		public function get_input_schema(): array {
+			return $this->input_schema;
+		}
 
-        /**
-         * Get the output JSON Schema.
-         *
-         * @return array
-         */
-        public function get_output_schema(): array {
-            return $this->output_schema;
-        }
+		/**
+		 * Get the output JSON Schema.
+		 *
+		 * @return array
+		 */
+		public function get_output_schema(): array {
+			return $this->output_schema;
+		}
 
-        /**
-         * Get arbitrary metadata.
-         *
-         * @return array
-         */
-        public function get_meta(): array {
-            return $this->meta;
-        }
+		/**
+		 * Get arbitrary metadata.
+		 *
+		 * @return array
+		 */
+		public function get_meta(): array {
+			return $this->meta;
+		}
 
-        /**
-         * Execute the ability.
-         *
-         * @param array $input Input data conforming to the input schema.
-         * @return mixed The callback's return value.
-         */
-        public function execute( $input = array() ): mixed {
-            if (!is_callable($this->callback)) {
-                return null;
-            }
+		/**
+		 * Execute the ability.
+		 *
+		 * @param array $input Input data conforming to the input schema.
+		 * @return mixed The callback's return value.
+		 */
+		public function execute( $input = array() ): mixed {
+			if ( ! is_callable( $this->callback ) ) {
+				return null;
+			}
 
-            $input = is_array( $input ) ? $input : array();
+			$input = is_array( $input ) ? $input : array();
 
-            if (!empty($this->input_schema)) {
-                $valid = rest_validate_value_from_schema($input, $this->input_schema, $this->name);
-                if (is_wp_error($valid)) {
-                    return $valid;
-                }
+			if ( ! empty( $this->input_schema ) ) {
+				$valid = rest_validate_value_from_schema( $input, $this->input_schema, $this->name );
+				if ( is_wp_error( $valid ) ) {
+					return $valid;
+				}
 
-                $sanitized = rest_sanitize_value_from_schema($input, $this->input_schema, $this->name);
-                if (is_wp_error($sanitized)) {
-                    return $sanitized;
-                }
+				$sanitized = rest_sanitize_value_from_schema( $input, $this->input_schema, $this->name );
+				if ( is_wp_error( $sanitized ) ) {
+					return $sanitized;
+				}
 
-                if (is_array($sanitized)) {
-                    $input = $sanitized;
-                }
-            }
+				if ( is_array( $sanitized ) ) {
+					$input = $sanitized;
+				}
+			}
 
-            return call_user_func($this->callback, $input);
-        }
+			return call_user_func( $this->callback, $input );
+		}
 
-        /**
-         * Check whether the current user has permission to execute this ability.
-         *
-         * When no permission callback has been registered the ability is
-         * treated as publicly accessible and this method returns true.
-         *
-         * @param array $input Input data (forwarded to the permission callback).
-         * @return bool
-         */
-        public function check_permissions( $input = array() ) {
-            if (null === $this->permission_callback) {
-                return true;
-            }
+		/**
+		 * Check whether the current user has permission to execute this ability.
+		 *
+		 * When no permission callback has been registered the ability is
+		 * treated as publicly accessible and this method returns true.
+		 *
+		 * @param array $input Input data (forwarded to the permission callback).
+		 * @return bool
+		 */
+		public function check_permissions( $input = array() ) {
+			if ( null === $this->permission_callback ) {
+				return true;
+			}
 
-            $input = is_array( $input ) ? $input : array();
+			$input = is_array( $input ) ? $input : array();
 
-            return call_user_func($this->permission_callback, $input);
-        }
-    }
+			return call_user_func( $this->permission_callback, $input );
+		}
+	}
 }
 
 /*
@@ -264,80 +264,80 @@ if (!class_exists('WP_Ability')) {
 |
 */
 
-if (!class_exists('WP_Ability_Category')) {
-    /**
-     * Represents a category used to group related abilities.
-     *
-     * @since 6.9.0 (WordPress core)
-     * @since 1.0.0 (polyfill)
-     */
-    class WP_Ability_Category {
+if ( ! class_exists( 'WP_Ability_Category' ) ) {
+	/**
+	 * Represents a category used to group related abilities.
+	 *
+	 * @since 6.9.0 (WordPress core)
+	 * @since 1.0.0 (polyfill)
+	 */
+	class WP_Ability_Category {
 
-        /**
-         * Unique slug identifier.
-         *
-         * @var string
-         */
-        private string $slug;
+		/**
+		 * Unique slug identifier.
+		 *
+		 * @var string
+		 */
+		private string $slug;
 
-        /**
-         * Human-readable label.
-         *
-         * @var string
-         */
-        private string $label;
+		/**
+		 * Human-readable label.
+		 *
+		 * @var string
+		 */
+		private string $label;
 
-        /**
-         * Human-readable description.
-         *
-         * @var string
-         */
-        private string $description;
+		/**
+		 * Human-readable description.
+		 *
+		 * @var string
+		 */
+		private string $description;
 
-        /**
-         * Constructor.
-         *
-         * @param string $slug Unique category slug.
-         * @param array  $args {
-         *     Category arguments.
-         *
-         *     @type string $label       Human-readable label.
-         *     @type string $description Description of the category.
-         * }
-         */
-        public function __construct(string $slug, array $args) {
-            $this->slug        = $slug;
-            $this->label       = (string) ($args['label'] ?? '');
-            $this->description = (string) ($args['description'] ?? '');
-        }
+		/**
+		 * Constructor.
+		 *
+		 * @param string $slug Unique category slug.
+		 * @param array  $args {
+		 *     Category arguments.
+		 *
+		 *     @type string $label       Human-readable label.
+		 *     @type string $description Description of the category.
+		 * }
+		 */
+		public function __construct( string $slug, array $args ) {
+			$this->slug        = $slug;
+			$this->label       = (string) ( $args['label'] ?? '' );
+			$this->description = (string) ( $args['description'] ?? '' );
+		}
 
-        /**
-         * Get the category slug.
-         *
-         * @return string
-         */
-        public function get_slug(): string {
-            return $this->slug;
-        }
+		/**
+		 * Get the category slug.
+		 *
+		 * @return string
+		 */
+		public function get_slug(): string {
+			return $this->slug;
+		}
 
-        /**
-         * Get the human-readable label.
-         *
-         * @return string
-         */
-        public function get_label(): string {
-            return $this->label;
-        }
+		/**
+		 * Get the human-readable label.
+		 *
+		 * @return string
+		 */
+		public function get_label(): string {
+			return $this->label;
+		}
 
-        /**
-         * Get the description.
-         *
-         * @return string
-         */
-        public function get_description(): string {
-            return $this->description;
-        }
-    }
+		/**
+		 * Get the description.
+		 *
+		 * @return string
+		 */
+		public function get_description(): string {
+			return $this->description;
+		}
+	}
 }
 
 /*
@@ -349,104 +349,104 @@ if (!class_exists('WP_Ability_Category')) {
 |
 */
 
-if (!class_exists('WP_Abilities_Registry')) {
-    /**
-     * Singleton registry for WordPress abilities.
-     *
-     * Provides a central store for all registered WP_Ability instances and
-     * exposes methods to register, unregister, query, and enumerate them.
-     *
-     * @since 6.9.0 (WordPress core)
-     * @since 1.0.0 (polyfill)
-     */
-    class WP_Abilities_Registry {
+if ( ! class_exists( 'WP_Abilities_Registry' ) ) {
+	/**
+	 * Singleton registry for WordPress abilities.
+	 *
+	 * Provides a central store for all registered WP_Ability instances and
+	 * exposes methods to register, unregister, query, and enumerate them.
+	 *
+	 * @since 6.9.0 (WordPress core)
+	 * @since 1.0.0 (polyfill)
+	 */
+	class WP_Abilities_Registry {
 
-        /**
-         * Singleton instance.
-         *
-         * @var self|null
-         */
-        private static ?self $instance = null;
+		/**
+		 * Singleton instance.
+		 *
+		 * @var self|null
+		 */
+		private static ?self $instance = null;
 
-        /**
-         * Registered abilities keyed by name.
-         *
-         * @var array<string, WP_Ability>
-         */
-        private array $abilities = [];
+		/**
+		 * Registered abilities keyed by name.
+		 *
+		 * @var array<string, WP_Ability>
+		 */
+		private array $abilities = [];
 
-        /**
-         * Retrieve the singleton instance.
-         *
-         * @return self
-         */
-        public static function get_instance(): self {
-            if (null === self::$instance) {
-                self::$instance = new self();
-            }
+		/**
+		 * Retrieve the singleton instance.
+		 *
+		 * @return self
+		 */
+		public static function get_instance(): self {
+			if ( null === self::$instance ) {
+				self::$instance = new self();
+			}
 
-            return self::$instance;
-        }
+			return self::$instance;
+		}
 
-        /**
-         * Register a new ability.
-         *
-         * @param string $name Unique ability name.
-         * @param array  $args Ability arguments passed to WP_Ability.
-         * @return WP_Ability The newly registered ability instance.
-         */
-        public function register(string $name, array $args): WP_Ability {
-            $ability = new WP_Ability($name, $args);
-            $this->abilities[$name] = $ability;
+		/**
+		 * Register a new ability.
+		 *
+		 * @param string $name Unique ability name.
+		 * @param array  $args Ability arguments passed to WP_Ability.
+		 * @return WP_Ability The newly registered ability instance.
+		 */
+		public function register( string $name, array $args ): WP_Ability {
+			$ability                  = new WP_Ability( $name, $args );
+			$this->abilities[ $name ] = $ability;
 
-            return $ability;
-        }
+			return $ability;
+		}
 
-        /**
-         * Unregister an ability by name.
-         *
-         * @param string $name The ability name to remove.
-         * @return bool True if the ability existed and was removed, false otherwise.
-         */
-        public function unregister(string $name): bool {
-            if (!isset($this->abilities[$name])) {
-                return false;
-            }
+		/**
+		 * Unregister an ability by name.
+		 *
+		 * @param string $name The ability name to remove.
+		 * @return bool True if the ability existed and was removed, false otherwise.
+		 */
+		public function unregister( string $name ): bool {
+			if ( ! isset( $this->abilities[ $name ] ) ) {
+				return false;
+			}
 
-            unset($this->abilities[$name]);
+			unset( $this->abilities[ $name ] );
 
-            return true;
-        }
+			return true;
+		}
 
-        /**
-         * Retrieve a single ability by name.
-         *
-         * @param string $name The ability name.
-         * @return WP_Ability|null The ability instance or null if not found.
-         */
-        public function get(string $name): ?WP_Ability {
-            return $this->abilities[$name] ?? null;
-        }
+		/**
+		 * Retrieve a single ability by name.
+		 *
+		 * @param string $name The ability name.
+		 * @return WP_Ability|null The ability instance or null if not found.
+		 */
+		public function get( string $name ): ?WP_Ability {
+			return $this->abilities[ $name ] ?? null;
+		}
 
-        /**
-         * Retrieve all registered abilities.
-         *
-         * @return array<string, WP_Ability>
-         */
-        public function get_all(): array {
-            return $this->abilities;
-        }
+		/**
+		 * Retrieve all registered abilities.
+		 *
+		 * @return array<string, WP_Ability>
+		 */
+		public function get_all(): array {
+			return $this->abilities;
+		}
 
-        /**
-         * Check whether an ability is registered.
-         *
-         * @param string $name The ability name.
-         * @return bool
-         */
-        public function has(string $name): bool {
-            return isset($this->abilities[$name]);
-        }
-    }
+		/**
+		 * Check whether an ability is registered.
+		 *
+		 * @param string $name The ability name.
+		 * @return bool
+		 */
+		public function has( string $name ): bool {
+			return isset( $this->abilities[ $name ] );
+		}
+	}
 }
 
 /*
@@ -458,105 +458,105 @@ if (!class_exists('WP_Abilities_Registry')) {
 |
 */
 
-if (!class_exists('WP_Ability_Categories_Registry')) {
-    /**
-     * Singleton registry for ability categories.
-     *
-     * Provides a central store for all registered WP_Ability_Category
-     * instances and exposes methods to register, unregister, query, and
-     * enumerate them.
-     *
-     * @since 6.9.0 (WordPress core)
-     * @since 1.0.0 (polyfill)
-     */
-    class WP_Ability_Categories_Registry {
+if ( ! class_exists( 'WP_Ability_Categories_Registry' ) ) {
+	/**
+	 * Singleton registry for ability categories.
+	 *
+	 * Provides a central store for all registered WP_Ability_Category
+	 * instances and exposes methods to register, unregister, query, and
+	 * enumerate them.
+	 *
+	 * @since 6.9.0 (WordPress core)
+	 * @since 1.0.0 (polyfill)
+	 */
+	class WP_Ability_Categories_Registry {
 
-        /**
-         * Singleton instance.
-         *
-         * @var self|null
-         */
-        private static ?self $instance = null;
+		/**
+		 * Singleton instance.
+		 *
+		 * @var self|null
+		 */
+		private static ?self $instance = null;
 
-        /**
-         * Registered categories keyed by slug.
-         *
-         * @var array<string, WP_Ability_Category>
-         */
-        private array $categories = [];
+		/**
+		 * Registered categories keyed by slug.
+		 *
+		 * @var array<string, WP_Ability_Category>
+		 */
+		private array $categories = [];
 
-        /**
-         * Retrieve the singleton instance.
-         *
-         * @return self
-         */
-        public static function get_instance(): self {
-            if (null === self::$instance) {
-                self::$instance = new self();
-            }
+		/**
+		 * Retrieve the singleton instance.
+		 *
+		 * @return self
+		 */
+		public static function get_instance(): self {
+			if ( null === self::$instance ) {
+				self::$instance = new self();
+			}
 
-            return self::$instance;
-        }
+			return self::$instance;
+		}
 
-        /**
-         * Register a new ability category.
-         *
-         * @param string $slug Unique category slug.
-         * @param array  $args Category arguments passed to WP_Ability_Category.
-         * @return WP_Ability_Category The newly registered category instance.
-         */
-        public function register(string $slug, array $args): WP_Ability_Category {
-            $category = new WP_Ability_Category($slug, $args);
-            $this->categories[$slug] = $category;
+		/**
+		 * Register a new ability category.
+		 *
+		 * @param string $slug Unique category slug.
+		 * @param array  $args Category arguments passed to WP_Ability_Category.
+		 * @return WP_Ability_Category The newly registered category instance.
+		 */
+		public function register( string $slug, array $args ): WP_Ability_Category {
+			$category                  = new WP_Ability_Category( $slug, $args );
+			$this->categories[ $slug ] = $category;
 
-            return $category;
-        }
+			return $category;
+		}
 
-        /**
-         * Unregister a category by slug.
-         *
-         * @param string $slug The category slug to remove.
-         * @return bool True if the category existed and was removed, false otherwise.
-         */
-        public function unregister(string $slug): bool {
-            if (!isset($this->categories[$slug])) {
-                return false;
-            }
+		/**
+		 * Unregister a category by slug.
+		 *
+		 * @param string $slug The category slug to remove.
+		 * @return bool True if the category existed and was removed, false otherwise.
+		 */
+		public function unregister( string $slug ): bool {
+			if ( ! isset( $this->categories[ $slug ] ) ) {
+				return false;
+			}
 
-            unset($this->categories[$slug]);
+			unset( $this->categories[ $slug ] );
 
-            return true;
-        }
+			return true;
+		}
 
-        /**
-         * Retrieve a single category by slug.
-         *
-         * @param string $slug The category slug.
-         * @return WP_Ability_Category|null The category instance or null if not found.
-         */
-        public function get(string $slug): ?WP_Ability_Category {
-            return $this->categories[$slug] ?? null;
-        }
+		/**
+		 * Retrieve a single category by slug.
+		 *
+		 * @param string $slug The category slug.
+		 * @return WP_Ability_Category|null The category instance or null if not found.
+		 */
+		public function get( string $slug ): ?WP_Ability_Category {
+			return $this->categories[ $slug ] ?? null;
+		}
 
-        /**
-         * Retrieve all registered categories.
-         *
-         * @return array<string, WP_Ability_Category>
-         */
-        public function get_all(): array {
-            return $this->categories;
-        }
+		/**
+		 * Retrieve all registered categories.
+		 *
+		 * @return array<string, WP_Ability_Category>
+		 */
+		public function get_all(): array {
+			return $this->categories;
+		}
 
-        /**
-         * Check whether a category is registered.
-         *
-         * @param string $slug The category slug.
-         * @return bool
-         */
-        public function has(string $slug): bool {
-            return isset($this->categories[$slug]);
-        }
-    }
+		/**
+		 * Check whether a category is registered.
+		 *
+		 * @param string $slug The category slug.
+		 * @return bool
+		 */
+		public function has( string $slug ): bool {
+			return isset( $this->categories[ $slug ] );
+		}
+	}
 }
 
 /*
@@ -570,130 +570,130 @@ if (!class_exists('WP_Ability_Categories_Registry')) {
 |
 */
 
-if (!function_exists('wp_register_ability')) {
-    /**
-     * Register a new WordPress ability.
-     *
-     * Applies the {@see 'wp_register_ability_args'} filter to the arguments
-     * before forwarding them to the abilities registry.
-     *
-     * @param string $name Unique ability name.
-     * @param array  $args Ability arguments.
-     * @return WP_Ability The registered ability instance.
-     */
-    function wp_register_ability(string $name, array $args): WP_Ability {
-        /** This filter is documented in wp-includes/abilities.php (WordPress 6.9+) */
-        $args = apply_filters('wp_register_ability_args', $args, $name);
+if ( ! function_exists( 'wp_register_ability' ) ) {
+	/**
+	 * Register a new WordPress ability.
+	 *
+	 * Applies the {@see 'wp_register_ability_args'} filter to the arguments
+	 * before forwarding them to the abilities registry.
+	 *
+	 * @param string $name Unique ability name.
+	 * @param array  $args Ability arguments.
+	 * @return WP_Ability The registered ability instance.
+	 */
+	function wp_register_ability( string $name, array $args ): WP_Ability {
+		/** This filter is documented in wp-includes/abilities.php (WordPress 6.9+) */
+		$args = apply_filters( 'wp_register_ability_args', $args, $name );
 
-        return WP_Abilities_Registry::get_instance()->register($name, $args);
-    }
+		return WP_Abilities_Registry::get_instance()->register( $name, $args );
+	}
 }
 
-if (!function_exists('wp_unregister_ability')) {
-    /**
-     * Unregister an ability by name.
-     *
-     * @param string $name The ability name.
-     * @return bool True on success, false if the ability was not registered.
-     */
-    function wp_unregister_ability(string $name): bool {
-        return WP_Abilities_Registry::get_instance()->unregister($name);
-    }
+if ( ! function_exists( 'wp_unregister_ability' ) ) {
+	/**
+	 * Unregister an ability by name.
+	 *
+	 * @param string $name The ability name.
+	 * @return bool True on success, false if the ability was not registered.
+	 */
+	function wp_unregister_ability( string $name ): bool {
+		return WP_Abilities_Registry::get_instance()->unregister( $name );
+	}
 }
 
-if (!function_exists('wp_get_ability')) {
-    /**
-     * Retrieve a registered ability by name.
-     *
-     * @param string $name The ability name.
-     * @return WP_Ability|null The ability instance or null.
-     */
-    function wp_get_ability(string $name): ?WP_Ability {
-        return WP_Abilities_Registry::get_instance()->get($name);
-    }
+if ( ! function_exists( 'wp_get_ability' ) ) {
+	/**
+	 * Retrieve a registered ability by name.
+	 *
+	 * @param string $name The ability name.
+	 * @return WP_Ability|null The ability instance or null.
+	 */
+	function wp_get_ability( string $name ): ?WP_Ability {
+		return WP_Abilities_Registry::get_instance()->get( $name );
+	}
 }
 
-if (!function_exists('wp_get_abilities')) {
-    /**
-     * Retrieve all registered abilities.
-     *
-     * @return array<string, WP_Ability>
-     */
-    function wp_get_abilities(): array {
-        return WP_Abilities_Registry::get_instance()->get_all();
-    }
+if ( ! function_exists( 'wp_get_abilities' ) ) {
+	/**
+	 * Retrieve all registered abilities.
+	 *
+	 * @return array<string, WP_Ability>
+	 */
+	function wp_get_abilities(): array {
+		return WP_Abilities_Registry::get_instance()->get_all();
+	}
 }
 
-if (!function_exists('wp_has_ability')) {
-    /**
-     * Check whether an ability is registered.
-     *
-     * @param string $name The ability name.
-     * @return bool
-     */
-    function wp_has_ability(string $name): bool {
-        return WP_Abilities_Registry::get_instance()->has($name);
-    }
+if ( ! function_exists( 'wp_has_ability' ) ) {
+	/**
+	 * Check whether an ability is registered.
+	 *
+	 * @param string $name The ability name.
+	 * @return bool
+	 */
+	function wp_has_ability( string $name ): bool {
+		return WP_Abilities_Registry::get_instance()->has( $name );
+	}
 }
 
-if (!function_exists('wp_register_ability_category')) {
-    /**
-     * Register a new ability category.
-     *
-     * @param string $slug Unique category slug.
-     * @param array  $args Category arguments.
-     * @return WP_Ability_Category The registered category instance.
-     */
-    function wp_register_ability_category(string $slug, array $args): WP_Ability_Category {
-        return WP_Ability_Categories_Registry::get_instance()->register($slug, $args);
-    }
+if ( ! function_exists( 'wp_register_ability_category' ) ) {
+	/**
+	 * Register a new ability category.
+	 *
+	 * @param string $slug Unique category slug.
+	 * @param array  $args Category arguments.
+	 * @return WP_Ability_Category The registered category instance.
+	 */
+	function wp_register_ability_category( string $slug, array $args ): WP_Ability_Category {
+		return WP_Ability_Categories_Registry::get_instance()->register( $slug, $args );
+	}
 }
 
-if (!function_exists('wp_unregister_ability_category')) {
-    /**
-     * Unregister an ability category by slug.
-     *
-     * @param string $slug The category slug.
-     * @return bool True on success, false if the category was not registered.
-     */
-    function wp_unregister_ability_category(string $slug): bool {
-        return WP_Ability_Categories_Registry::get_instance()->unregister($slug);
-    }
+if ( ! function_exists( 'wp_unregister_ability_category' ) ) {
+	/**
+	 * Unregister an ability category by slug.
+	 *
+	 * @param string $slug The category slug.
+	 * @return bool True on success, false if the category was not registered.
+	 */
+	function wp_unregister_ability_category( string $slug ): bool {
+		return WP_Ability_Categories_Registry::get_instance()->unregister( $slug );
+	}
 }
 
-if (!function_exists('wp_has_ability_category')) {
-    /**
-     * Check whether an ability category is registered.
-     *
-     * @param string $slug The category slug.
-     * @return bool
-     */
-    function wp_has_ability_category(string $slug): bool {
-        return WP_Ability_Categories_Registry::get_instance()->has($slug);
-    }
+if ( ! function_exists( 'wp_has_ability_category' ) ) {
+	/**
+	 * Check whether an ability category is registered.
+	 *
+	 * @param string $slug The category slug.
+	 * @return bool
+	 */
+	function wp_has_ability_category( string $slug ): bool {
+		return WP_Ability_Categories_Registry::get_instance()->has( $slug );
+	}
 }
 
-if (!function_exists('wp_get_ability_category')) {
-    /**
-     * Retrieve a registered ability category by slug.
-     *
-     * @param string $slug The category slug.
-     * @return WP_Ability_Category|null The category instance or null.
-     */
-    function wp_get_ability_category(string $slug): ?WP_Ability_Category {
-        return WP_Ability_Categories_Registry::get_instance()->get($slug);
-    }
+if ( ! function_exists( 'wp_get_ability_category' ) ) {
+	/**
+	 * Retrieve a registered ability category by slug.
+	 *
+	 * @param string $slug The category slug.
+	 * @return WP_Ability_Category|null The category instance or null.
+	 */
+	function wp_get_ability_category( string $slug ): ?WP_Ability_Category {
+		return WP_Ability_Categories_Registry::get_instance()->get( $slug );
+	}
 }
 
-if (!function_exists('wp_get_ability_categories')) {
-    /**
-     * Retrieve all registered ability categories.
-     *
-     * @return array<string, WP_Ability_Category>
-     */
-    function wp_get_ability_categories(): array {
-        return WP_Ability_Categories_Registry::get_instance()->get_all();
-    }
+if ( ! function_exists( 'wp_get_ability_categories' ) ) {
+	/**
+	 * Retrieve all registered ability categories.
+	 *
+	 * @return array<string, WP_Ability_Category>
+	 */
+	function wp_get_ability_categories(): array {
+		return WP_Ability_Categories_Registry::get_instance()->get_all();
+	}
 }
 
 /*
@@ -707,26 +707,30 @@ if (!function_exists('wp_get_ability_categories')) {
 |
 */
 
-add_action('init', static function (): void {
-    /**
-     * Fires when the Abilities API is ready for category registration.
-     *
-     * Plugins and themes should hook here to register ability categories
-     * via wp_register_ability_category().
-     *
-     * @since 6.9.0 (WordPress core)
-     * @since 1.0.0 (polyfill)
-     */
-    do_action('wp_abilities_api_categories_init');
+add_action(
+	'init',
+	static function (): void {
+		/**
+		 * Fires when the Abilities API is ready for category registration.
+		 *
+		 * Plugins and themes should hook here to register ability categories
+		 * via wp_register_ability_category().
+		 *
+		 * @since 6.9.0 (WordPress core)
+		 * @since 1.0.0 (polyfill)
+		 */
+		do_action( 'wp_abilities_api_categories_init' );
 
-    /**
-     * Fires when the Abilities API is ready for ability registration.
-     *
-     * Plugins and themes should hook here to register abilities via
-     * wp_register_ability().
-     *
-     * @since 6.9.0 (WordPress core)
-     * @since 1.0.0 (polyfill)
-     */
-    do_action('wp_abilities_api_init');
-}, 5);
+		/**
+		 * Fires when the Abilities API is ready for ability registration.
+		 *
+		 * Plugins and themes should hook here to register abilities via
+		 * wp_register_ability().
+		 *
+		 * @since 6.9.0 (WordPress core)
+		 * @since 1.0.0 (polyfill)
+		 */
+		do_action( 'wp_abilities_api_init' );
+	},
+	5
+);

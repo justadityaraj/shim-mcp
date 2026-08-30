@@ -1004,6 +1004,7 @@ final class Pages {
 
 						$pattern = $delimiter . $search . $delimiter . ( $ignore_case ? 'i' : '' );
 
+						// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a malformed user pattern must fail as a return value, not a PHP warning.
 						if ( false === @preg_match( $pattern, '' ) ) {
 							return array(
 								'success' => false,

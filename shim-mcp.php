@@ -25,28 +25,34 @@ declare(strict_types=1);
 
 namespace ShimMcp;
 
-defined('ABSPATH') || exit();
+defined( 'ABSPATH' ) || exit();
 
-define('SHIM_MCP_DIR', plugin_dir_path(__FILE__));
-define('SHIM_MCP_URL', plugin_dir_url(__FILE__));
-define('SHIM_MCP_VERSION', '1.0.0');
+define( 'SHIM_MCP_DIR', plugin_dir_path( __FILE__ ) );
+define( 'SHIM_MCP_URL', plugin_dir_url( __FILE__ ) );
+define( 'SHIM_MCP_VERSION', '1.0.0' );
 
 require_once __DIR__ . '/includes/Autoloader.php';
 
-register_activation_hook(__FILE__, function (): void {
-    // Set transient for admin redirect on first activation
-    set_transient('shim_mcp_activated', true, 30);
-    // Flush rewrite rules for REST API routes
-    flush_rewrite_rules();
-});
+register_activation_hook(
+	__FILE__,
+	function (): void {
+		// Set transient for admin redirect on first activation
+		set_transient( 'shim_mcp_activated', true, 30 );
+		// Flush rewrite rules for REST API routes
+		flush_rewrite_rules();
+	}
+);
 
-register_deactivation_hook(__FILE__, function (): void {
-    // Clean up transients
-    delete_transient('shim_mcp_activated');
-    // Flush rewrite rules
-    flush_rewrite_rules();
-});
+register_deactivation_hook(
+	__FILE__,
+	function (): void {
+		// Clean up transients
+		delete_transient( 'shim_mcp_activated' );
+		// Flush rewrite rules
+		flush_rewrite_rules();
+	}
+);
 
-if (Autoloader::register()) {
-    Plugin::instance();
+if ( Autoloader::register() ) {
+	Plugin::instance();
 }
