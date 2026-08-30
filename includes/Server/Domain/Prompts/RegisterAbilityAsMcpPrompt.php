@@ -51,7 +51,7 @@ class RegisterAbilityAsMcpPrompt {
 	/**
 	 * The MCP server.
 	 *
-	 * @var \ShimMcp\Server\Core\McpServer
+	 * @var \ShimMcp\Server\McpServer
 	 */
 	private McpServer $mcp_server;
 
@@ -59,7 +59,7 @@ class RegisterAbilityAsMcpPrompt {
 	 * Make a new instance of the class.
 	 *
 	 * @param \WP_Ability            $ability    The ability.
-	 * @param \ShimMcp\Server\Core\McpServer $mcp_server The MCP server.
+	 * @param \ShimMcp\Server\McpServer $mcp_server The MCP server.
 	 *
 	 * @return \ShimMcp\Server\Domain\Prompts\McpPrompt|\WP_Error Returns prompt instance or WP_Error if validation fails.
 	 */
@@ -73,7 +73,7 @@ class RegisterAbilityAsMcpPrompt {
 	 * Constructor.
 	 *
 	 * @param \WP_Ability            $ability    The ability.
-	 * @param \ShimMcp\Server\Core\McpServer $mcp_server The MCP server.
+	 * @param \ShimMcp\Server\McpServer $mcp_server The MCP server.
 	 */
 	private function __construct( WP_Ability $ability, McpServer $mcp_server ) {
 		$this->mcp_server = $mcp_server;

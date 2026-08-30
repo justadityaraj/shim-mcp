@@ -33,7 +33,7 @@ class McpTransportContext {
 	/**
 	 * Initialize the transport context.
 	 *
-	 * @param \ShimMcp\Server\Core\McpServer             $mcp_server The MCP server instance.
+	 * @param \ShimMcp\Server\McpServer             $mcp_server The MCP server instance.
 	 * @param \ShimMcp\Server\Handlers\Initialize\InitializeHandler     $initialize_handler The initialize handler.
 	 * @param \ShimMcp\Server\Handlers\Tools\ToolsHandler          $tools_handler The tools handler.
 	 * @param \ShimMcp\Server\Handlers\Resources\ResourcesHandler      $resources_handler The resources handler.
@@ -46,7 +46,7 @@ class McpTransportContext {
 	/**
 	 * The MCP server instance.
 	 *
-	 * @var \ShimMcp\Server\Core\McpServer
+	 * @var \ShimMcp\Server\McpServer
 	 */
 	public McpServer $mcp_server;
 
@@ -115,7 +115,7 @@ class McpTransportContext {
 	 * Initialize the transport context.
 	 *
 	 * @param array{
-	 *   mcp_server: \ShimMcp\Server\Core\McpServer,
+	 *   mcp_server: \ShimMcp\Server\McpServer,
 	 *   initialize_handler: \ShimMcp\Server\Handlers\Initialize\InitializeHandler,
 	 *   tools_handler: \ShimMcp\Server\Handlers\Tools\ToolsHandler,
 	 *   resources_handler: \ShimMcp\Server\Handlers\Resources\ResourcesHandler,

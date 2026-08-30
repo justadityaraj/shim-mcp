@@ -29,7 +29,7 @@ class InitializeHandler {
 	/**
 	 * The WordPress MCP instance.
 	 *
-	 * @var \ShimMcp\Server\Core\McpServer
+	 * @var \ShimMcp\Server\McpServer
 	 */
 	private McpServer $mcp;
 
@@ -43,7 +43,7 @@ class InitializeHandler {
 	/**
 	 * Constructor.
 	 *
-	 * @param \ShimMcp\Server\Core\McpServer $mcp The WordPress MCP instance.
+	 * @param \ShimMcp\Server\McpServer $mcp The WordPress MCP instance.
 	 */
 	public function __construct( McpServer $mcp ) {
 		$this->mcp = $mcp;

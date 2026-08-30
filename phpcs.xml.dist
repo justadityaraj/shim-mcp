@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="Shim MCP">
+	<description>Coding standards for Shim MCP.</description>
+
+	<file>.</file>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+	<arg name="parallel" value="8"/>
+
+	<config name="minimum_wp_version" value="6.7"/>
+	<config name="testVersion" value="8.0-"/>
+
+	<rule ref="WordPress-Extra">
+		<exclude name="Squiz.Commenting"/>
+		<exclude name="Generic.Commenting"/>
+		<exclude name="WordPress.Files.FileName"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Generic.Files.OneObjectStructurePerFile"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="shim-mcp"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

@@ -81,7 +81,7 @@ class McpTool {
 	/**
 	 * The MCP server instance this tool belongs to.
 	 *
-	 * @var \ShimMcp\Server\Core\McpServer|null
+	 * @var \ShimMcp\Server\McpServer|null
 	 */
 	private ?McpServer $mcp_server = null;
 
@@ -292,7 +292,7 @@ class McpTool {
 	/**
 	 * Get the MCP server instance this tool belongs to.
 	 *
-	 * @return \ShimMcp\Server\Core\McpServer
+	 * @return \ShimMcp\Server\McpServer
 	 */
 	public function get_mcp_server(): McpServer {
 		if ( null === $this->mcp_server ) {
@@ -305,7 +305,7 @@ class McpTool {
 	/**
 	 * Set the MCP server instance this tool belongs to.
 	 *
-	 * @param \ShimMcp\Server\Core\McpServer $mcp_server The MCP server instance.
+	 * @param \ShimMcp\Server\McpServer $mcp_server The MCP server instance.
 	 *
 	 * @return void
 	 */
@@ -348,7 +348,7 @@ class McpTool {
 	 * Create an McpTool instance from an array.
 	 *
 	 * @param array     $data Array containing tool data.
-	 * @param \ShimMcp\Server\Core\McpServer $mcp_server The MCP server instance.
+	 * @param \ShimMcp\Server\McpServer $mcp_server The MCP server instance.
 	 *
 	 * @return self|\WP_Error Returns a new McpTool instance or WP_Error if validation fails.
 	 */
