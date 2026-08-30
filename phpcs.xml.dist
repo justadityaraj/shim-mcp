@@ -5,6 +5,7 @@
 	<file>.</file>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>bin/*</exclude-pattern>
 
 	<arg name="extensions" value="php"/>
 	<arg name="colors"/>
@@ -20,6 +21,23 @@
 		<exclude name="WordPress.Files.FileName"/>
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 		<exclude name="Generic.Files.OneObjectStructurePerFile"/>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="shim_mcp"/>
+				<element value="ShimMcp"/>
+				<element value="SHIM_MCP"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- The vendored server layer fires mcp_adapter_* filters. Those names are
+	     upstream's public API and code written against the MCP Adapter hooks
+	     them, so they keep their original prefix. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
+		<exclude-pattern>includes/Server/*</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">
