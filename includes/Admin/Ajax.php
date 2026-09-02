@@ -121,7 +121,7 @@ class Ajax {
 		if ( 401 === $code || 403 === $code ) {
 			wp_send_json_success(
 				[
-					'message' => 'Endpoint is reachable and rejecting unauthenticated requests.',
+					'message' => 'Endpoint reachable and rejecting unauthenticated requests. Client credentials were not verified by this check.',
 					'status'  => $code,
 				]
 			);

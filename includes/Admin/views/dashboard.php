@@ -161,7 +161,7 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		<h2>Status</h2>
 		<div class="mcp-status-row">
 			<span id="mcp-connection-dot" class="mcp-dot <?php echo $shim_mcp_has_key ? 'mcp-dot-unknown' : 'mcp-dot-inactive'; ?>"></span>
-			<span id="mcp-connection-text"><?php echo $shim_mcp_has_key ? 'Key configured &mdash; test to verify' : 'No API key configured'; ?></span>
+			<span id="mcp-connection-text"><?php echo $shim_mcp_has_key ? 'Key configured &mdash; run the endpoint check' : 'No API key configured'; ?></span>
 		</div>
 
 		<?php if ( null !== $shim_mcp_ability_count ) : ?>
@@ -169,7 +169,7 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		<?php endif; ?>
 
 		<button type="button" class="button button-secondary" id="mcp-test-connection" <?php echo $shim_mcp_has_key ? '' : 'disabled'; ?>>
-			Test Connection
+			Check Endpoint
 		</button>
 	</div>
 </div>

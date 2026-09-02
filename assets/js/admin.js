@@ -128,7 +128,7 @@
 
     $(document).on('click', '#mcp-test-connection', function () {
         var $btn = $(this);
-        $btn.prop('disabled', true).text('Testing...');
+        $btn.prop('disabled', true).text('Checking...');
 
         $.post(shimMcp.ajaxUrl, {
             action: 'shim_mcp_test_connection',
@@ -136,16 +136,16 @@
         }, function (response) {
             if (response.success) {
                 $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-inactive').addClass('mcp-dot-active');
-                $('#mcp-connection-text').text('Connected');
+                $('#mcp-connection-text').text(response.data && response.data.message ? response.data.message : 'Endpoint reachable; client credentials were not verified.');
             } else {
                 $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-active').addClass('mcp-dot-inactive');
                 $('#mcp-connection-text').text(response.data && response.data.message ? response.data.message : 'Connection failed');
             }
-            $btn.prop('disabled', false).text('Test Connection');
+            $btn.prop('disabled', false).text('Check Endpoint');
         }).fail(function () {
             $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-active').addClass('mcp-dot-inactive');
             $('#mcp-connection-text').text('Request failed');
-            $btn.prop('disabled', false).text('Test Connection');
+            $btn.prop('disabled', false).text('Check Endpoint');
         });
     });
 
