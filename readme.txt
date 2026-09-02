@@ -3,7 +3,7 @@ Contributors: justadityaraj
 Tags: mcp, ai, claude, model-context-protocol, automation
 Requires at least: 6.9
 Tested up to: 7.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -70,6 +70,13 @@ HTTPS is strongly recommended for production use since API credentials are trans
 Different abilities require different WordPress capabilities. For example, content abilities require `edit_posts`, user abilities require `list_users` or `edit_users`, and system abilities require `manage_options`. See the full abilities reference in docs/ABILITIES.md.
 
 == Changelog ==
+
+= 1.0.1 =
+
+* Option abilities refuse to read or write options whose names look like stored credentials, and the option-name search no longer returns values at all
+* Core admin files are loaded only where a function from them is used
+* Removed the redirect to the settings page after activation
+
 
 = 1.0.0 =
 * Initial release with 56 WordPress abilities
