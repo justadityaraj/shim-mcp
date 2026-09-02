@@ -49,7 +49,6 @@ final class Plugin {
 		add_action( 'admin_init', [ $this, 'check_conflicts' ] );
 
 		// First-time activation redirect
-		add_action( 'admin_init', [ $this, 'maybe_redirect_to_dashboard' ] );
 	}
 
 	public function render_unsupported_notice(): void {
@@ -83,19 +82,6 @@ final class Plugin {
 				);
 			}
 		}
-	}
-
-	public function maybe_redirect_to_dashboard(): void {
-		if ( ! get_transient( 'shim_mcp_activated' ) ) {
-			return;
-		}
-		delete_transient( 'shim_mcp_activated' );
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reads a flag WordPress itself sets on the plugins screen; no input is processed.
-		if ( wp_doing_ajax() || isset( $_GET['activate-multi'] ) ) {
-			return;
-		}
-		wp_safe_redirect( admin_url( 'tools.php?page=shim-mcp' ) );
-		exit;
 	}
 
 	public function __clone() {

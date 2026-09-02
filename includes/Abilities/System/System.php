@@ -45,10 +45,6 @@ class System {
 
 					$theme = wp_get_theme();
 
-					if ( ! function_exists( 'get_plugins' ) ) {
-						require_once ABSPATH . 'wp-admin/includes/plugin.php';
-					}
-
 					$active = get_option( 'active_plugins' );
 					$count  = is_array( $active ) ? count( $active ) : 0;
 

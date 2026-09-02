@@ -11,7 +11,7 @@ final class Options {
 			'shim-mcp/options-get',
 			array(
 				'label'               => 'Read Site Option',
-				'description'         => 'Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all.',
+				'description'         => 'Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. Options whose names look like credentials, such as API keys, secrets, tokens or passwords, are refused.',
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -44,6 +44,14 @@ final class Options {
 						return array(
 							'success' => false,
 							'message' => esc_html__( 'Provide the option name you want to read as a non-empty string of at most 191 characters.', 'shim-mcp' ),
+						);
+					}
+
+					if ( self::is_sensitive( $name ) ) {
+						return array(
+							'success' => false,
+							'name'    => $name,
+							'message' => esc_html__( 'That option name looks like it stores a credential, so this ability will not read it. Secrets stay on the server.', 'shim-mcp' ),
 						);
 					}
 
@@ -86,7 +94,7 @@ final class Options {
 			'shim-mcp/options-search',
 			array(
 				'label'               => 'Search Option Names',
-				'description'         => 'Finds every option whose name contains a given fragment and returns one page of matches, each with a shortened preview of the stored value so long or serialised values do not flood the response.',
+				'description'         => 'Finds every option whose name contains a given fragment and returns one page of matching names with their autoload flags. Values are never included; read a specific non-credential option with the read ability.',
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -129,8 +137,6 @@ final class Options {
 								'properties' => array(
 									'name'     => array( 'type' => 'string' ),
 									'autoload' => array( 'type' => 'string' ),
-									'preview'  => array( 'type' => 'string' ),
-									'length'   => array( 'type' => 'integer' ),
 								),
 							),
 						),
@@ -172,7 +178,7 @@ final class Options {
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- searching option names by pattern has no core API, and the result must be live rather than cached.
 					$rows = $wpdb->get_results(
 						$wpdb->prepare(
-							"SELECT option_name, option_value, autoload FROM {$wpdb->options} WHERE option_name LIKE %s ORDER BY option_name ASC LIMIT %d OFFSET %d",
+							"SELECT option_name, autoload FROM {$wpdb->options} WHERE option_name LIKE %s ORDER BY option_name ASC LIMIT %d OFFSET %d",
 							$like,
 							$per_page,
 							$offset
@@ -184,13 +190,9 @@ final class Options {
 
 					if ( is_array( $rows ) ) {
 						foreach ( $rows as $row ) {
-							$raw = isset( $row['option_value'] ) && is_string( $row['option_value'] ) ? $row['option_value'] : '';
-
 							$matches[] = array(
 								'name'     => isset( $row['option_name'] ) ? (string) $row['option_name'] : '',
 								'autoload' => isset( $row['autoload'] ) ? (string) $row['autoload'] : '',
-								'preview'  => self::shorten( $raw ),
-								'length'   => strlen( $raw ),
 							);
 						}
 					}
@@ -273,6 +275,14 @@ final class Options {
 							'success' => false,
 							'name'    => $name,
 							'message' => esc_html__( 'That option is protected. Changing it can lock people out of the site or hand out capabilities, so this ability will not write it.', 'shim-mcp' ),
+						);
+					}
+
+					if ( self::is_sensitive( $name ) ) {
+						return array(
+							'success' => false,
+							'name'    => $name,
+							'message' => esc_html__( 'That option name looks like it stores a credential. Rotating or planting credentials is out of scope for this ability, so it will not write it.', 'shim-mcp' ),
 						);
 					}
 
@@ -379,6 +389,24 @@ final class Options {
 		return $name;
 	}
 
+	private static function is_sensitive( string $name ): bool {
+		$lower = strtolower( $name );
+
+		foreach ( array( 'api_key', 'apikey', 'secret', 'token', 'password', 'passwd', 'credential', 'private_key', 'license_key', 'access_key', 'connectors_ai_' ) as $needle ) {
+			if ( str_contains( $lower, $needle ) ) {
+				return true;
+			}
+		}
+
+		foreach ( array( '_key', '_salt', '_pass', '_auth' ) as $suffix ) {
+			if ( str_ends_with( $lower, $suffix ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private static function is_protected( string $name ): bool {
 		global $wpdb;
 
@@ -426,21 +454,5 @@ final class Options {
 		);
 
 		return is_string( $flag ) ? $flag : '';
-	}
-
-	private static function shorten( string $raw ): string {
-		$flat = preg_replace( '/\s+/', ' ', $raw );
-
-		if ( ! is_string( $flat ) ) {
-			$flat = $raw;
-		}
-
-		$flat = trim( $flat );
-
-		if ( strlen( $flat ) <= 160 ) {
-			return $flat;
-		}
-
-		return substr( $flat, 0, 160 ) . '...';
 	}
 }

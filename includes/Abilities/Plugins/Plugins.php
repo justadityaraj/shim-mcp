@@ -199,8 +199,9 @@ class Plugins {
 						);
 					}
 
-					require_once ABSPATH . 'wp-admin/includes/plugin.php';
-					require_once ABSPATH . 'wp-admin/includes/file.php';
+					if ( ! function_exists( 'activate_plugin' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
+					}
 
 					$plugin_file = plugin_basename( trim( $input['plugin_file'] ) );
 
@@ -443,10 +444,12 @@ class Plugins {
 						);
 					}
 
-					require_once ABSPATH . 'wp-admin/includes/file.php';
-					require_once ABSPATH . 'wp-admin/includes/plugin.php';
-					require_once ABSPATH . 'wp-admin/includes/misc.php';
-					require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+					if ( ! function_exists( 'delete_plugins' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
+					}
+					if ( ! function_exists( 'request_filesystem_credentials' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/file.php';
+					}
 
 					$plugin_file = plugin_basename( trim( $input['plugin_file'] ) );
 

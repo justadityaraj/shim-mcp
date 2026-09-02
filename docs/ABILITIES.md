@@ -158,8 +158,8 @@ Each ability declares a blanket capability in its permission callback. Abilities
 
 | Ability | Capability | Read-only | Description |
 |---------|-----------|-----------|-------------|
-| `shim-mcp/options-get` | `manage_options` | yes | Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. |
-| `shim-mcp/options-search` | `manage_options` | yes | Finds every option whose name contains a given fragment and returns one page of matches, each with a shortened preview of the stored value so long or serialised values do not flood the response. |
+| `shim-mcp/options-get` | `manage_options` | yes | Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. Options whose names look like credentials, such as API keys, secrets, tokens or passwords, are refused. |
+| `shim-mcp/options-search` | `manage_options` | yes | Finds every option whose name contains a given fragment and returns one page of matching names with their autoload flags. Values are never included; read a specific non-credential option with the read ability. |
 | `shim-mcp/options-update` | `manage_options` | no | Stores a new value for an option and creates it when it does not exist yet. Supply a key to replace a single entry inside an option that already holds an array rather than overwriting the whole option. Options that govern the site addresses, who may register and at what role, the active plugin set, or role capability definitions are refused outright. |
 
 ---

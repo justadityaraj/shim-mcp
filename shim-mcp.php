@@ -36,9 +36,6 @@ require_once __DIR__ . '/includes/Autoloader.php';
 register_activation_hook(
 	__FILE__,
 	function (): void {
-		// Set transient for admin redirect on first activation
-		set_transient( 'shim_mcp_activated', true, 30 );
-		// Flush rewrite rules for REST API routes
 		flush_rewrite_rules();
 	}
 );
@@ -46,9 +43,6 @@ register_activation_hook(
 register_deactivation_hook(
 	__FILE__,
 	function (): void {
-		// Clean up transients
-		delete_transient( 'shim_mcp_activated' );
-		// Flush rewrite rules
 		flush_rewrite_rules();
 	}
 );
