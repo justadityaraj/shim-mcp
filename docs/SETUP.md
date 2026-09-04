@@ -10,8 +10,8 @@
 
 ### Option A: Upload via WordPress Admin
 
-1. Download the latest release zip from the [Releases page](https://github.com/justadityaraj/shim-mcp/releases)
-2. In WordPress admin, go to **Plugins > Add New > Upload Plugin**
+1. Install from the [WordPress.org Plugin Directory](https://wordpress.org/plugins/shim-mcp/), or download the latest release zip from the [Releases page](https://github.com/justadityaraj/shim-mcp/releases)
+2. In WordPress admin, go to **Plugins > Add New**, search for **Shim MCP**, and install it directly (or use **Upload Plugin** with a zip from [GitHub Releases](https://github.com/justadityaraj/shim-mcp/releases))
 3. Choose the zip file and click **Install Now**
 4. Click **Activate Plugin**
 

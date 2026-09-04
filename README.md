@@ -3,6 +3,7 @@
 ![PHP >= 8.0](https://img.shields.io/badge/PHP-%3E%3D%208.0-777BB4?logo=php&logoColor=white)
 ![WordPress >= 6.7](https://img.shields.io/badge/WordPress-%3E%3D%206.7-21759B?logo=wordpress&logoColor=white)
 ![License GPL-2.0-or-later](https://img.shields.io/badge/License-GPL--2.0--or--later-blue)
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/shim-mcp)](https://wordpress.org/plugins/shim-mcp/)
 
 A self-contained **Model Context Protocol (MCP) server for WordPress**, built for developers. Install one plugin and your WordPress site becomes an MCP server that Claude Code, Claude Desktop, Cursor, Windsurf, Cline, or any MCP-compatible AI client can drive — 56 abilities across posts, pages, media, users, plugins, menus, widgets, comments, options and system management.
 
@@ -68,7 +69,7 @@ claude mcp add shim -- wp shim-mcp serve --user=admin --path=/full/path/to/wordp
 
 **Remote site (HTTP)**
 
-1. Install the plugin — upload the zip via **Plugins → Add New → Upload Plugin**, or clone into `wp-content/plugins/`.
+1. Install the plugin — search for **Shim MCP** under **Plugins → Add New**, or download it from the [WordPress.org listing](https://wordpress.org/plugins/shim-mcp/).
 2. Go to **Tools → Shim MCP** and click Generate to create an application password.
 3. Copy the config snippet shown on the dashboard into your AI client's config.
 
@@ -105,7 +106,7 @@ wp shim-mcp list  [--format=<format>]                                # list regi
 
 ## Status
 
-Early release, and **submitted to the WordPress.org plugin directory — awaiting review.** Approval is not granted yet, so for now install it from the [releases page](https://github.com/justadityaraj/shim-mcp/releases) or by cloning this repository.
+**Approved and live on the [WordPress.org Plugin Directory](https://wordpress.org/plugins/shim-mcp/).** Install it directly from Plugins → Add New in wp-admin, or download the zip from the [releases page](https://github.com/justadityaraj/shim-mcp/releases) here.
 
 It is feature-complete and the abilities are documented, but it has not yet run across a broad range of hosting environments. Issues and reports are welcome.
 
