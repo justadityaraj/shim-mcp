@@ -1,0 +1,127 @@
+language: "en-US"
+
+tone_instructions: >-
+  Be direct and specific. Point at the exact line and the failure mode, not general advice.
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  collapse_walkthrough: true
+  sequence_diagrams: false
+  poem: false
+  in_progress_fortune: false
+  estimate_code_review_effort: true
+  suggested_labels: false
+  auto_apply_labels: false
+  suggested_reviewers: false
+  auto_assign_reviewers: false
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    base_branches:
+      - "dev"
+      - "main"
+    drafts: false
+
+  path_filters:
+    - "!includes/Server/**"
+    - "includes/Server/Cli/**"
+    - "includes/Server/Abilities/**"
+
+  path_instructions:
+    - path: "includes/Abilities/**/*.php"
+      instructions: >-
+        Every ability's execute_callback must re-check the per-object capability
+        (edit_post, delete_post, read_post, edit_user, delete_user, edit_comment)
+        for abilities that act on a specific object, in addition to the blanket
+        permission_callback. Flag any new ability touching a specific post, page,
+        user, or comment that skips this check as a privilege-escalation bug, not
+        a style note.
+
+        Every input_schema property must declare an explicit "type". An untyped
+        property is a real defect: the runtime validates input against these
+        schemas, and a missing type triggers a WordPress _doing_it_wrong notice.
+
+        Do not suggest adding code comments or docstrings. This project writes
+        zero comments by policy; well-named identifiers replace them.
+
+    - path: "includes/Abilities/Plugins/Plugins.php"
+      instructions: >-
+        This plugin deliberately does not install, download, or fetch executable
+        code from any external source (WordPress.org Plugin Directory Guideline 8).
+        Do not suggest adding install-from-URL, install-from-zip, or similar
+        functionality. Installing by WordPress.org directory slug via plugins_api()
+        would be compliant; anything that fetches a zip from an arbitrary URL is not.
+
+    - path: "includes/Abilities/System/System.php"
+      instructions: >-
+        The ability that writes to wp-config.php must stay gated behind the
+        SHIM_MCP_ALLOW_CONFIG_WRITES constant, checked in both the permission
+        callback and the execute callback, in addition to the existing
+        DISALLOW_FILE_EDIT / DISALLOW_FILE_MODS checks and the sanity check on
+        the rewritten file contents. Flag any change that weakens or bypasses
+        this gate.
+
+    - path: "includes/Server/**/*.php"
+      instructions: >-
+        This code is vendored from WordPress/mcp-adapter (GPL-2.0) and kept in
+        sync with upstream deliberately. Do not suggest refactors, renames, or
+        style changes here; only flag genuine bugs. mcp_adapter_* hook names are
+        upstream's public filter API and must not be renamed.
+
+    - path: "**/*.php"
+      instructions: >-
+        Do not suggest adding code comments or PHPDoc blocks. This project writes
+        zero comments by policy (only phpcs:ignore pragmas and license headers
+        survive review). Do not flag missing docstrings as an issue.
+
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+
+  pre_merge_checks:
+    docstrings:
+      mode: "off"
+    title:
+      mode: "warning"
+    description:
+      mode: "warning"
+    issue_assessment:
+      mode: "warning"
+
+  tools:
+    ast-grep:
+      packages:
+        - "php"
+
+knowledge_base:
+  opt_out: false
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "phpcs.xml.dist"
+      - "CREDITS.md"
+      - "SECURITY.md"
+  learnings:
+    scope: "local"
+  issues:
+    scope: "local"
+  pull_requests:
+    scope: "local"
+
+code_generation:
+  docstrings:
+    path_instructions:
+      - path: "**/*.php"
+        instructions: >-
+          Do not generate docstrings for this project under any circumstance.
+          It has a zero-code-comments policy.
+
+chat:
+  auto_reply: true
+  allow_non_org_members: true
