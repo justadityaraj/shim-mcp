@@ -27,9 +27,9 @@ reviews:
     drafts: false
 
   path_filters:
+    - "**"
     - "!includes/Server/**"
     - "includes/Server/Cli/**"
-    - "includes/Server/Abilities/**"
 
   path_instructions:
     - path: "includes/Abilities/**/*.php"
