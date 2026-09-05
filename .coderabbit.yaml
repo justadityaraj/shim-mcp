@@ -89,11 +89,6 @@ reviews:
     issue_assessment:
       mode: "warning"
 
-  tools:
-    ast-grep:
-      packages:
-        - "php"
-
 knowledge_base:
   opt_out: false
   code_guidelines:
