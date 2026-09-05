@@ -26,11 +26,6 @@ reviews:
       - "main"
     drafts: false
 
-  path_filters:
-    - "**"
-    - "!includes/Server/**"
-    - "includes/Server/Cli/**"
-
   path_instructions:
     - path: "includes/Abilities/**/*.php"
       instructions: >-
