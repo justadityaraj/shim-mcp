@@ -12,7 +12,7 @@
  * Plugin URI:        https://dev.adityarajsingh.com/shim-mcp/
  * Description:       Connect WordPress to AI in one click. Full MCP server with 56 WordPress abilities, no other plugins needed.
  * Requires at least: 6.9
- * Version:           1.0.2
+ * Version:           1.0.3-dev.1
  * Requires PHP:      8.0
  * Author:            Aditya Raj Singh
  * Author URI:        https://adityarajsingh.com
@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) || exit();
 
 define( 'SHIM_MCP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SHIM_MCP_URL', plugin_dir_url( __FILE__ ) );
-define( 'SHIM_MCP_VERSION', '1.0.2' );
+define( 'SHIM_MCP_VERSION', '1.0.3-dev.1' );
 
 require_once __DIR__ . '/includes/Autoloader.php';
 
