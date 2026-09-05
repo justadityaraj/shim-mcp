@@ -10,7 +10,6 @@ declare( strict_types=1 );
 namespace ShimMcp\Server\Handlers\Tools;
 
 use ShimMcp\Server\McpServer;
-use ShimMcp\Server\Domain\Tools\McpTool;
 use ShimMcp\Server\Handlers\HandlerHelperTrait;
 use ShimMcp\Server\Infrastructure\ErrorHandling\McpErrorFactory;
 
@@ -44,18 +43,18 @@ class ToolsHandler {
 	 * @return array Response with tools list and metadata.
 	 */
 	public function list_tools( int $request_id = 0 ): array {
-		$tools      = $this->mcp->get_tools();
-		$safe_tools = array();
+		$tools     = $this->mcp->get_tools();
+		$tool_list = array();
 
 		foreach ( $tools as $tool ) {
-			$safe_tools[] = $this->sanitize_tool_data( $tool );
+			$tool_list[] = $tool->to_array();
 		}
 
 		return array(
-			'tools'     => $safe_tools,
+			'tools'     => $tool_list,
 			'_metadata' => array(
 				'component_type' => 'tools',
-				'tools_count'    => count( $safe_tools ),
+				'tools_count'    => count( $tool_list ),
 			),
 		);
 	}
@@ -69,20 +68,20 @@ class ToolsHandler {
 	 */
 	public function list_all_tools( int $request_id = 0 ): array {
 		// Return all tools with additional details.
-		$tools      = $this->mcp->get_tools();
-		$safe_tools = array();
+		$tools     = $this->mcp->get_tools();
+		$tool_list = array();
 
 		foreach ( $tools as $tool ) {
-			$safe_tool              = $this->sanitize_tool_data( $tool );
-			$safe_tool['available'] = true;
-			$safe_tools[]           = $safe_tool;
+			$tool_data              = $tool->to_array();
+			$tool_data['available'] = true;
+			$tool_list[]            = $tool_data;
 		}
 
 		return array(
-			'tools'     => $safe_tools,
+			'tools'     => $tool_list,
 			'_metadata' => array(
 				'component_type' => 'tools',
-				'tools_count'    => count( $safe_tools ),
+				'tools_count'    => count( $tool_list ),
 			),
 		);
 	}
@@ -207,44 +206,6 @@ class ToolsHandler {
 				),
 			);
 		}
-	}
-
-	/**
-	 * Sanitizes tool data for JSON encoding by removing callback functions and other problematic data.
-	 *
-	 * @param \ShimMcp\Server\Domain\Tools\McpTool $tool Raw tool data.
-	 *
-	 * @return array Sanitized tool data safe for JSON encoding.
-	 */
-	private function sanitize_tool_data( McpTool $tool ): array {
-		// Convert the tool to an array representation.
-		$tool = $tool->to_array();
-		// Create a safe copy with only JSON-serializable data.
-		$safe_tool = array(
-			'name'        => $tool['name'] ?? '',
-			'description' => $tool['description'] ?? '',
-			'type'        => $tool['type'] ?? 'action',
-		);
-
-		// Include input schema if present (should be JSON-safe).
-		if ( isset( $tool['inputSchema'] ) && is_array( $tool['inputSchema'] ) ) {
-			$safe_tool['inputSchema'] = $tool['inputSchema'];
-		}
-
-		// Include output schema if present (should be JSON-safe).
-		if ( isset( $tool['outputSchema'] ) && is_array( $tool['outputSchema'] ) ) {
-			$safe_tool['outputSchema'] = $tool['outputSchema'];
-		}
-
-		// Include annotations if present.
-		if ( isset( $tool['annotations'] ) && is_array( $tool['annotations'] ) ) {
-			$safe_tool['annotations'] = $tool['annotations'];
-		}
-
-		// Note: We deliberately exclude 'callback' and 'permission_callback'
-		// as these are PHP callables that can cause circular references during JSON encoding.
-
-		return $safe_tool;
 	}
 
 	/**

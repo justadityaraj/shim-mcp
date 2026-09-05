@@ -1,9 +1,10 @@
 # Shim MCP — WordPress MCP Server for Claude Code, Cursor, and any MCP client
 
 ![PHP >= 8.0](https://img.shields.io/badge/PHP-%3E%3D%208.0-777BB4?logo=php&logoColor=white)
-![WordPress >= 6.7](https://img.shields.io/badge/WordPress-%3E%3D%206.7-21759B?logo=wordpress&logoColor=white)
+![WordPress >= 6.9](https://img.shields.io/badge/WordPress-%3E%3D%206.9-21759B?logo=wordpress&logoColor=white)
 ![License GPL-2.0-or-later](https://img.shields.io/badge/License-GPL--2.0--or--later-blue)
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/shim-mcp)](https://wordpress.org/plugins/shim-mcp/)
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/justadityaraj/shim-mcp?utm_source=oss&utm_medium=github&utm_campaign=justadityaraj%2Fshim-mcp&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
 
 A self-contained **Model Context Protocol (MCP) server for WordPress**, built for developers. Install one plugin and your WordPress site becomes an MCP server that Claude Code, Claude Desktop, Cursor, Windsurf, Cline, or any MCP-compatible AI client can drive — 56 abilities across posts, pages, media, users, plugins, menus, widgets, comments, options and system management.
 
@@ -123,6 +124,22 @@ Verified on WordPress 7.1 / PHP 8.5.9 — activation, the admin dashboard, the M
 | PHPCompatibility, PHP 8.0 to 8.5 | 0 issues |
 
 Plugin Check is an automated scan of the directory's coding requirements. Passing it says the code meets those standards; it is not a review outcome and implies no endorsement by WordPress.org.
+
+## Development version
+
+Stable releases come from `main` and are what the [WordPress.org listing](https://wordpress.org/plugins/shim-mcp/) serves. Work in progress lives on `dev`.
+
+If you want to try unreleased changes, take the newest **pre-release** from the [releases page](https://github.com/justadityaraj/shim-mcp/releases) — those are built the same way as stable releases and install normally through **Plugins → Add New → Upload Plugin**.
+
+To track `dev` directly instead:
+
+```bash
+git clone -b dev https://github.com/justadityaraj/shim-mcp.git wp-content/plugins/shim-mcp
+```
+
+Clone into a directory named exactly `shim-mcp`. GitHub's "Download ZIP" button produces a `shim-mcp-dev` folder, which WordPress treats as a second, separate plugin.
+
+Pre-release builds are unreleased by definition: they have not been through the release checks, and they are not on WordPress.org. Do not run them on a production site.
 
 ## Maintainer
 
