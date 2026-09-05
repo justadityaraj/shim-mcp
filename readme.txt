@@ -3,7 +3,7 @@ Contributors: justadityaraj
 Tags: mcp, ai, claude, model-context-protocol, automation
 Requires at least: 6.9
 Tested up to: 7.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -70,6 +70,11 @@ HTTPS is strongly recommended for production use since API credentials are trans
 Different abilities require different WordPress capabilities. For example, content abilities require `edit_posts`, user abilities require `list_users` or `edit_users`, and system abilities require `manage_options`. See the full abilities reference in docs/ABILITIES.md.
 
 == Changelog ==
+
+= 1.0.3 =
+
+* `tools/list` descriptors now match the MCP Tool schema. The non-standard `type` field is gone and the optional `title` field is preserved. Contributed by @mikemikimike.
+
 
 = 1.0.2 =
 
