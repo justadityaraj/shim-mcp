@@ -1,9 +1,10 @@
 # Shim MCP — WordPress MCP Server for Claude Code, Cursor, and any MCP client
 
 ![PHP >= 8.0](https://img.shields.io/badge/PHP-%3E%3D%208.0-777BB4?logo=php&logoColor=white)
-![WordPress >= 6.7](https://img.shields.io/badge/WordPress-%3E%3D%206.7-21759B?logo=wordpress&logoColor=white)
+![WordPress >= 6.9](https://img.shields.io/badge/WordPress-%3E%3D%206.9-21759B?logo=wordpress&logoColor=white)
 ![License GPL-2.0-or-later](https://img.shields.io/badge/License-GPL--2.0--or--later-blue)
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/shim-mcp)](https://wordpress.org/plugins/shim-mcp/)
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/justadityaraj/shim-mcp?utm_source=oss&utm_medium=github&utm_campaign=justadityaraj%2Fshim-mcp&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
 
 A self-contained **Model Context Protocol (MCP) server for WordPress**, built for developers. Install one plugin and your WordPress site becomes an MCP server that Claude Code, Claude Desktop, Cursor, Windsurf, Cline, or any MCP-compatible AI client can drive — 56 abilities across posts, pages, media, users, plugins, menus, widgets, comments, options and system management.
 
