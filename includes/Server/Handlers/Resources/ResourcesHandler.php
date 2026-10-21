@@ -59,6 +59,10 @@ class ResourcesHandler {
 		);
 	}
 
+	public function list_resource_templates( int|string $request_id = 0 ): array {
+		return array( 'resourceTemplates' => array() );
+	}
+
 	/**
 	 * Handles the resources/read request.
 	 *
