@@ -8,7 +8,7 @@ $shim       = array_filter( $names, static fn( $name ) => 0 === strpos( $name, '
 $abilities  = array_values( array_diff( $shim, $meta_tools ) );
 $registered = array_values( array_intersect( $meta_tools, $shim ) );
 
-same( 56, count( $abilities ), 'all Shim MCP abilities register' );
+same( 57, count( $abilities ), 'all Shim MCP abilities register' );
 same( $meta_tools, $registered, 'the three MCP meta-tool abilities register' );
 
 $unexposed = array_filter(

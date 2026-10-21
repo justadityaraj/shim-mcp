@@ -8,17 +8,17 @@ Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Connect WordPress to AI in one click. Full MCP server with 56 abilities.
+Connect WordPress to AI in one click. Full MCP server with 57 abilities.
 
 == Description ==
 
-Shim MCP is a self-contained MCP (Model Context Protocol) server plugin for WordPress. It provides 56 abilities that let any MCP-compatible AI client manage your WordPress site -- posts, pages, media, users, plugins, menus, widgets, comments, options, and system settings. The MCP server and every ability ship in the one plugin, so no companion plugins are required.
+Shim MCP is a self-contained MCP (Model Context Protocol) server plugin for WordPress. It provides 57 abilities that let any MCP-compatible AI client manage your WordPress site -- posts, pages, media, users, plugins, menus, widgets, comments, options, and system settings. The MCP server and every ability ship in the one plugin, so no companion plugins are required.
 
 The MCP protocol layer is derived from the WordPress project's own MCP Adapter (GPL-2.0), and abilities are registered through WordPress's Abilities API, which core ships from 6.9. See the Credits section below.
 
 Key features:
 
-* 56 WordPress abilities organized across 13 domains
+* 57 WordPress abilities organized across 13 domains
 * MCP protocol 2025-06-18 over two transports: Streamable HTTP, and stdio through WP-CLI (`wp shim-mcp serve`)
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, and Cursor
@@ -37,7 +37,7 @@ Shim MCP builds its MCP protocol layer on two GPL-2.0 projects published by the 
 * [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) - everything under `includes/Server/` (transport, JSON-RPC routing, session management, tools/resources/prompts handlers, schema transformation, error and observability infrastructure) is derived from it.
 * [WordPress Abilities API](https://github.com/WordPress/abilities-api) - every ability is registered through this core API, which WordPress ships from 6.9.
 
-The 56 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. Full breakdown in CREDITS.md.
+The 57 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. Full breakdown in CREDITS.md.
 
 == Frequently Asked Questions ==
 
