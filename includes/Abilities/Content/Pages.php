@@ -456,7 +456,7 @@ final class Pages {
 						}
 					}
 
-					$new_id = wp_insert_post( $postarr, true );
+					$new_id = wp_insert_post( wp_slash( $postarr ), true );
 
 					if ( is_wp_error( $new_id ) ) {
 						return array(
@@ -718,7 +718,7 @@ final class Pages {
 					}
 
 					if ( count( $postarr ) > 1 ) {
-						$saved = wp_update_post( $postarr, true );
+						$saved = wp_update_post( wp_slash( $postarr ), true );
 
 						if ( is_wp_error( $saved ) ) {
 							return array(
@@ -1054,9 +1054,11 @@ final class Pages {
 					}
 
 					$saved = wp_update_post(
-						array(
-							'ID'           => $page->ID,
-							'post_content' => (string) $updated,
+						wp_slash(
+							array(
+								'ID'           => $page->ID,
+								'post_content' => (string) $updated,
+							)
 						),
 						true
 					);
