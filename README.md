@@ -62,11 +62,13 @@ wp plugin activate shim-mcp
 wp shim-mcp serve --user=admin
 ```
 
-Then register it with your client. For Claude Code:
+Then register it with your client. For Claude Code on macOS or Linux:
 
 ```bash
-claude mcp add shim -- wp shim-mcp serve --user=admin --path=/full/path/to/wordpress
+claude mcp add shim-mcp -- wp shim-mcp serve --user=admin --path=/path/to/wordpress
 ```
+
+Windows, Claude Desktop and Cursor need a slightly different command; the [local setup guide](docs/SETUP.md#local-setup-stdio) has a tested configuration for each, plus a one-line check that the server answers before you connect a client.
 
 **Remote site (HTTP)**
 

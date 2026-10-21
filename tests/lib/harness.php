@@ -114,8 +114,8 @@ final class StdioServer {
 
 	private int $next_id = 1;
 
-	public function __construct( array $serve_args, array $php_settings = array(), bool $socket_stdin = false ) {
-		$command = wp_command( array_merge( array( 'shim-mcp', 'serve' ), $serve_args ) );
+	public function __construct( array $serve_args, array $php_settings = array(), bool $socket_stdin = false, ?array $command = null ) {
+		$command = $command ?? wp_command( array_merge( array( 'shim-mcp', 'serve' ), $serve_args ) );
 		foreach ( $php_settings as $setting ) {
 			array_splice( $command, 1, 0, array( '-d', $setting ) );
 		}
