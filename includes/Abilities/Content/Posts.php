@@ -360,8 +360,8 @@ class Posts {
 						'post_type'    => 'post',
 						'post_title'   => sanitize_text_field( $input['title'] ),
 						'post_status'  => $status,
-						'post_content' => isset( $input['content'] ) && is_string( $input['content'] ) ? wp_kses_post( $input['content'] ) : '',
-						'post_excerpt' => isset( $input['excerpt'] ) && is_string( $input['excerpt'] ) ? wp_kses_post( $input['excerpt'] ) : '',
+						'post_content' => isset( $input['content'] ) && is_string( $input['content'] ) ? self::permitted_markup( $input['content'] ) : '',
+						'post_excerpt' => isset( $input['excerpt'] ) && is_string( $input['excerpt'] ) ? self::permitted_markup( $input['excerpt'] ) : '',
 					);
 
 					if ( isset( $input['slug'] ) && is_string( $input['slug'] ) && '' !== $input['slug'] ) {
@@ -398,7 +398,7 @@ class Posts {
 						}
 					}
 
-					$new_id = wp_insert_post( $postarr, true );
+					$new_id = wp_insert_post( wp_slash( $postarr ), true );
 
 					if ( is_wp_error( $new_id ) ) {
 						return array(
@@ -562,12 +562,12 @@ class Posts {
 					}
 
 					if ( isset( $input['content'] ) && is_string( $input['content'] ) ) {
-						$postarr['post_content'] = wp_kses_post( $input['content'] );
+						$postarr['post_content'] = self::permitted_markup( $input['content'] );
 						$changed[]               = 'content';
 					}
 
 					if ( isset( $input['excerpt'] ) && is_string( $input['excerpt'] ) ) {
-						$postarr['post_excerpt'] = wp_kses_post( $input['excerpt'] );
+						$postarr['post_excerpt'] = self::permitted_markup( $input['excerpt'] );
 						$changed[]               = 'excerpt';
 					}
 
@@ -615,7 +615,7 @@ class Posts {
 					}
 
 					if ( count( $postarr ) > 1 ) {
-						$result = wp_update_post( $postarr, true );
+						$result = wp_update_post( wp_slash( $postarr ), true );
 						if ( is_wp_error( $result ) ) {
 							return array(
 								'success' => false,
@@ -917,9 +917,11 @@ class Posts {
 					}
 
 					$result = wp_update_post(
-						array(
-							'ID'           => $post->ID,
-							'post_content' => wp_kses_post( (string) $updated ),
+						wp_slash(
+							array(
+								'ID'           => $post->ID,
+								'post_content' => self::permitted_markup( (string) $updated ),
+							)
 						),
 						true
 					);
@@ -951,5 +953,9 @@ class Posts {
 				),
 			)
 		);
+	}
+
+	private static function permitted_markup( string $markup ): string {
+		return current_user_can( 'unfiltered_html' ) ? $markup : wp_kses_post( $markup );
 	}
 }

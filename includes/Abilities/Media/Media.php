@@ -387,12 +387,14 @@ class Media {
 					}
 
 					$attachment_id = wp_insert_attachment(
-						array(
-							'post_mime_type' => $checked['type'],
-							'post_title'     => $title,
-							'post_excerpt'   => $caption,
-							'post_content'   => '',
-							'post_status'    => 'inherit',
+						wp_slash(
+							array(
+								'post_mime_type' => $checked['type'],
+								'post_title'     => $title,
+								'post_excerpt'   => $caption,
+								'post_content'   => '',
+								'post_status'    => 'inherit',
+							)
 						),
 						$destination,
 						$parent_id,
@@ -538,7 +540,7 @@ class Media {
 					}
 
 					if ( count( $changes ) > 1 ) {
-						$result = wp_update_post( $changes, true );
+						$result = wp_update_post( wp_slash( $changes ), true );
 
 						if ( is_wp_error( $result ) ) {
 							return array(
