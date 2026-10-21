@@ -35,6 +35,7 @@ class McpErrorFactory {
 	public const RESOURCE_NOT_FOUND = -32002; // Resource not found
 	public const TOOL_NOT_FOUND     = -32003; // Tool not found
 	public const PROMPT_NOT_FOUND   = -32004; // Prompt not found
+	public const SESSION_NOT_FOUND  = -32005;
 	public const PERMISSION_DENIED  = -32008; // Access denied/forbidden
 	public const UNAUTHORIZED       = -32010; // Authentication required
 
@@ -288,6 +289,15 @@ class McpErrorFactory {
 		);
 	}
 
+	public static function session_not_found( int|string|null $id, string $details = '' ): array {
+		$message = __( 'Session not found', 'shim-mcp' );
+		if ( $details ) {
+			$message .= ': ' . $details;
+		}
+
+		return self::create_error_response( $id, self::SESSION_NOT_FOUND, $message );
+	}
+
 	/**
 	 * Create a permission denied error response.
 	 *
@@ -354,6 +364,7 @@ class McpErrorFactory {
 			case self::RESOURCE_NOT_FOUND:
 			case self::TOOL_NOT_FOUND:
 			case self::PROMPT_NOT_FOUND:
+			case self::SESSION_NOT_FOUND:
 			case self::METHOD_NOT_FOUND:
 				return 404;
 

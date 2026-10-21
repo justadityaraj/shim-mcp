@@ -121,6 +121,10 @@ class HttpRequestHandler {
 			}
 		);
 
+		if ( null === $response_body || array() === $response_body ) {
+			return new \WP_REST_Response( null, 202 );
+		}
+
 		// Determine HTTP status code based on error type
 		if ( ! $is_batch_request && isset( $response_body['error'] ) ) {
 			$http_status = McpErrorFactory::get_http_status_for_error( $response_body );

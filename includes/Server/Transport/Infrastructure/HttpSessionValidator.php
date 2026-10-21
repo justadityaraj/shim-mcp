@@ -44,7 +44,7 @@ class HttpSessionValidator {
 
 		// Validate session using SessionManager
 		if ( ! SessionManager::validate_session( $user_id, $session_id ) ) {
-			return McpErrorFactory::invalid_params( 0, 'Invalid or expired session' );
+			return McpErrorFactory::session_not_found( 0, 'Invalid or expired session' );
 		}
 
 		return true;
