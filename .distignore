@@ -6,3 +6,9 @@ package.json
 phpcs.xml.dist
 bin
 CREDITS.md
+.coderabbit.yaml
+.github
+composer.json
+composer.lock
+phpstan.neon.dist
+tests

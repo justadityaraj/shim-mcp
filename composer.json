@@ -1,0 +1,29 @@
+{
+	"name": "justadityaraj/shim-mcp",
+	"description": "WordPress MCP server plugin. This file only installs development tooling.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"php-stubs/wordpress-stubs": "^6.9",
+		"php-stubs/wp-cli-stubs": "^2.11",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpstan/phpstan": "^2.1",
+		"squizlabs/php_codesniffer": "^3.10",
+		"wp-coding-standards/wpcs": "^3.1"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"platform": {
+			"php": "8.0.30"
+		}
+	},
+	"scripts": {
+		"lint": "phpcs",
+		"analyse": "phpstan analyse --memory-limit=2G --no-progress",
+		"test:setup": "@php tests/setup.php",
+		"test": "@php tests/run.php"
+	}
+}
