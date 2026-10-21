@@ -633,7 +633,8 @@ class Plugins {
 						);
 					}
 
-					$download = isset( $api->download_link ) ? (string) $api->download_link : '';
+					$info     = is_array( $api ) ? $api : get_object_vars( $api );
+					$download = (string) ( $info['download_link'] ?? '' );
 					if ( 'https' !== wp_parse_url( $download, PHP_URL_SCHEME ) || 'downloads.wordpress.org' !== wp_parse_url( $download, PHP_URL_HOST ) ) {
 						return array(
 							'success' => false,
@@ -673,8 +674,8 @@ class Plugins {
 						'success'     => true,
 						'slug'        => $slug,
 						'plugin_file' => $plugin_file,
-						'name'        => (string) $api->name,
-						'version'     => (string) $api->version,
+						'name'        => (string) ( $info['name'] ?? $slug ),
+						'version'     => (string) ( $info['version'] ?? '' ),
 						'active'      => false,
 						'message'     => __( 'The plugin was installed and is inactive. Activate it to switch it on.', 'shim-mcp' ),
 					);
