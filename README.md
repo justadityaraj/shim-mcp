@@ -141,6 +141,20 @@ Clone into a directory named exactly `shim-mcp`. GitHub's "Download ZIP" button 
 
 Pre-release builds are unreleased by definition: they have not been through the release checks, and they are not on WordPress.org. Do not run them on a production site.
 
+### Running the tests
+
+The smoke tests build the release zip, install it on a disposable WordPress site that runs on SQLite, and talk to the plugin over MCP. They need PHP 8.0+ with the `pdo_sqlite` and `zip` extensions, and network access for the first run. No database server or Docker is needed.
+
+```bash
+composer install          # PHPCS, PHPStan and the WordPress stubs
+composer lint             # PHP_CodeSniffer
+composer analyse          # PHPStan
+composer test:setup       # build the zip and create the test site
+composer test             # run every suite against that site
+```
+
+`php tests/run.php stdio` runs only the suites whose name contains `stdio`. Set `WP_VERSION` before `test:setup` to test another WordPress release, and `SHIM_TEST_ROOT` to move the test site out of the system temp directory. The zip is built from `git ls-files`, so add a new file to git before rebuilding. GitHub Actions runs the same commands on every push and pull request, on the minimum supported pair (WordPress 6.9, PHP 8.0) and on the latest WordPress with PHP 8.5.
+
 ## Maintainer
 
 Built and maintained by [Aditya Raj Singh](https://adityarajsingh.com) at [BNCW Enterprises](https://bncw.in).
