@@ -38,48 +38,50 @@
         }, 2000);
     }
 
-    /**
-     * Update config blocks with real base64 credentials.
-     */
-    function updateConfigs(base64) {
-        $('.mcp-placeholder').each(function () {
-            $(this).text(base64).removeClass('mcp-placeholder');
+    function setCredential(base64) {
+        $('.mcp-credential').each(function () {
+            $(this).text(base64 || $(this).data('placeholder'));
         });
+        $('.mcp-config-copy').prop('disabled', !base64);
+        $('#mcp-config-note').toggle(!base64);
     }
 
-    /**
-     * Switch UI to "key active" state.
-     */
-    function showKeyActive() {
+    function showKeyActive(password, base64) {
         $('#mcp-key-status').html(
             '<span class="mcp-badge mcp-badge-active">API Key Active</span>' +
+            '<button type="button" class="button button-secondary" id="mcp-generate-key">Generate New Key</button>' +
             '<button type="button" class="button button-secondary" id="mcp-revoke-key">Revoke Key</button>'
         );
+        $('#mcp-key-value').text(password);
+        $('#mcp-key-output').show();
+        setCredential(base64);
         $('#mcp-test-connection').prop('disabled', false);
         $('#mcp-connection-dot').removeClass('mcp-dot-inactive mcp-dot-active').addClass('mcp-dot-unknown');
-        $('#mcp-connection-text').text('Key configured \u2014 test to verify');
+        $('#mcp-connection-text').text('Key configured \u2014 run the endpoint check');
     }
 
-    /**
-     * Switch UI to "no key" state.
-     */
     function showNoKey() {
         $('#mcp-key-status').html(
             '<button type="button" class="button button-primary" id="mcp-generate-key">Generate API Key</button>'
         );
+        $('#mcp-key-value').text('');
         $('#mcp-key-output').hide();
+        setCredential(null);
         $('#mcp-test-connection').prop('disabled', true);
         $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-active').addClass('mcp-dot-inactive');
         $('#mcp-connection-text').text('No API key configured');
-
-        // Reset placeholders.
-        $('.mcp-code-wrapper .mcp-placeholder').text('BASE64_ENCODED_CREDENTIALS');
     }
 
     // ---- Event handlers ----
 
     $(document).on('click', '#mcp-generate-key', function () {
         var $btn = $(this);
+        var label = $btn.text();
+
+        if ($('#mcp-revoke-key').length && !confirm('Generating a new key revokes the current one. MCP clients using it will stop working.')) {
+            return;
+        }
+
         $btn.prop('disabled', true).text('Generating...');
 
         $.post(shimMcp.ajaxUrl, {
@@ -87,18 +89,14 @@
             nonce: shimMcp.nonce
         }, function (response) {
             if (response.success) {
-                var data = response.data;
-                $('#mcp-key-value').text(data.password);
-                $('#mcp-key-output').show();
-                updateConfigs(data.base64);
-                showKeyActive();
+                showKeyActive(response.data.password, response.data.base64);
             } else {
                 alert('Error: ' + (response.data && response.data.message ? response.data.message : 'Unknown error'));
-                $btn.prop('disabled', false).text('Generate API Key');
+                $btn.prop('disabled', false).text(label);
             }
         }).fail(function () {
             alert('Request failed. Please try again.');
-            $btn.prop('disabled', false).text('Generate API Key');
+            $btn.prop('disabled', false).text(label);
         });
     });
 

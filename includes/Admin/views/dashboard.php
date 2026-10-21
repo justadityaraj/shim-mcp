@@ -71,6 +71,7 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		<div id="mcp-key-status">
 			<?php if ( $shim_mcp_has_key ) : ?>
 				<span class="mcp-badge mcp-badge-active">API Key Active</span>
+				<button type="button" class="button button-secondary" id="mcp-generate-key">Generate New Key</button>
 				<button type="button" class="button button-secondary" id="mcp-revoke-key">Revoke Key</button>
 			<?php else : ?>
 				<button type="button" class="button button-primary" id="mcp-generate-key">Generate API Key</button>
@@ -92,6 +93,7 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 	<div class="mcp-card">
 		<h2>Configuration</h2>
 		<p>Copy the configuration below into your AI client settings.</p>
+		<p id="mcp-config-note" class="description">WordPress cannot show an application password again after it is created. Generate a new key to fill in the credentials and export a complete configuration.</p>
 
 		<!-- Claude Code -->
 		<div class="mcp-config-block">
@@ -100,14 +102,15 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 				<pre><code id="mcp-config-claude-code">{
 	"mcpServers": {
 	"shim-mcp": {
+		"type": "http",
 		"url": "<?php echo esc_url( $shim_mcp_rest_base ); ?>",
 		"headers": {
-		"Authorization": "Basic <span class="mcp-placeholder"><?php echo esc_html( $shim_mcp_base64_placeholder ); ?></span>"
+		"Authorization": "Basic <span class="mcp-credential" data-placeholder="<?php echo esc_attr( $shim_mcp_base64_placeholder ); ?>"><?php echo esc_html( $shim_mcp_base64_placeholder ); ?></span>"
 		}
 	}
 	}
 }</code></pre>
-				<button type="button" class="button button-small mcp-copy-btn" data-target="mcp-config-claude-code">Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-claude-code" disabled>Copy</button>
 			</div>
 		</div>
 
@@ -124,12 +127,12 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		"mcp-remote",
 		"<?php echo esc_url( $shim_mcp_rest_base ); ?>",
 		"--header",
-		"Authorization: Basic <span class="mcp-placeholder"><?php echo esc_html( $shim_mcp_base64_placeholder ); ?></span>"
+		"Authorization: Basic <span class="mcp-credential" data-placeholder="<?php echo esc_attr( $shim_mcp_base64_placeholder ); ?>"><?php echo esc_html( $shim_mcp_base64_placeholder ); ?></span>"
 		]
 	}
 	}
 }</code></pre>
-				<button type="button" class="button button-small mcp-copy-btn" data-target="mcp-config-claude-desktop">Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-claude-desktop" disabled>Copy</button>
 			</div>
 		</div>
 
@@ -146,12 +149,12 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 		"mcp-remote",
 		"<?php echo esc_url( $shim_mcp_rest_base ); ?>",
 		"--header",
-		"Authorization: Basic <span class="mcp-placeholder"><?php echo esc_html( $shim_mcp_base64_placeholder ); ?></span>"
+		"Authorization: Basic <span class="mcp-credential" data-placeholder="<?php echo esc_attr( $shim_mcp_base64_placeholder ); ?>"><?php echo esc_html( $shim_mcp_base64_placeholder ); ?></span>"
 		]
 	}
 	}
 }</code></pre>
-				<button type="button" class="button button-small mcp-copy-btn" data-target="mcp-config-cursor">Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-cursor" disabled>Copy</button>
 			</div>
 		</div>
 	</div>
