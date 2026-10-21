@@ -121,26 +121,17 @@ final class StdioServer {
 		}
 
 		$this->stderr_file = (string) tempnam( sys_get_temp_dir(), 'shim' );
-		$descriptors       = array(
-			0 => array( 'pipe', 'r' ),
-			1 => array( 'pipe', 'w' ),
-			2 => array( 'file', $this->stderr_file, 'w' ),
+		$this->process     = proc_open(
+			$command,
+			array(
+				0 => $socket_stdin ? array( 'socket' ) : array( 'pipe', 'r' ),
+				1 => array( 'pipe', 'w' ),
+				2 => array( 'file', $this->stderr_file, 'w' ),
+			),
+			$this->pipes
 		);
-		if ( $socket_stdin ) {
-			$pair           = stream_socket_pair( STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP );
-			$descriptors[0] = $pair[1];
-			$descriptors[3] = $pair[0];
-			$command        = array_merge( array( '/bin/sh', '-c', 'exec 3<&- "$@"', 'sh' ), $command );
-		}
-
-		$this->process = proc_open( $command, $descriptors, $this->pipes );
 		if ( ! is_resource( $this->process ) ) {
 			fail( 'start wp shim-mcp serve' );
-		}
-
-		if ( $socket_stdin ) {
-			fclose( $pair[1] );
-			$this->pipes[0] = $pair[0];
 		}
 	}
 
