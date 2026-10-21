@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace ShimMcp\Server\Cli;
 
 use ShimMcp\Server\McpServer;
+use ShimMcp\Server\Transport\Infrastructure\JsonRpcMessageValidator;
 use ShimMcp\Server\Transport\Infrastructure\RequestRouter;
 
 /**
@@ -138,33 +139,18 @@ class StdioServerBridge {
 				return $this->create_error_response( null, -32700, 'Parse error', 'Invalid JSON was received by the server.' );
 			}
 
-			if ( ! is_array( $request ) ) {
-				return $this->create_error_response( null, -32600, 'Invalid Request', 'The JSON sent is not a valid Request object.' );
+			$invalid = JsonRpcMessageValidator::validate( $request );
+			if ( null !== $invalid ) {
+				return $this->format_response( array( 'error' => $invalid['error'] ), $invalid['id'] );
 			}
 
-			if ( isset( $request['id'] ) && ! is_int( $request['id'] ) && ! is_string( $request['id'] ) ) {
-				return $this->create_error_response( null, -32600, 'Invalid Request', 'The request id must be a string or an integer.' );
+			if ( ! JsonRpcMessageValidator::is_request( $request ) ) {
+				return '';
 			}
 
-			if ( ! isset( $request['jsonrpc'] ) || '2.0' !== $request['jsonrpc'] ) {
-				return $this->create_error_response( $request['id'] ?? null, -32600, 'Invalid Request', 'The JSON-RPC version must be 2.0.' );
-			}
-
-			$method = $request['method'] ?? null;
+			$method = $request['method'];
 			$params = $request['params'] ?? array();
-			$id     = $request['id'] ?? null;
-
-			if ( ! is_string( $method ) ) {
-				return $this->create_error_response( $id, -32600, 'Invalid Request', 'Method must be a string.' );
-			}
-
-			if ( is_object( $params ) ) {
-				$params = (array) $params;
-			}
-
-			if ( ! is_array( $params ) ) {
-				$params = array();
-			}
+			$id     = $request['id'];
 
 			ob_start();
 			try {
@@ -175,10 +161,6 @@ class StdioServerBridge {
 
 			if ( '' !== $stray_output ) {
 				$this->log_to_stderr( sprintf( 'Discarded %d bytes written to stdout while handling %s: %s', strlen( $stray_output ), $method, $stray_output ) );
-			}
-
-			if ( null === $id ) {
-				return '';
 			}
 
 			return $this->format_response( $result, $id );

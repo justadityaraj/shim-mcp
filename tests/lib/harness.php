@@ -131,7 +131,11 @@ final class StdioServer {
 	}
 
 	public function send( array $message ): void {
-		fwrite( $this->pipes[0], json_encode( $message, JSON_UNESCAPED_SLASHES ) . "\n" );
+		$this->send_raw( json_encode( $message, JSON_UNESCAPED_SLASHES ) );
+	}
+
+	public function send_raw( string $line ): void {
+		fwrite( $this->pipes[0], $line . "\n" );
 		fflush( $this->pipes[0] );
 	}
 
