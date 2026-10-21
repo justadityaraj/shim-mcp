@@ -3,7 +3,7 @@
 ## Requirements
 
 - PHP 8.0 or higher
-- WordPress 6.7 or higher
+- WordPress 6.9 or higher
 - HTTPS recommended for production (API credentials are transmitted with requests)
 
 ## Installation
