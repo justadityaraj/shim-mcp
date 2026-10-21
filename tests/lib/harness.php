@@ -114,12 +114,23 @@ final class StdioServer {
 
 	private int $next_id = 1;
 
-	public function __construct( array $serve_args ) {
+	public function __construct( array $serve_args, array $php_settings = array(), bool $socket_stdin = false ) {
+		$command = wp_command( array_merge( array( 'shim-mcp', 'serve' ), $serve_args ) );
+		foreach ( $php_settings as $setting ) {
+			array_splice( $command, 1, 0, array( '-d', $setting ) );
+		}
+
+		$stdin = array( 'pipe', 'r' );
+		if ( $socket_stdin ) {
+			$pair  = stream_socket_pair( STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP );
+			$stdin = $pair[1];
+		}
+
 		$this->stderr_file = (string) tempnam( sys_get_temp_dir(), 'shim' );
 		$this->process     = proc_open(
-			wp_command( array_merge( array( 'shim-mcp', 'serve' ), $serve_args ) ),
+			$command,
 			array(
-				0 => array( 'pipe', 'r' ),
+				0 => $stdin,
 				1 => array( 'pipe', 'w' ),
 				2 => array( 'file', $this->stderr_file, 'w' ),
 			),
@@ -128,6 +139,15 @@ final class StdioServer {
 		if ( ! is_resource( $this->process ) ) {
 			fail( 'start wp shim-mcp serve' );
 		}
+
+		if ( $socket_stdin ) {
+			fclose( $pair[1] );
+			$this->pipes[0] = $pair[0];
+		}
+	}
+
+	public function running(): bool {
+		return proc_get_status( $this->process )['running'];
 	}
 
 	public function send( array $message ): void {
