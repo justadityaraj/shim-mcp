@@ -64,6 +64,8 @@ if ( ! is_dir( $content . '/plugins' ) ) {
 }
 extract_zip( $root . '/sqlite-database-integration.zip', $content . '/plugins' );
 copy( $content . '/plugins/sqlite-database-integration/db.copy', $content . '/db.php' );
+mkdir( $content . '/mu-plugins' );
+copy( __DIR__ . '/fixtures/test-abilities.php', $content . '/mu-plugins/shim-mcp-test-abilities.php' );
 
 $config = run_command(
 	wp_command( array( 'config', 'create', '--dbname=wordpress', '--dbuser=wordpress', '--skip-check', '--extra-php' ) ),

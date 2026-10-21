@@ -62,7 +62,7 @@ class McpCommand extends \WP_CLI_Command { // phpcs:ignore
 		} else {
 			$server    = array_values( $servers )[0];
 			$server_id = $server->get_server_id();
-			\WP_CLI::line( sprintf( 'Using server: %s', $server_id ) );
+			\WP_CLI::debug( sprintf( 'Using server: %s', $server_id ) );
 		}
 
 		if ( isset( $assoc_args['user'] ) ) {
