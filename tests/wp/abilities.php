@@ -16,3 +16,8 @@ $unexposed = array_filter(
 	static fn( $name ) => true !== ( wp_get_ability( $name )->get_meta()['mcp']['public'] ?? null )
 );
 same( array(), array_values( $unexposed ), 'every Shim MCP ability is exposed to MCP' );
+
+$categories = array_unique( array_map( static fn( $name ) => wp_get_ability( $name )->get_category(), $abilities ) );
+sort( $categories );
+same( array( 'site', 'user' ), $categories, "every ability is filed under WordPress core's site and user categories" );
+check( null !== wp_get_ability_category( 'site' ) && null !== wp_get_ability_category( 'user' ), 'the core site and user categories are registered' );

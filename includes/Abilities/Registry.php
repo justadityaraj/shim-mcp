@@ -2,9 +2,10 @@
 /**
  * Abilities Registry — orchestrator for all Shim MCP abilities.
  *
- * Registers two ability categories ('site' and 'user'), calls the
- * static register() method on each of the 13 ability files, and
- * applies a blanket filter to mark every ability as MCP-public.
+ * Calls the static register() method on each of the 13 ability files,
+ * filing every ability under the 'site' and 'user' categories that
+ * WordPress core registers, and applies a blanket filter to mark every
+ * ability as MCP-public.
  *
  * @package ShimMcp\Abilities
  * @since   1.0.0
@@ -39,44 +40,18 @@ final class Registry {
 	/**
 	 * Wire up the Abilities API hooks.
 	 *
-	 * Called once from Plugin::setup(). Registers callbacks on the two
-	 * Abilities API init actions and adds the MCP exposure filter.
+	 * Called once from Plugin::setup(). Registers the abilities on the
+	 * Abilities API init action and adds the MCP exposure filter.
 	 *
 	 * @since 1.0.0
 	 */
 	public static function init(): void {
-		add_action( 'wp_abilities_api_categories_init', array( self::class, 'register_categories' ) );
 		add_action( 'wp_abilities_api_init', array( self::class, 'register_abilities' ) );
 		add_filter( 'wp_register_ability_args', array( self::class, 'expose_all_abilities' ), 10, 2 );
 	}
 
 	/**
-	 * Register ability categories.
-	 *
-	 * Hooked to {@see 'wp_abilities_api_categories_init'}.
-	 *
-	 * @since 1.0.0
-	 */
-	public static function register_categories(): void {
-		wp_register_ability_category(
-			'site',
-			array(
-				'label'       => __( 'Site Management', 'shim-mcp' ),
-				'description' => __( 'Abilities for managing site content, media, plugins, menus, widgets, options, and system settings.', 'shim-mcp' ),
-			)
-		);
-
-		wp_register_ability_category(
-			'user',
-			array(
-				'label'       => __( 'User Management', 'shim-mcp' ),
-				'description' => __( 'Abilities for managing WordPress users and their roles.', 'shim-mcp' ),
-			)
-		);
-	}
-
-	/**
-	 * Register all 57 abilities from the 13 ability files.
+	 * Register all 56 abilities from the 13 ability files.
 	 *
 	 * Hooked to {@see 'wp_abilities_api_init'}.
 	 *
