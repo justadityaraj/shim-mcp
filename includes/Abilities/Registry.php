@@ -51,7 +51,7 @@ final class Registry {
 	}
 
 	/**
-	 * Register all 56 abilities from the 13 ability files.
+	 * Register all 57 abilities from the 13 ability files.
 	 *
 	 * Hooked to {@see 'wp_abilities_api_init'}.
 	 *
