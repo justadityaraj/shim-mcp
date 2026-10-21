@@ -77,9 +77,9 @@ class HttpRequestHandler {
 	private function handle_mcp_request( HttpRequestContext $context ): \WP_REST_Response {
 		try {
 			// Validate request body
-			if ( null === $context->body ) {
+			if ( null === $context->body && 'null' !== trim( $context->request->get_body() ) ) {
 				return new \WP_REST_Response(
-					McpErrorFactory::parse_error( 0, 'Invalid JSON in request body' ),
+					McpErrorFactory::parse_error( null, 'Invalid JSON in request body' ),
 					400
 				);
 			}
@@ -96,7 +96,7 @@ class HttpRequestHandler {
 			);
 
 			return new \WP_REST_Response(
-				McpErrorFactory::internal_error( 0, 'Handler error occurred' ),
+				McpErrorFactory::internal_error( null, 'Handler error occurred' ),
 				500
 			);
 		}
@@ -116,7 +116,7 @@ class HttpRequestHandler {
 		$response_body = JsonRpcResponseBuilder::process_messages(
 			$messages,
 			$is_batch_request,
-			function ( array $message ) use ( $context ) {
+			function ( $message ) use ( $context ) {
 				return $this->process_single_message( $message, $context );
 			}
 		);
@@ -137,33 +137,22 @@ class HttpRequestHandler {
 	/**
 	 * Process a single MCP message.
 	 *
-	 * @param array              $message The MCP JSON-RPC message.
+	 * @param mixed              $message The decoded MCP JSON-RPC message.
 	 * @param \ShimMcp\Server\Transport\Infrastructure\HttpRequestContext $context The HTTP request context.
 	 *
 	 * @return array|null JSON-RPC response or null for notifications.
 	 */
-	private function process_single_message( array $message, HttpRequestContext $context ): ?array {
-		// Validate JSON-RPC message format
-		$validation = McpErrorFactory::validate_jsonrpc_message( $message );
-		if ( isset( $validation['error'] ) ) {
-			return $validation;
+	private function process_single_message( $message, HttpRequestContext $context ): ?array {
+		$invalid = JsonRpcMessageValidator::validate( $message );
+		if ( null !== $invalid ) {
+			return $invalid;
 		}
 
-		if ( isset( $message['id'] ) && ! is_int( $message['id'] ) && ! is_string( $message['id'] ) ) {
-			return McpErrorFactory::invalid_request( null, 'The request id must be a string or an integer.' );
+		if ( ! JsonRpcMessageValidator::is_request( $message ) ) {
+			return null;
 		}
 
-		// Handle notifications (no response required)
-		if ( isset( $message['method'] ) && ! isset( $message['id'] ) ) {
-			return null; // Notifications don't get a response
-		}
-
-		// Process requests with IDs
-		if ( isset( $message['method'] ) && isset( $message['id'] ) ) {
-			return $this->process_jsonrpc_request( $message, $context );
-		}
-
-		return null;
+		return $this->process_jsonrpc_request( $message, $context );
 	}
 
 	/**

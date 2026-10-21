@@ -401,37 +401,4 @@ class McpErrorFactory {
 
 		return self::mcp_error_to_http_status( $error_response['error']['code'] );
 	}
-
-	/**
-	 * Validate JSON-RPC message structure.
-	 *
-	 * @param mixed $message The message to validate.
-	 *
-	 * @return bool|array Returns true if valid, or error array if invalid.
-	 */
-	public static function validate_jsonrpc_message( $message ) {
-		if ( ! is_array( $message ) ) {
-			return self::invalid_request( 0, __( 'Message must be a JSON object', 'shim-mcp' ) );
-		}
-
-		// Must have jsonrpc field with value "2.0".
-		if ( ! isset( $message['jsonrpc'] ) || '2.0' !== $message['jsonrpc'] ) {
-			return self::invalid_request( 0, __( 'jsonrpc version must be "2.0"', 'shim-mcp' ) );
-		}
-
-		// Must be either a request/notification (has method) or a response (has result/error).
-		$is_request_or_notification = isset( $message['method'] );
-		$is_response                = isset( $message['result'] ) || isset( $message['error'] );
-
-		if ( ! $is_request_or_notification && ! $is_response ) {
-			return self::invalid_request( 0, __( 'Message must have either method or result/error field', 'shim-mcp' ) );
-		}
-
-		// Responses must have an id field.
-		if ( $is_response && ! isset( $message['id'] ) ) {
-			return self::invalid_request( 0, __( 'Response messages must have an id field', 'shim-mcp' ) );
-		}
-
-		return true;
-	}
 }

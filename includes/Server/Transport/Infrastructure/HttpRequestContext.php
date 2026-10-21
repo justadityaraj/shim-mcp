@@ -39,9 +39,9 @@ class HttpRequestContext {
 	/**
 	 * The JSON-decoded body of the request.
 	 *
-	 * @var array|null
+	 * @var mixed
 	 */
-	public ?array $body;
+	public mixed $body;
 
 	/**
 	 * The Accept header from the request.
