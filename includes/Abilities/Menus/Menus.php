@@ -44,7 +44,7 @@ class Menus {
 					if ( ! is_array( $menus ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Navigation menus could not be read from this site.', 'shim-mcp' ),
+							'message' => __( 'Navigation menus could not be read from this site.', 'shim-mcp' ),
 						);
 					}
 
@@ -53,8 +53,8 @@ class Menus {
 					foreach ( $menus as $menu ) {
 						$rows[] = array(
 							'id'         => (int) $menu->term_id,
-							'name'       => esc_html( $menu->name ),
-							'slug'       => esc_html( $menu->slug ),
+							'name'       => $menu->name,
+							'slug'       => $menu->slug,
 							'item_count' => (int) $menu->count,
 						);
 					}
@@ -109,7 +109,7 @@ class Menus {
 					if ( ! is_array( $input ) || ! isset( $input['name'] ) || ! is_string( $input['name'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply a menu name as a string.', 'shim-mcp' ),
+							'message' => __( 'Supply a menu name as a string.', 'shim-mcp' ),
 						);
 					}
 
@@ -118,7 +118,7 @@ class Menus {
 					if ( '' === trim( $name ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The menu name cannot be blank.', 'shim-mcp' ),
+							'message' => __( 'The menu name cannot be blank.', 'shim-mcp' ),
 						);
 					}
 
@@ -127,7 +127,7 @@ class Menus {
 					if ( is_wp_error( $created ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $created->get_error_message() ),
+							'message' => $created->get_error_message(),
 						);
 					}
 
@@ -136,15 +136,15 @@ class Menus {
 					if ( ! $menu ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The menu was created but could not be read back.', 'shim-mcp' ),
+							'message' => __( 'The menu was created but could not be read back.', 'shim-mcp' ),
 						);
 					}
 
 					return array(
 						'success' => true,
 						'id'      => (int) $menu->term_id,
-						'name'    => esc_html( $menu->name ),
-						'slug'    => esc_html( $menu->slug ),
+						'name'    => $menu->name,
+						'slug'    => $menu->slug,
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -207,7 +207,7 @@ class Menus {
 					if ( ! is_array( $input ) || ! isset( $input['menu'] ) || ! is_scalar( $input['menu'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the menu id or slug.', 'shim-mcp' ),
+							'message' => __( 'Supply the menu id or slug.', 'shim-mcp' ),
 						);
 					}
 
@@ -217,7 +217,7 @@ class Menus {
 					if ( ! $menu ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No navigation menu matches that id or slug.', 'shim-mcp' ),
+							'message' => __( 'No navigation menu matches that id or slug.', 'shim-mcp' ),
 						);
 					}
 
@@ -232,14 +232,14 @@ class Menus {
 					foreach ( $items as $item ) {
 						$rows[] = array(
 							'id'        => (int) $item->ID,
-							'title'     => esc_html( $item->title ),
+							'title'     => $item->title,
 							'url'       => esc_url_raw( (string) $item->url ),
-							'type'      => esc_html( (string) $item->type ),
-							'object'    => esc_html( (string) $item->object ),
+							'type'      => (string) $item->type,
+							'object'    => (string) $item->object,
 							'object_id' => (int) $item->object_id,
 							'parent'    => (int) $item->menu_item_parent,
 							'order'     => (int) $item->menu_order,
-							'target'    => esc_html( (string) $item->target ),
+							'target'    => (string) $item->target,
 						);
 					}
 
@@ -330,7 +330,7 @@ class Menus {
 					if ( ! is_array( $input ) || ! isset( $input['menu'] ) || ! is_scalar( $input['menu'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the menu id or slug.', 'shim-mcp' ),
+							'message' => __( 'Supply the menu id or slug.', 'shim-mcp' ),
 						);
 					}
 
@@ -340,7 +340,7 @@ class Menus {
 					if ( ! $menu ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No navigation menu matches that id or slug.', 'shim-mcp' ),
+							'message' => __( 'No navigation menu matches that id or slug.', 'shim-mcp' ),
 						);
 					}
 
@@ -352,7 +352,7 @@ class Menus {
 						if ( ! in_array( $candidate, array( 'custom', 'post_type', 'taxonomy' ), true ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The item type must be custom, post_type or taxonomy.', 'shim-mcp' ),
+								'message' => __( 'The item type must be custom, post_type or taxonomy.', 'shim-mcp' ),
 							);
 						}
 
@@ -388,7 +388,7 @@ class Menus {
 						if ( ! isset( $input['url'] ) || ! is_string( $input['url'] ) || '' === trim( $input['url'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'A custom link needs a url.', 'shim-mcp' ),
+								'message' => __( 'A custom link needs a url.', 'shim-mcp' ),
 							);
 						}
 
@@ -397,7 +397,7 @@ class Menus {
 						if ( '' === $url ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That url is not in a form WordPress accepts.', 'shim-mcp' ),
+								'message' => __( 'That url is not in a form WordPress accepts.', 'shim-mcp' ),
 							);
 						}
 
@@ -406,14 +406,14 @@ class Menus {
 						if ( ! isset( $args['menu-item-title'] ) || '' === trim( (string) $args['menu-item-title'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'A custom link needs a title.', 'shim-mcp' ),
+								'message' => __( 'A custom link needs a title.', 'shim-mcp' ),
 							);
 						}
 					} else {
 						if ( ! isset( $input['object'] ) || ! is_string( $input['object'] ) || '' === trim( $input['object'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'Naming the post type or taxonomy is required for a content reference.', 'shim-mcp' ),
+								'message' => __( 'Naming the post type or taxonomy is required for a content reference.', 'shim-mcp' ),
 							);
 						}
 
@@ -423,7 +423,7 @@ class Menus {
 						if ( 0 === $object_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'Supply the id of the post or term this item should link to.', 'shim-mcp' ),
+								'message' => __( 'Supply the id of the post or term this item should link to.', 'shim-mcp' ),
 							);
 						}
 
@@ -431,7 +431,7 @@ class Menus {
 							if ( ! post_type_exists( $object ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'That post type is not registered on this site.', 'shim-mcp' ),
+									'message' => __( 'That post type is not registered on this site.', 'shim-mcp' ),
 								);
 							}
 
@@ -440,21 +440,21 @@ class Menus {
 							if ( ! $linked || $linked->post_type !== $object ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No content of that type exists with the given id.', 'shim-mcp' ),
+									'message' => __( 'No content of that type exists with the given id.', 'shim-mcp' ),
 								);
 							}
 
 							if ( ! current_user_can( 'read_post', $object_id ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'You are not allowed to read the content you asked to link.', 'shim-mcp' ),
+									'message' => __( 'You are not allowed to read the content you asked to link.', 'shim-mcp' ),
 								);
 							}
 						} else {
 							if ( ! taxonomy_exists( $object ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'That taxonomy is not registered on this site.', 'shim-mcp' ),
+									'message' => __( 'That taxonomy is not registered on this site.', 'shim-mcp' ),
 								);
 							}
 
@@ -463,7 +463,7 @@ class Menus {
 							if ( ! $term || is_wp_error( $term ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No term in that taxonomy exists with the given id.', 'shim-mcp' ),
+									'message' => __( 'No term in that taxonomy exists with the given id.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -477,14 +477,14 @@ class Menus {
 					if ( is_wp_error( $item_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $item_id->get_error_message() ),
+							'message' => $item_id->get_error_message(),
 						);
 					}
 
 					if ( 0 === (int) $item_id ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress did not create the menu item.', 'shim-mcp' ),
+							'message' => __( 'WordPress did not create the menu item.', 'shim-mcp' ),
 						);
 					}
 
@@ -561,7 +561,7 @@ class Menus {
 					if ( ! is_array( $input ) || ! isset( $input['item_id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the id of the menu item to change.', 'shim-mcp' ),
+							'message' => __( 'Supply the id of the menu item to change.', 'shim-mcp' ),
 						);
 					}
 
@@ -570,7 +570,7 @@ class Menus {
 					if ( 0 === $item_id ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The menu item id must be a positive number.', 'shim-mcp' ),
+							'message' => __( 'The menu item id must be a positive number.', 'shim-mcp' ),
 						);
 					}
 
@@ -579,14 +579,14 @@ class Menus {
 					if ( ! $post || 'nav_menu_item' !== $post->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That id does not belong to a navigation menu item.', 'shim-mcp' ),
+							'message' => __( 'That id does not belong to a navigation menu item.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $item_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this menu item.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this menu item.', 'shim-mcp' ),
 						);
 					}
 
@@ -595,7 +595,7 @@ class Menus {
 					if ( is_wp_error( $menus ) || empty( $menus ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'This item is not attached to any navigation menu.', 'shim-mcp' ),
+							'message' => __( 'This item is not attached to any navigation menu.', 'shim-mcp' ),
 						);
 					}
 
@@ -623,7 +623,7 @@ class Menus {
 						if ( ! is_string( $input['title'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The title must be a string.', 'shim-mcp' ),
+								'message' => __( 'The title must be a string.', 'shim-mcp' ),
 							);
 						}
 
@@ -634,7 +634,7 @@ class Menus {
 						if ( ! is_string( $input['description'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The description must be a string.', 'shim-mcp' ),
+								'message' => __( 'The description must be a string.', 'shim-mcp' ),
 							);
 						}
 
@@ -645,7 +645,7 @@ class Menus {
 						if ( ! is_string( $input['url'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The url must be a string.', 'shim-mcp' ),
+								'message' => __( 'The url must be a string.', 'shim-mcp' ),
 							);
 						}
 
@@ -654,7 +654,7 @@ class Menus {
 						if ( '' === $url ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That url is not in a form WordPress accepts.', 'shim-mcp' ),
+								'message' => __( 'That url is not in a form WordPress accepts.', 'shim-mcp' ),
 							);
 						}
 
@@ -665,7 +665,7 @@ class Menus {
 						if ( ! is_string( $input['target'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The target must be a string.', 'shim-mcp' ),
+								'message' => __( 'The target must be a string.', 'shim-mcp' ),
 							);
 						}
 
@@ -678,7 +678,7 @@ class Menus {
 						if ( $parent_id === $item_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'A menu item cannot be its own parent.', 'shim-mcp' ),
+								'message' => __( 'A menu item cannot be its own parent.', 'shim-mcp' ),
 							);
 						}
 
@@ -688,7 +688,7 @@ class Menus {
 							if ( ! $parent || 'nav_menu_item' !== $parent->post_type ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'The parent id does not belong to a navigation menu item.', 'shim-mcp' ),
+									'message' => __( 'The parent id does not belong to a navigation menu item.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -705,7 +705,7 @@ class Menus {
 					if ( is_wp_error( $updated ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $updated->get_error_message() ),
+							'message' => $updated->get_error_message(),
 						);
 					}
 
@@ -757,7 +757,7 @@ class Menus {
 					if ( ! is_array( $input ) || ! isset( $input['item_id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the id of the menu item to remove.', 'shim-mcp' ),
+							'message' => __( 'Supply the id of the menu item to remove.', 'shim-mcp' ),
 						);
 					}
 
@@ -766,7 +766,7 @@ class Menus {
 					if ( 0 === $item_id ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The menu item id must be a positive number.', 'shim-mcp' ),
+							'message' => __( 'The menu item id must be a positive number.', 'shim-mcp' ),
 						);
 					}
 
@@ -775,14 +775,14 @@ class Menus {
 					if ( ! $post || 'nav_menu_item' !== $post->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That id does not belong to a navigation menu item.', 'shim-mcp' ),
+							'message' => __( 'That id does not belong to a navigation menu item.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'delete_post', $item_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to delete this menu item.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to delete this menu item.', 'shim-mcp' ),
 						);
 					}
 
@@ -791,7 +791,7 @@ class Menus {
 					if ( ! $deleted ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The menu item could not be removed.', 'shim-mcp' ),
+							'message' => __( 'The menu item could not be removed.', 'shim-mcp' ),
 						);
 					}
 
@@ -851,14 +851,14 @@ class Menus {
 					if ( ! is_array( $input ) || ! isset( $input['location'] ) || ! is_string( $input['location'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the theme location identifier as a string.', 'shim-mcp' ),
+							'message' => __( 'Supply the theme location identifier as a string.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! isset( $input['menu'] ) || ! is_scalar( $input['menu'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply a menu id or slug, or 0 to empty the location.', 'shim-mcp' ),
+							'message' => __( 'Supply a menu id or slug, or 0 to empty the location.', 'shim-mcp' ),
 						);
 					}
 
@@ -868,7 +868,7 @@ class Menus {
 					if ( ! is_array( $registered ) || ! array_key_exists( $location, $registered ) ) {
 						return array(
 							'success'   => false,
-							'message'   => esc_html__( 'The active theme does not register a location by that name.', 'shim-mcp' ),
+							'message'   => __( 'The active theme does not register a location by that name.', 'shim-mcp' ),
 							'locations' => is_array( $registered ) ? array_map( 'esc_html', array_keys( $registered ) ) : array(),
 						);
 					}
@@ -882,7 +882,7 @@ class Menus {
 						if ( ! $menu ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'No navigation menu matches that id or slug.', 'shim-mcp' ),
+								'message' => __( 'No navigation menu matches that id or slug.', 'shim-mcp' ),
 							);
 						}
 
@@ -901,7 +901,7 @@ class Menus {
 
 					return array(
 						'success'  => true,
-						'location' => esc_html( $location ),
+						'location' => $location,
 						'menu_id'  => $menu_id,
 					);
 				},

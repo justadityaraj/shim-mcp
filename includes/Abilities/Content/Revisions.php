@@ -63,7 +63,7 @@ class Revisions {
 					if ( $post_id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply a positive numeric post ID.', 'shim-mcp' ),
+							'message' => __( 'Supply a positive numeric post ID.', 'shim-mcp' ),
 						);
 					}
 
@@ -72,14 +72,14 @@ class Revisions {
 					if ( ! $parent instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No post exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No post exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $parent->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Your account cannot edit this post, so its revisions are unavailable.', 'shim-mcp' ),
+							'message' => __( 'Your account cannot edit this post, so its revisions are unavailable.', 'shim-mcp' ),
 						);
 					}
 
@@ -110,9 +110,9 @@ class Revisions {
 
 						$rows[] = array(
 							'id'           => (int) $revision->ID,
-							'title'        => esc_html( get_the_title( $revision->ID ) ),
+							'title'        => $revision->post_title,
 							'author_id'    => $author_id,
-							'author_name'  => $author ? esc_html( $author->display_name ) : '',
+							'author_name'  => $author ? $author->display_name : '',
 							'modified'     => (string) $revision->post_modified,
 							'modified_gmt' => (string) $revision->post_modified_gmt,
 							'is_autosave'  => (bool) wp_is_post_autosave( $revision->ID ),
@@ -181,7 +181,7 @@ class Revisions {
 					if ( $revision_id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply a positive numeric revision ID.', 'shim-mcp' ),
+							'message' => __( 'Supply a positive numeric revision ID.', 'shim-mcp' ),
 						);
 					}
 
@@ -190,7 +190,7 @@ class Revisions {
 					if ( ! $revision instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That ID does not belong to a stored revision.', 'shim-mcp' ),
+							'message' => __( 'That ID does not belong to a stored revision.', 'shim-mcp' ),
 						);
 					}
 
@@ -200,7 +200,7 @@ class Revisions {
 					if ( ! $parent instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The post this revision belongs to no longer exists.', 'shim-mcp' ),
+							'message' => __( 'The post this revision belongs to no longer exists.', 'shim-mcp' ),
 						);
 					}
 
@@ -210,7 +210,7 @@ class Revisions {
 						if ( $expected_parent !== $parent_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'This revision belongs to a different post than the one you named.', 'shim-mcp' ),
+								'message' => __( 'This revision belongs to a different post than the one you named.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -218,7 +218,7 @@ class Revisions {
 					if ( ! current_user_can( 'edit_post', $parent->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Your account cannot edit this post, so it cannot be rolled back.', 'shim-mcp' ),
+							'message' => __( 'Your account cannot edit this post, so it cannot be rolled back.', 'shim-mcp' ),
 						);
 					}
 
@@ -227,14 +227,14 @@ class Revisions {
 					if ( is_wp_error( $restored ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $restored->get_error_message() ),
+							'message' => $restored->get_error_message(),
 						);
 					}
 
 					if ( ! $restored ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress did not apply the rollback. The revision may already match the current post.', 'shim-mcp' ),
+							'message' => __( 'WordPress did not apply the rollback. The revision may already match the current post.', 'shim-mcp' ),
 						);
 					}
 
@@ -244,9 +244,9 @@ class Revisions {
 						'success'     => true,
 						'post_id'     => (int) $parent->ID,
 						'revision_id' => (int) $revision->ID,
-						'title'       => $updated instanceof \WP_Post ? esc_html( get_the_title( $updated->ID ) ) : '',
+						'title'       => $updated instanceof \WP_Post ? $updated->post_title : '',
 						'modified'    => $updated instanceof \WP_Post ? (string) $updated->post_modified : '',
-						'message'     => esc_html__( 'The post now matches the selected revision.', 'shim-mcp' ),
+						'message'     => __( 'The post now matches the selected revision.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {

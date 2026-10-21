@@ -47,7 +47,7 @@ class Taxonomy {
 			if ( is_wp_error( $terms ) ) {
 				return array(
 					'success' => false,
-					'message' => esc_html( $terms->get_error_message() ),
+					'message' => $terms->get_error_message(),
 				);
 			}
 
@@ -56,9 +56,9 @@ class Taxonomy {
 			foreach ( $terms as $term ) {
 				$rows[] = array(
 					'id'          => (int) $term->term_id,
-					'name'        => esc_html( $term->name ),
+					'name'        => $term->name,
 					'slug'        => $term->slug,
-					'description' => esc_html( $term->description ),
+					'description' => $term->description,
 					'parent'      => (int) $term->parent,
 					'count'       => (int) $term->count,
 				);
@@ -233,7 +233,7 @@ class Taxonomy {
 					if ( 'category' !== $taxonomy && 'post_tag' !== $taxonomy ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The taxonomy must be either category or post_tag.', 'shim-mcp' ),
+							'message' => __( 'The taxonomy must be either category or post_tag.', 'shim-mcp' ),
 						);
 					}
 
@@ -242,7 +242,7 @@ class Taxonomy {
 					if ( '' === $name ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A term name is required and cannot be blank.', 'shim-mcp' ),
+							'message' => __( 'A term name is required and cannot be blank.', 'shim-mcp' ),
 						);
 					}
 
@@ -263,7 +263,7 @@ class Taxonomy {
 							if ( 'category' !== $taxonomy ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'Tags cannot be nested, so a parent may only be given for categories.', 'shim-mcp' ),
+									'message' => __( 'Tags cannot be nested, so a parent may only be given for categories.', 'shim-mcp' ),
 								);
 							}
 
@@ -272,7 +272,7 @@ class Taxonomy {
 							if ( ! $parent_term instanceof \WP_Term ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No category exists with the parent id you supplied.', 'shim-mcp' ),
+									'message' => __( 'No category exists with the parent id you supplied.', 'shim-mcp' ),
 								);
 							}
 
@@ -285,7 +285,7 @@ class Taxonomy {
 					if ( is_wp_error( $created ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $created->get_error_message() ),
+							'message' => $created->get_error_message(),
 						);
 					}
 
@@ -294,14 +294,14 @@ class Taxonomy {
 					if ( ! $term instanceof \WP_Term ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The term was saved but could not be read back.', 'shim-mcp' ),
+							'message' => __( 'The term was saved but could not be read back.', 'shim-mcp' ),
 						);
 					}
 
 					return array(
 						'success'  => true,
 						'id'       => (int) $term->term_id,
-						'name'     => esc_html( $term->name ),
+						'name'     => $term->name,
 						'slug'     => $term->slug,
 						'taxonomy' => $term->taxonomy,
 						'parent'   => (int) $term->parent,
@@ -384,7 +384,7 @@ class Taxonomy {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A positive term id is required.', 'shim-mcp' ),
+							'message' => __( 'A positive term id is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -393,7 +393,7 @@ class Taxonomy {
 					if ( '' !== $taxonomy && 'category' !== $taxonomy && 'post_tag' !== $taxonomy ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Only the category and post_tag taxonomies can be edited here.', 'shim-mcp' ),
+							'message' => __( 'Only the category and post_tag taxonomies can be edited here.', 'shim-mcp' ),
 						);
 					}
 
@@ -402,14 +402,14 @@ class Taxonomy {
 					if ( ! $term instanceof \WP_Term ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No term was found with that id.', 'shim-mcp' ),
+							'message' => __( 'No term was found with that id.', 'shim-mcp' ),
 						);
 					}
 
 					if ( 'category' !== $term->taxonomy && 'post_tag' !== $term->taxonomy ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That term belongs to a taxonomy this ability does not manage.', 'shim-mcp' ),
+							'message' => __( 'That term belongs to a taxonomy this ability does not manage.', 'shim-mcp' ),
 						);
 					}
 
@@ -418,7 +418,7 @@ class Taxonomy {
 					if ( ! $taxonomy_object || ! current_user_can( $taxonomy_object->cap->edit_terms ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit terms in this taxonomy.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit terms in this taxonomy.', 'shim-mcp' ),
 						);
 					}
 
@@ -429,7 +429,7 @@ class Taxonomy {
 						if ( ! is_string( $input['name'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The name must be given as text.', 'shim-mcp' ),
+								'message' => __( 'The name must be given as text.', 'shim-mcp' ),
 							);
 						}
 
@@ -438,7 +438,7 @@ class Taxonomy {
 						if ( '' === $name ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The name cannot be set to an empty value.', 'shim-mcp' ),
+								'message' => __( 'The name cannot be set to an empty value.', 'shim-mcp' ),
 							);
 						}
 
@@ -450,7 +450,7 @@ class Taxonomy {
 						if ( ! is_string( $input['slug'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The slug must be given as text.', 'shim-mcp' ),
+								'message' => __( 'The slug must be given as text.', 'shim-mcp' ),
 							);
 						}
 
@@ -459,7 +459,7 @@ class Taxonomy {
 						if ( '' === $slug ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The slug you supplied contains no usable characters.', 'shim-mcp' ),
+								'message' => __( 'The slug you supplied contains no usable characters.', 'shim-mcp' ),
 							);
 						}
 
@@ -471,7 +471,7 @@ class Taxonomy {
 						if ( ! is_string( $input['description'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The description must be given as text.', 'shim-mcp' ),
+								'message' => __( 'The description must be given as text.', 'shim-mcp' ),
 							);
 						}
 
@@ -486,14 +486,14 @@ class Taxonomy {
 							if ( 'category' !== $term->taxonomy ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'Only categories can be nested under a parent.', 'shim-mcp' ),
+									'message' => __( 'Only categories can be nested under a parent.', 'shim-mcp' ),
 								);
 							}
 
 							if ( $parent === (int) $term->term_id ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'A category cannot be its own parent.', 'shim-mcp' ),
+									'message' => __( 'A category cannot be its own parent.', 'shim-mcp' ),
 								);
 							}
 
@@ -502,14 +502,14 @@ class Taxonomy {
 							if ( ! $parent_term instanceof \WP_Term ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No category exists with the parent id you supplied.', 'shim-mcp' ),
+									'message' => __( 'No category exists with the parent id you supplied.', 'shim-mcp' ),
 								);
 							}
 
 							if ( term_is_ancestor_of( (int) $term->term_id, (int) $parent_term->term_id, $term->taxonomy ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'That move would place the category inside one of its own descendants.', 'shim-mcp' ),
+									'message' => __( 'That move would place the category inside one of its own descendants.', 'shim-mcp' ),
 								);
 							}
 
@@ -524,7 +524,7 @@ class Taxonomy {
 					if ( empty( $args ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply at least one of name, slug, description or parent to change.', 'shim-mcp' ),
+							'message' => __( 'Supply at least one of name, slug, description or parent to change.', 'shim-mcp' ),
 						);
 					}
 
@@ -533,7 +533,7 @@ class Taxonomy {
 					if ( is_wp_error( $result ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $result->get_error_message() ),
+							'message' => $result->get_error_message(),
 						);
 					}
 
@@ -542,14 +542,14 @@ class Taxonomy {
 					if ( ! $fresh instanceof \WP_Term ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The term was updated but could not be read back.', 'shim-mcp' ),
+							'message' => __( 'The term was updated but could not be read back.', 'shim-mcp' ),
 						);
 					}
 
 					return array(
 						'success'  => true,
 						'id'       => (int) $fresh->term_id,
-						'name'     => esc_html( $fresh->name ),
+						'name'     => $fresh->name,
 						'slug'     => $fresh->slug,
 						'taxonomy' => $fresh->taxonomy,
 						'parent'   => (int) $fresh->parent,

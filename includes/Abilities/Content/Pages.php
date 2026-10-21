@@ -97,7 +97,7 @@ final class Pages {
 						if ( ! in_array( $status, array( 'publish', 'draft', 'pending', 'private', 'future', 'trash', 'any' ), true ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That is not a status this site recognises for pages.', 'shim-mcp' ),
+								'message' => __( 'That is not a status this site recognises for pages.', 'shim-mcp' ),
 							);
 						}
 
@@ -148,15 +148,15 @@ final class Pages {
 
 						$rows[] = array(
 							'id'         => (int) $page->ID,
-							'title'      => esc_html( get_the_title( $page ) ),
-							'slug'       => esc_html( $page->post_name ),
-							'status'     => esc_html( $page->post_status ),
+							'title'      => $page->post_title,
+							'slug'       => $page->post_name,
+							'status'     => $page->post_status,
 							'parent'     => (int) $page->post_parent,
 							'menu_order' => (int) $page->menu_order,
-							'template'   => esc_html( (string) get_page_template_slug( $page->ID ) ),
+							'template'   => (string) get_page_template_slug( $page->ID ),
 							'author'     => (int) $page->post_author,
 							'url'        => is_string( $permalink ) ? esc_url_raw( $permalink ) : '',
-							'modified'   => esc_html( (string) $page->post_modified_gmt ),
+							'modified'   => (string) $page->post_modified_gmt,
 						);
 					}
 
@@ -226,7 +226,7 @@ final class Pages {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) || ! is_numeric( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric page identifier is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric page identifier is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -235,21 +235,21 @@ final class Pages {
 					if ( ! $page instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
+							'message' => __( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( 'page' !== $page->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
+							'message' => __( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'read_post', $page->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to read this page.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to read this page.', 'shim-mcp' ),
 						);
 					}
 
@@ -258,17 +258,17 @@ final class Pages {
 					$result = array(
 						'success'    => true,
 						'id'         => (int) $page->ID,
-						'title'      => esc_html( get_the_title( $page ) ),
-						'slug'       => esc_html( $page->post_name ),
-						'status'     => esc_html( $page->post_status ),
+						'title'      => $page->post_title,
+						'slug'       => $page->post_name,
+						'status'     => $page->post_status,
 						'parent'     => (int) $page->post_parent,
 						'menu_order' => (int) $page->menu_order,
-						'template'   => esc_html( (string) get_page_template_slug( $page->ID ) ),
+						'template'   => (string) get_page_template_slug( $page->ID ),
 						'author'     => (int) $page->post_author,
 						'excerpt'    => (string) $page->post_excerpt,
 						'url'        => is_string( $permalink ) ? esc_url_raw( $permalink ) : '',
-						'created'    => esc_html( (string) $page->post_date_gmt ),
-						'modified'   => esc_html( (string) $page->post_modified_gmt ),
+						'created'    => (string) $page->post_date_gmt,
+						'modified'   => (string) $page->post_modified_gmt,
 					);
 
 					if ( ! isset( $input['include_content'] ) || false !== $input['include_content'] ) {
@@ -359,7 +359,7 @@ final class Pages {
 					if ( ! is_array( $input ) || ! isset( $input['title'] ) || ! is_string( $input['title'] ) || '' === trim( $input['title'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A page needs a title before it can be created.', 'shim-mcp' ),
+							'message' => __( 'A page needs a title before it can be created.', 'shim-mcp' ),
 						);
 					}
 
@@ -375,7 +375,7 @@ final class Pages {
 						if ( ! in_array( $status, array( 'publish', 'draft', 'pending', 'private', 'future' ), true ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The status must be publish, draft, pending, private or future.', 'shim-mcp' ),
+								'message' => __( 'The status must be publish, draft, pending, private or future.', 'shim-mcp' ),
 							);
 						}
 
@@ -407,7 +407,7 @@ final class Pages {
 							if ( ! $parent instanceof \WP_Post || 'page' !== $parent->post_type ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'The parent identifier does not point at an existing page.', 'shim-mcp' ),
+									'message' => __( 'The parent identifier does not point at an existing page.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -421,7 +421,7 @@ final class Pages {
 						if ( ! get_userdata( $author_id ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'No user carries the author identifier that was supplied.', 'shim-mcp' ),
+								'message' => __( 'No user carries the author identifier that was supplied.', 'shim-mcp' ),
 							);
 						}
 
@@ -434,7 +434,7 @@ final class Pages {
 						if ( false === $stamp ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The date could not be read. Write it as 2026-09-01 09:30:00.', 'shim-mcp' ),
+								'message' => __( 'The date could not be read. Write it as 2026-09-01 09:30:00.', 'shim-mcp' ),
 							);
 						}
 
@@ -451,7 +451,7 @@ final class Pages {
 						if ( 'default' !== $template && ! isset( $known[ $template ] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The active theme has no page template with that file name.', 'shim-mcp' ),
+								'message' => __( 'The active theme has no page template with that file name.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -461,7 +461,7 @@ final class Pages {
 					if ( is_wp_error( $new_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $new_id->get_error_message() ),
+							'message' => $new_id->get_error_message(),
 						);
 					}
 
@@ -476,11 +476,11 @@ final class Pages {
 
 					return array(
 						'success' => true,
-						'message' => esc_html__( 'The page was created.', 'shim-mcp' ),
+						'message' => __( 'The page was created.', 'shim-mcp' ),
 						'id'      => $new_id,
-						'title'   => $created instanceof \WP_Post ? esc_html( get_the_title( $created ) ) : '',
-						'slug'    => $created instanceof \WP_Post ? esc_html( $created->post_name ) : '',
-						'status'  => $created instanceof \WP_Post ? esc_html( $created->post_status ) : '',
+						'title'   => $created instanceof \WP_Post ? $created->post_title : '',
+						'slug'    => $created instanceof \WP_Post ? $created->post_name : '',
+						'status'  => $created instanceof \WP_Post ? $created->post_status : '',
 						'url'     => is_string( $permalink ) ? esc_url_raw( $permalink ) : '',
 					);
 				},
@@ -570,7 +570,7 @@ final class Pages {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) || ! is_numeric( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric page identifier is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric page identifier is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -579,21 +579,21 @@ final class Pages {
 					if ( ! $page instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
+							'message' => __( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( 'page' !== $page->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
+							'message' => __( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $page->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this page.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this page.', 'shim-mcp' ),
 						);
 					}
 
@@ -604,7 +604,7 @@ final class Pages {
 						if ( '' === trim( $input['title'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The title cannot be emptied.', 'shim-mcp' ),
+								'message' => __( 'The title cannot be emptied.', 'shim-mcp' ),
 							);
 						}
 
@@ -628,7 +628,7 @@ final class Pages {
 						if ( ! in_array( $status, array( 'publish', 'draft', 'pending', 'private', 'future' ), true ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The status must be publish, draft, pending, private or future.', 'shim-mcp' ),
+								'message' => __( 'The status must be publish, draft, pending, private or future.', 'shim-mcp' ),
 							);
 						}
 
@@ -652,7 +652,7 @@ final class Pages {
 						if ( $parent_id === (int) $page->ID ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'A page cannot be made its own parent.', 'shim-mcp' ),
+								'message' => __( 'A page cannot be made its own parent.', 'shim-mcp' ),
 							);
 						}
 
@@ -662,14 +662,14 @@ final class Pages {
 							if ( ! $parent instanceof \WP_Post || 'page' !== $parent->post_type ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'The parent identifier does not point at an existing page.', 'shim-mcp' ),
+									'message' => __( 'The parent identifier does not point at an existing page.', 'shim-mcp' ),
 								);
 							}
 
 							if ( in_array( (int) $page->ID, array_map( 'intval', get_post_ancestors( $parent_id ) ), true ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'That move would place the page inside one of its own descendants.', 'shim-mcp' ),
+									'message' => __( 'That move would place the page inside one of its own descendants.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -684,7 +684,7 @@ final class Pages {
 						if ( ! get_userdata( $author_id ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'No user carries the author identifier that was supplied.', 'shim-mcp' ),
+								'message' => __( 'No user carries the author identifier that was supplied.', 'shim-mcp' ),
 							);
 						}
 
@@ -704,7 +704,7 @@ final class Pages {
 							if ( ! isset( $known[ $template ] ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'The active theme has no page template with that file name.', 'shim-mcp' ),
+									'message' => __( 'The active theme has no page template with that file name.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -713,7 +713,7 @@ final class Pages {
 					if ( count( $postarr ) < 2 && ! $has_template ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing was supplied to change on this page.', 'shim-mcp' ),
+							'message' => __( 'Nothing was supplied to change on this page.', 'shim-mcp' ),
 						);
 					}
 
@@ -723,7 +723,7 @@ final class Pages {
 						if ( is_wp_error( $saved ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html( $saved->get_error_message() ),
+								'message' => $saved->get_error_message(),
 							);
 						}
 					}
@@ -743,11 +743,11 @@ final class Pages {
 
 					return array(
 						'success' => true,
-						'message' => esc_html__( 'The page was updated.', 'shim-mcp' ),
+						'message' => __( 'The page was updated.', 'shim-mcp' ),
 						'id'      => (int) $page->ID,
-						'title'   => $fresh instanceof \WP_Post ? esc_html( get_the_title( $fresh ) ) : '',
-						'slug'    => $fresh instanceof \WP_Post ? esc_html( $fresh->post_name ) : '',
-						'status'  => $fresh instanceof \WP_Post ? esc_html( $fresh->post_status ) : '',
+						'title'   => $fresh instanceof \WP_Post ? $fresh->post_title : '',
+						'slug'    => $fresh instanceof \WP_Post ? $fresh->post_name : '',
+						'status'  => $fresh instanceof \WP_Post ? $fresh->post_status : '',
 						'url'     => is_string( $permalink ) ? esc_url_raw( $permalink ) : '',
 						'changed' => $changed,
 					);
@@ -804,7 +804,7 @@ final class Pages {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) || ! is_numeric( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric page identifier is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric page identifier is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -813,21 +813,21 @@ final class Pages {
 					if ( ! $page instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
+							'message' => __( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( 'page' !== $page->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
+							'message' => __( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'delete_post', $page->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to delete this page.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to delete this page.', 'shim-mcp' ),
 						);
 					}
 
@@ -847,27 +847,27 @@ final class Pages {
 						if ( ! empty( $children ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'This page has child pages. Confirm with orphan_children to remove it anyway.', 'shim-mcp' ),
+								'message' => __( 'This page has child pages. Confirm with orphan_children to remove it anyway.', 'shim-mcp' ),
 							);
 						}
 					}
 
-					$title = esc_html( get_the_title( $page ) );
+					$title = $page->post_title;
 
 					$outcome = $permanent ? wp_delete_post( $page->ID, true ) : wp_trash_post( $page->ID );
 
 					if ( ! $outcome ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress refused to remove this page.', 'shim-mcp' ),
+							'message' => __( 'WordPress refused to remove this page.', 'shim-mcp' ),
 						);
 					}
 
 					return array(
 						'success'   => true,
 						'message'   => $permanent
-							? esc_html__( 'The page was permanently deleted.', 'shim-mcp' )
-							: esc_html__( 'The page was moved to the trash.', 'shim-mcp' ),
+							? __( 'The page was permanently deleted.', 'shim-mcp' )
+							: __( 'The page was moved to the trash.', 'shim-mcp' ),
 						'id'        => (int) $page->ID,
 						'title'     => $title,
 						'permanent' => $permanent,
@@ -938,21 +938,21 @@ final class Pages {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) || ! is_numeric( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric page identifier is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric page identifier is required.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! isset( $input['search'] ) || ! is_string( $input['search'] ) || '' === $input['search'] ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the text to search for.', 'shim-mcp' ),
+							'message' => __( 'Supply the text to search for.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! isset( $input['replace'] ) || ! is_string( $input['replace'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply the replacement text, using an empty string to strip the matches out.', 'shim-mcp' ),
+							'message' => __( 'Supply the replacement text, using an empty string to strip the matches out.', 'shim-mcp' ),
 						);
 					}
 
@@ -961,21 +961,21 @@ final class Pages {
 					if ( ! $page instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
+							'message' => __( 'Nothing on this site carries that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( 'page' !== $page->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
+							'message' => __( 'That identifier belongs to another post type, not a page.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $page->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this page.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this page.', 'shim-mcp' ),
 						);
 					}
 
@@ -998,7 +998,7 @@ final class Pages {
 						if ( '' === $delimiter ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The pattern already uses every character available as a delimiter. Rewrite it without one of ~ # % ! @ or the pipe.', 'shim-mcp' ),
+								'message' => __( 'The pattern already uses every character available as a delimiter. Rewrite it without one of ~ # % ! @ or the pipe.', 'shim-mcp' ),
 							);
 						}
 
@@ -1008,7 +1008,7 @@ final class Pages {
 						if ( false === @preg_match( $pattern, '' ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That regular expression does not compile, so nothing was run against the page.', 'shim-mcp' ),
+								'message' => __( 'That regular expression does not compile, so nothing was run against the page.', 'shim-mcp' ),
 							);
 						}
 
@@ -1017,7 +1017,7 @@ final class Pages {
 						if ( ! is_string( $updated ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The regular expression failed while running against this page.', 'shim-mcp' ),
+								'message' => __( 'The regular expression failed while running against this page.', 'shim-mcp' ),
 							);
 						}
 					} elseif ( $ignore_case ) {
@@ -1031,7 +1031,7 @@ final class Pages {
 					if ( 0 === $total ) {
 						return array(
 							'success'      => true,
-							'message'      => esc_html__( 'Nothing matched, so the page was left untouched.', 'shim-mcp' ),
+							'message'      => __( 'Nothing matched, so the page was left untouched.', 'shim-mcp' ),
 							'id'           => (int) $page->ID,
 							'replacements' => 0,
 							'saved'        => false,
@@ -1045,7 +1045,7 @@ final class Pages {
 					if ( isset( $input['dry_run'] ) && true === $input['dry_run'] ) {
 						return array(
 							'success'      => true,
-							'message'      => esc_html__( 'Preview only, nothing was written to the database.', 'shim-mcp' ),
+							'message'      => __( 'Preview only, nothing was written to the database.', 'shim-mcp' ),
 							'id'           => (int) $page->ID,
 							'replacements' => $total,
 							'saved'        => false,
@@ -1064,13 +1064,13 @@ final class Pages {
 					if ( is_wp_error( $saved ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $saved->get_error_message() ),
+							'message' => $saved->get_error_message(),
 						);
 					}
 
 					return array(
 						'success'      => true,
-						'message'      => esc_html__( 'The page body was rewritten.', 'shim-mcp' ),
+						'message'      => __( 'The page body was rewritten.', 'shim-mcp' ),
 						'id'           => (int) $page->ID,
 						'replacements' => $total,
 						'saved'        => true,

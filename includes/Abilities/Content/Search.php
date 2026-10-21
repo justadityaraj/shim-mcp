@@ -66,7 +66,7 @@ class Search {
 					if ( ! is_array( $input ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The search request was not shaped as an object.', 'shim-mcp' ),
+							'message' => __( 'The search request was not shaped as an object.', 'shim-mcp' ),
 						);
 					}
 
@@ -75,7 +75,7 @@ class Search {
 					if ( ! is_string( $raw_keyword ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The keyword has to be given as text.', 'shim-mcp' ),
+							'message' => __( 'The keyword has to be given as text.', 'shim-mcp' ),
 						);
 					}
 
@@ -84,7 +84,7 @@ class Search {
 					if ( '' === trim( $keyword ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Give a keyword with at least one visible character.', 'shim-mcp' ),
+							'message' => __( 'Give a keyword with at least one visible character.', 'shim-mcp' ),
 						);
 					}
 
@@ -94,7 +94,7 @@ class Search {
 						if ( ! is_array( $input['post_types'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The post_types value has to be a list of post type names.', 'shim-mcp' ),
+								'message' => __( 'The post_types value has to be a list of post type names.', 'shim-mcp' ),
 							);
 						}
 
@@ -119,7 +119,7 @@ class Search {
 						if ( empty( $requested ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'None of the post types you named are registered on this site.', 'shim-mcp' ),
+								'message' => __( 'None of the post types you named are registered on this site.', 'shim-mcp' ),
 							);
 						}
 
@@ -146,7 +146,7 @@ class Search {
 						if ( ! is_string( $input['status'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The status value has to be given as text.', 'shim-mcp' ),
+								'message' => __( 'The status value has to be given as text.', 'shim-mcp' ),
 							);
 						}
 
@@ -195,22 +195,22 @@ class Search {
 
 						$results[] = array(
 							'id'        => (int) $post->ID,
-							'post_type' => esc_html( (string) $post->post_type ),
-							'title'     => esc_html( get_the_title( $post ) ),
-							'status'    => esc_html( (string) $post->post_status ),
+							'post_type' => (string) $post->post_type,
+							'title'     => $post->post_title,
+							'status'    => (string) $post->post_status,
 							'link'      => is_string( $permalink ) ? esc_url_raw( $permalink ) : '',
-							'excerpt'   => esc_html( $excerpt ),
+							'excerpt'   => $excerpt,
 						);
 					}
 
 					return array(
 						'success' => true,
-						'keyword' => esc_html( $keyword ),
+						'keyword' => $keyword,
 						'count'   => count( $results ),
 						'results' => $results,
 						'message' => empty( $results )
-							? esc_html__( 'Nothing readable matched that keyword.', 'shim-mcp' )
-							: esc_html__( 'Matching content found.', 'shim-mcp' ),
+							? __( 'Nothing readable matched that keyword.', 'shim-mcp' )
+							: __( 'Matching content found.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {

@@ -87,7 +87,7 @@ class Media {
 
 						$items[] = array(
 							'id'        => (int) $attachment->ID,
-							'title'     => esc_html( get_the_title( $attachment ) ),
+							'title'     => $attachment->post_title,
 							'slug'      => (string) $attachment->post_name,
 							'mime_type' => (string) $attachment->post_mime_type,
 							'url'       => (string) wp_get_attachment_url( $attachment->ID ),
@@ -148,7 +148,7 @@ class Media {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'An attachment ID is required.', 'shim-mcp' ),
+							'message' => __( 'An attachment ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -157,7 +157,7 @@ class Media {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The attachment ID must be a positive whole number.', 'shim-mcp' ),
+							'message' => __( 'The attachment ID must be a positive whole number.', 'shim-mcp' ),
 						);
 					}
 
@@ -166,14 +166,14 @@ class Media {
 					if ( ! $attachment instanceof \WP_Post || 'attachment' !== $attachment->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No attachment exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No attachment exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'read_post', $id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to view this attachment.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to view this attachment.', 'shim-mcp' ),
 						);
 					}
 
@@ -192,15 +192,15 @@ class Media {
 						'success'    => true,
 						'attachment' => array(
 							'id'          => $id,
-							'title'       => esc_html( get_the_title( $attachment ) ),
+							'title'       => $attachment->post_title,
 							'slug'        => (string) $attachment->post_name,
 							'url'         => (string) wp_get_attachment_url( $id ),
 							'mime_type'   => (string) $attachment->post_mime_type,
 							'width'       => $width,
 							'height'      => $height,
-							'alt_text'    => is_string( $alt ) ? esc_html( $alt ) : '',
-							'caption'     => esc_html( (string) $attachment->post_excerpt ),
-							'description' => esc_html( (string) $attachment->post_content ),
+							'alt_text'    => is_string( $alt ) ? $alt : '',
+							'caption'     => (string) $attachment->post_excerpt,
+							'description' => (string) $attachment->post_content,
 							'file_path'   => (string) get_attached_file( $id ),
 							'date'        => (string) $attachment->post_date_gmt,
 							'author'      => (int) $attachment->post_author,
@@ -273,21 +273,21 @@ class Media {
 					if ( ! is_array( $input ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A filename and base64 file contents are required.', 'shim-mcp' ),
+							'message' => __( 'A filename and base64 file contents are required.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! isset( $input['filename'] ) || ! is_string( $input['filename'] ) || '' === trim( $input['filename'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Give the file a name, including its extension.', 'shim-mcp' ),
+							'message' => __( 'Give the file a name, including its extension.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! isset( $input['data'] ) || ! is_string( $input['data'] ) || '' === trim( $input['data'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The base64 file contents are empty.', 'shim-mcp' ),
+							'message' => __( 'The base64 file contents are empty.', 'shim-mcp' ),
 						);
 					}
 
@@ -296,7 +296,7 @@ class Media {
 					if ( '' === $filename ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That filename is not usable once sanitized.', 'shim-mcp' ),
+							'message' => __( 'That filename is not usable once sanitized.', 'shim-mcp' ),
 						);
 					}
 
@@ -306,7 +306,7 @@ class Media {
 					if ( false === $bytes || '' === $bytes ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The file contents could not be decoded as base64.', 'shim-mcp' ),
+							'message' => __( 'The file contents could not be decoded as base64.', 'shim-mcp' ),
 						);
 					}
 
@@ -318,14 +318,14 @@ class Media {
 						if ( ! $parent instanceof \WP_Post ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The post you want to attach this file to does not exist.', 'shim-mcp' ),
+								'message' => __( 'The post you want to attach this file to does not exist.', 'shim-mcp' ),
 							);
 						}
 
 						if ( ! current_user_can( 'edit_post', $parent_id ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'You are not allowed to attach files to that post.', 'shim-mcp' ),
+								'message' => __( 'You are not allowed to attach files to that post.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -335,7 +335,7 @@ class Media {
 					if ( ! empty( $uploads['error'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The uploads directory is not writable right now.', 'shim-mcp' ),
+							'message' => __( 'The uploads directory is not writable right now.', 'shim-mcp' ),
 						);
 					}
 
@@ -348,7 +348,7 @@ class Media {
 					if ( false === $written ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The file could not be written to the uploads directory.', 'shim-mcp' ),
+							'message' => __( 'The file could not be written to the uploads directory.', 'shim-mcp' ),
 						);
 					}
 
@@ -359,7 +359,7 @@ class Media {
 
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'This site does not accept files of that type.', 'shim-mcp' ),
+							'message' => __( 'This site does not accept files of that type.', 'shim-mcp' ),
 						);
 					}
 
@@ -404,7 +404,7 @@ class Media {
 
 						return array(
 							'success' => false,
-							'message' => esc_html( $attachment_id->get_error_message() ),
+							'message' => $attachment_id->get_error_message(),
 						);
 					}
 
@@ -427,7 +427,7 @@ class Media {
 						'id'        => $attachment_id,
 						'url'       => (string) wp_get_attachment_url( $attachment_id ),
 						'mime_type' => (string) $checked['type'],
-						'message'   => esc_html__( 'The file was added to the media library.', 'shim-mcp' ),
+						'message'   => __( 'The file was added to the media library.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => static function (): bool {
@@ -490,7 +490,7 @@ class Media {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'An attachment ID is required.', 'shim-mcp' ),
+							'message' => __( 'An attachment ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -499,7 +499,7 @@ class Media {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The attachment ID must be a positive whole number.', 'shim-mcp' ),
+							'message' => __( 'The attachment ID must be a positive whole number.', 'shim-mcp' ),
 						);
 					}
 
@@ -508,14 +508,14 @@ class Media {
 					if ( ! $attachment instanceof \WP_Post || 'attachment' !== $attachment->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No attachment exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No attachment exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this attachment.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this attachment.', 'shim-mcp' ),
 						);
 					}
 
@@ -543,7 +543,7 @@ class Media {
 						if ( is_wp_error( $result ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html( $result->get_error_message() ),
+								'message' => $result->get_error_message(),
 							);
 						}
 					}
@@ -556,7 +556,7 @@ class Media {
 					if ( empty( $updated ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing was changed because no editable fields were supplied.', 'shim-mcp' ),
+							'message' => __( 'Nothing was changed because no editable fields were supplied.', 'shim-mcp' ),
 						);
 					}
 
@@ -564,7 +564,7 @@ class Media {
 						'success' => true,
 						'id'      => $id,
 						'updated' => $updated,
-						'message' => esc_html__( 'The attachment details were saved.', 'shim-mcp' ),
+						'message' => __( 'The attachment details were saved.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => static function (): bool {
@@ -616,7 +616,7 @@ class Media {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'An attachment ID is required.', 'shim-mcp' ),
+							'message' => __( 'An attachment ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -625,7 +625,7 @@ class Media {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The attachment ID must be a positive whole number.', 'shim-mcp' ),
+							'message' => __( 'The attachment ID must be a positive whole number.', 'shim-mcp' ),
 						);
 					}
 
@@ -634,14 +634,14 @@ class Media {
 					if ( ! $attachment instanceof \WP_Post || 'attachment' !== $attachment->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No attachment exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No attachment exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'delete_post', $id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to delete this attachment.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to delete this attachment.', 'shim-mcp' ),
 						);
 					}
 
@@ -656,7 +656,7 @@ class Media {
 					if ( ! $deleted instanceof \WP_Post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress could not remove that attachment.', 'shim-mcp' ),
+							'message' => __( 'WordPress could not remove that attachment.', 'shim-mcp' ),
 						);
 					}
 
@@ -665,8 +665,8 @@ class Media {
 						'id'      => $id,
 						'forced'  => $force,
 						'message' => $force
-							? esc_html__( 'The attachment and its files were erased.', 'shim-mcp' )
-							: esc_html__( 'The attachment was moved to the trash.', 'shim-mcp' ),
+							? __( 'The attachment and its files were erased.', 'shim-mcp' )
+							: __( 'The attachment was moved to the trash.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => static function (): bool {
