@@ -72,11 +72,9 @@ class InitializeHandler {
 
 		// MCP capabilities (compatible across all supported versions)
 		$capabilities = array(
-			'tools'       => new stdClass(),
-			'resources'   => new stdClass(),
-			'prompts'     => new stdClass(),
-			'logging'     => new stdClass(),
-			'completions' => new stdClass(),
+			'tools'     => new stdClass(),
+			'resources' => new stdClass(),
+			'prompts'   => new stdClass(),
 		);
 
 		return array(

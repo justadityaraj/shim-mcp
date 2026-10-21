@@ -28,37 +28,6 @@ class SystemHandler {
 	}
 
 	/**
-	 * Handles the logging/setLevel request.
-	 *
-	 * @param array $params     Request parameters.
-	 * @param int|string   $request_id Optional. The request ID for JSON-RPC. Default 0.
-	 *
-	 * @return array Response with error if level parameter is missing, empty array otherwise.
-	 */
-	public function set_logging_level( array $params, int|string $request_id = 0 ): array {
-		if ( ! isset( $params['params']['level'] ) && ! isset( $params['level'] ) ) {
-			return array( 'error' => McpErrorFactory::missing_parameter( $request_id, 'level' )['error'] );
-		}
-
-		// @todo: Implement logging level setting logic here.
-
-		return array();
-	}
-
-	/**
-	 * Handles the completion/complete request.
-	 *
-	 * @param int|string $request_id Optional. The request ID for JSON-RPC. Default 0.
-	 *
-	 * @return array Completion response array.
-	 */
-	public function complete( int|string $request_id = 0 ): array {
-		// Implement completion logic here.
-
-		return array();
-	}
-
-	/**
 	 * Handles the roots/list request.
 	 *
 	 * @param int|string $request_id Optional. The request ID for JSON-RPC. Default 0.

@@ -290,6 +290,8 @@ final class HttpServer {
 
 final class HttpClient {
 
+	private HttpServer $server;
+
 	private string $endpoint;
 
 	private string $authorization;
@@ -297,6 +299,7 @@ final class HttpClient {
 	public ?string $session_id = null;
 
 	public function __construct( HttpServer $server, string $user = 'admin', ?string $password = null ) {
+		$this->server        = $server;
 		$this->endpoint      = $server->endpoint;
 		$this->authorization = 'Basic ' . base64_encode( $user . ':' . ( $password ?? trim( (string) file_get_contents( app_password_path() ) ) ) );
 	}
