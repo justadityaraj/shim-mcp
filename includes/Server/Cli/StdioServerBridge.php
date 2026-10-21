@@ -162,7 +162,16 @@ class StdioServerBridge {
 				$params = array();
 			}
 
-			$result = $this->request_router->route_request( $method, $params, $id, 'stdio' );
+			ob_start();
+			try {
+				$result = $this->request_router->route_request( $method, $params, $id, 'stdio' );
+			} finally {
+				$stray_output = (string) ob_get_clean();
+			}
+
+			if ( '' !== $stray_output ) {
+				$this->log_to_stderr( sprintf( 'Discarded %d bytes written to stdout while handling %s: %s', strlen( $stray_output ), $method, $stray_output ) );
+			}
 
 			if ( null === $id ) {
 				return '';
