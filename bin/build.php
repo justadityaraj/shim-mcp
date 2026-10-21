@@ -67,6 +67,9 @@ foreach ( $tracked as $path ) {
 }
 
 if ( ! $zip->close() ) {
+	if ( file_exists( $out ) ) {
+		unlink( $out );
+	}
 	fwrite( STDERR, "cannot write {$out}: {$zip->getStatusString()}\n" );
 	exit( 1 );
 }
