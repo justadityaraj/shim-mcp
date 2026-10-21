@@ -160,7 +160,7 @@ final class Users {
 						if ( ! get_role( $role_slug ) instanceof \WP_Role ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That role slug does not exist on this site.', 'shim-mcp' ),
+								'message' => __( 'That role slug does not exist on this site.', 'shim-mcp' ),
 							);
 						}
 						$args['role'] = $role_slug;
@@ -233,7 +233,7 @@ final class Users {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric user ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric user ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -241,7 +241,7 @@ final class Users {
 					if ( $user_id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric user ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric user ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -249,14 +249,14 @@ final class Users {
 					if ( ! $user instanceof \WP_User ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No account exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No account exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_user', $user_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to view this account.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to view this account.', 'shim-mcp' ),
 						);
 					}
 
@@ -306,7 +306,7 @@ final class Users {
 					if ( ! is_array( $names ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The role list could not be read from this site.', 'shim-mcp' ),
+							'message' => __( 'The role list could not be read from this site.', 'shim-mcp' ),
 						);
 					}
 
@@ -316,7 +316,7 @@ final class Users {
 						$caps  = $role instanceof \WP_Role ? array_keys( array_filter( (array) $role->capabilities ) ) : array();
 						$roles[] = array(
 							'slug'             => (string) $slug,
-							'name'             => esc_html( translate_user_role( (string) $label ) ),
+							'name'             => translate_user_role( (string) $label ),
 							'capability_count' => count( $caps ),
 							'grantable_by_you' => $may_grant_role( (string) $slug ),
 						);
@@ -414,7 +414,7 @@ final class Users {
 					if ( ! is_array( $input ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A username, an email address and a password are required.', 'shim-mcp' ),
+							'message' => __( 'A username, an email address and a password are required.', 'shim-mcp' ),
 						);
 					}
 
@@ -428,28 +428,28 @@ final class Users {
 					if ( '' === $username || '' === $password ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A username, an email address and a password are required.', 'shim-mcp' ),
+							'message' => __( 'A username, an email address and a password are required.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! is_email( $email ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That email address is not valid.', 'shim-mcp' ),
+							'message' => __( 'That email address is not valid.', 'shim-mcp' ),
 						);
 					}
 
 					if ( username_exists( $username ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That username is already taken.', 'shim-mcp' ),
+							'message' => __( 'That username is already taken.', 'shim-mcp' ),
 						);
 					}
 
 					if ( email_exists( $email ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That email address already belongs to an account.', 'shim-mcp' ),
+							'message' => __( 'That email address already belongs to an account.', 'shim-mcp' ),
 						);
 					}
 
@@ -460,14 +460,14 @@ final class Users {
 					if ( ! get_role( $role ) instanceof \WP_Role ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That role slug does not exist on this site.', 'shim-mcp' ),
+							'message' => __( 'That role slug does not exist on this site.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! $may_grant_role( $role ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You cannot create an account with a role that outranks your own.', 'shim-mcp' ),
+							'message' => __( 'You cannot create an account with a role that outranks your own.', 'shim-mcp' ),
 						);
 					}
 
@@ -494,7 +494,7 @@ final class Users {
 					if ( is_wp_error( $user_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $user_id->get_error_message() ),
+							'message' => $user_id->get_error_message(),
 						);
 					}
 
@@ -502,7 +502,7 @@ final class Users {
 					if ( ! $created instanceof \WP_User ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The account was created but could not be read back.', 'shim-mcp' ),
+							'message' => __( 'The account was created but could not be read back.', 'shim-mcp' ),
 						);
 					}
 
@@ -513,7 +513,7 @@ final class Users {
 					return array(
 						'success' => true,
 						'user'    => $shape_user( $created ),
-						'message' => esc_html__( 'The account was created.', 'shim-mcp' ),
+						'message' => __( 'The account was created.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -598,7 +598,7 @@ final class Users {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric user ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric user ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -606,7 +606,7 @@ final class Users {
 					if ( $user_id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric user ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric user ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -614,14 +614,14 @@ final class Users {
 					if ( ! $user instanceof \WP_User ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No account exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No account exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_user', $user_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to change this account.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to change this account.', 'shim-mcp' ),
 						);
 					}
 
@@ -633,14 +633,14 @@ final class Users {
 						if ( ! is_email( $email ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That email address is not valid.', 'shim-mcp' ),
+								'message' => __( 'That email address is not valid.', 'shim-mcp' ),
 							);
 						}
 						$owner = email_exists( $email );
 						if ( false !== $owner && (int) $owner !== $user_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That email address already belongs to another account.', 'shim-mcp' ),
+								'message' => __( 'That email address already belongs to another account.', 'shim-mcp' ),
 							);
 						}
 						$userdata['user_email'] = $email;
@@ -670,21 +670,21 @@ final class Users {
 						if ( ! get_role( $role ) instanceof \WP_Role ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That role slug does not exist on this site.', 'shim-mcp' ),
+								'message' => __( 'That role slug does not exist on this site.', 'shim-mcp' ),
 							);
 						}
 
 						if ( get_current_user_id() === $user_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'You cannot change the role on your own account.', 'shim-mcp' ),
+								'message' => __( 'You cannot change the role on your own account.', 'shim-mcp' ),
 							);
 						}
 
 						if ( ! $may_grant_role( $role ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'You cannot assign a role that outranks your own.', 'shim-mcp' ),
+								'message' => __( 'You cannot assign a role that outranks your own.', 'shim-mcp' ),
 							);
 						}
 
@@ -692,7 +692,7 @@ final class Users {
 							if ( ! $may_grant_role( (string) $held_role ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'This account already holds a role you are not allowed to manage.', 'shim-mcp' ),
+									'message' => __( 'This account already holds a role you are not allowed to manage.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -704,7 +704,7 @@ final class Users {
 					if ( array() === $updated ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing was supplied to change on this account.', 'shim-mcp' ),
+							'message' => __( 'Nothing was supplied to change on this account.', 'shim-mcp' ),
 						);
 					}
 
@@ -713,7 +713,7 @@ final class Users {
 					if ( is_wp_error( $result ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $result->get_error_message() ),
+							'message' => $result->get_error_message(),
 						);
 					}
 
@@ -721,7 +721,7 @@ final class Users {
 					if ( ! $fresh instanceof \WP_User ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The account was changed but could not be read back.', 'shim-mcp' ),
+							'message' => __( 'The account was changed but could not be read back.', 'shim-mcp' ),
 						);
 					}
 
@@ -729,7 +729,7 @@ final class Users {
 						'success' => true,
 						'user'    => $shape_user( $fresh ),
 						'updated' => $updated,
-						'message' => esc_html__( 'The account was updated.', 'shim-mcp' ),
+						'message' => __( 'The account was updated.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -782,7 +782,7 @@ final class Users {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric user ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric user ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -790,7 +790,7 @@ final class Users {
 					if ( $user_id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric user ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric user ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -798,21 +798,21 @@ final class Users {
 					if ( ! $user instanceof \WP_User ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No account exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No account exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( get_current_user_id() === $user_id ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You cannot delete the account you are signed in as.', 'shim-mcp' ),
+							'message' => __( 'You cannot delete the account you are signed in as.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'delete_user', $user_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to delete this account.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to delete this account.', 'shim-mcp' ),
 						);
 					}
 
@@ -820,7 +820,7 @@ final class Users {
 						if ( ! $may_grant_role( (string) $held_role ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'This account holds a role you are not allowed to manage.', 'shim-mcp' ),
+								'message' => __( 'This account holds a role you are not allowed to manage.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -831,13 +831,13 @@ final class Users {
 						if ( $reassign < 1 || ! get_userdata( $reassign ) instanceof \WP_User ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The account named to inherit the content does not exist.', 'shim-mcp' ),
+								'message' => __( 'The account named to inherit the content does not exist.', 'shim-mcp' ),
 							);
 						}
 						if ( $reassign === $user_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'Content cannot be reassigned to the account being deleted.', 'shim-mcp' ),
+								'message' => __( 'Content cannot be reassigned to the account being deleted.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -850,16 +850,16 @@ final class Users {
 					if ( true !== $deleted ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress refused to delete that account.', 'shim-mcp' ),
+							'message' => __( 'WordPress refused to delete that account.', 'shim-mcp' ),
 						);
 					}
 
 					return array(
 						'success'     => true,
 						'id'          => $user_id,
-						'username'    => esc_html( $username ),
+						'username'    => $username,
 						'reassign_to' => null === $reassign ? 0 : $reassign,
-						'message'     => esc_html__( 'The account was deleted.', 'shim-mcp' ),
+						'message'     => __( 'The account was deleted.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {

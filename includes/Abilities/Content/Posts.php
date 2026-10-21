@@ -138,12 +138,12 @@ class Posts {
 
 						$posts[] = array(
 							'id'          => (int) $post->ID,
-							'title'       => esc_html( get_the_title( $post ) ),
-							'status'      => esc_html( $post->post_status ),
-							'date'        => esc_html( $post->post_date ),
+							'title'       => $post->post_title,
+							'status'      => $post->post_status,
+							'date'        => $post->post_date,
 							'link'        => esc_url_raw( (string) get_permalink( $post ) ),
 							'author_id'   => (int) $post->post_author,
-							'author_name' => esc_html( (string) get_the_author_meta( 'display_name', (int) $post->post_author ) ),
+							'author_name' => (string) get_the_author_meta( 'display_name', (int) $post->post_author ),
 						);
 					}
 
@@ -197,7 +197,7 @@ class Posts {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric post ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric post ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -207,14 +207,14 @@ class Posts {
 					if ( ! $post || 'post' !== $post->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No post exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No post exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'read_post', $post->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to read this post.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to read this post.', 'shim-mcp' ),
 						);
 					}
 
@@ -224,8 +224,8 @@ class Posts {
 						foreach ( $cat_terms as $term ) {
 							$categories[] = array(
 								'id'   => (int) $term->term_id,
-								'name' => esc_html( $term->name ),
-								'slug' => esc_html( $term->slug ),
+								'name' => $term->name,
+								'slug' => $term->slug,
 							);
 						}
 					}
@@ -236,8 +236,8 @@ class Posts {
 						foreach ( $tag_terms as $term ) {
 							$tags[] = array(
 								'id'   => (int) $term->term_id,
-								'name' => esc_html( $term->name ),
-								'slug' => esc_html( $term->slug ),
+								'name' => $term->name,
+								'slug' => $term->slug,
 							);
 						}
 					}
@@ -246,16 +246,16 @@ class Posts {
 						'success' => true,
 						'post'    => array(
 							'id'          => (int) $post->ID,
-							'title'       => esc_html( $post->post_title ),
+							'title'       => $post->post_title,
 							'content'     => $post->post_content,
 							'excerpt'     => $post->post_excerpt,
-							'status'      => esc_html( $post->post_status ),
-							'slug'        => esc_html( $post->post_name ),
-							'date'        => esc_html( $post->post_date ),
-							'modified'    => esc_html( $post->post_modified ),
+							'status'      => $post->post_status,
+							'slug'        => $post->post_name,
+							'date'        => $post->post_date,
+							'modified'    => $post->post_modified,
 							'link'        => esc_url_raw( (string) get_permalink( $post ) ),
 							'author_id'   => (int) $post->post_author,
-							'author_name' => esc_html( (string) get_the_author_meta( 'display_name', (int) $post->post_author ) ),
+							'author_name' => (string) get_the_author_meta( 'display_name', (int) $post->post_author ),
 							'categories'  => $categories,
 							'tags'        => $tags,
 						),
@@ -339,7 +339,7 @@ class Posts {
 					if ( ! is_array( $input ) || ! isset( $input['title'] ) || ! is_string( $input['title'] ) || '' === trim( $input['title'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A post title is required.', 'shim-mcp' ),
+							'message' => __( 'A post title is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -352,7 +352,7 @@ class Posts {
 					if ( 'publish' === $status && ! current_user_can( 'publish_posts' ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to publish posts on this site.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to publish posts on this site.', 'shim-mcp' ),
 						);
 					}
 
@@ -373,7 +373,7 @@ class Posts {
 						if ( false === $timestamp ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The publication date could not be understood.', 'shim-mcp' ),
+								'message' => __( 'The publication date could not be understood.', 'shim-mcp' ),
 							);
 						}
 						$postarr['post_date'] = gmdate( 'Y-m-d H:i:s', $timestamp );
@@ -385,13 +385,13 @@ class Posts {
 							if ( get_current_user_id() !== $author_id && ! current_user_can( 'edit_others_posts' ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'You are not allowed to assign posts to another user.', 'shim-mcp' ),
+									'message' => __( 'You are not allowed to assign posts to another user.', 'shim-mcp' ),
 								);
 							}
 							if ( ! get_userdata( $author_id ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No user exists with that ID.', 'shim-mcp' ),
+									'message' => __( 'No user exists with that ID.', 'shim-mcp' ),
 								);
 							}
 							$postarr['post_author'] = $author_id;
@@ -403,7 +403,7 @@ class Posts {
 					if ( is_wp_error( $new_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $new_id->get_error_message() ),
+							'message' => $new_id->get_error_message(),
 						);
 					}
 
@@ -450,8 +450,8 @@ class Posts {
 						'success' => true,
 						'id'      => $new_id,
 						'link'    => esc_url_raw( (string) get_permalink( $new_id ) ),
-						'status'  => esc_html( (string) get_post_status( $new_id ) ),
-						'message' => esc_html__( 'The post was created.', 'shim-mcp' ),
+						'status'  => (string) get_post_status( $new_id ),
+						'message' => __( 'The post was created.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -532,7 +532,7 @@ class Posts {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric post ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric post ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -542,14 +542,14 @@ class Posts {
 					if ( ! $post || 'post' !== $post->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No post exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No post exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $post->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this post.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this post.', 'shim-mcp' ),
 						);
 					}
 
@@ -581,13 +581,13 @@ class Posts {
 						if ( ! in_array( $input['status'], $allowed_status, true ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That publication status is not supported.', 'shim-mcp' ),
+								'message' => __( 'That publication status is not supported.', 'shim-mcp' ),
 							);
 						}
 						if ( 'publish' === $input['status'] && ! current_user_can( 'publish_posts' ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'You are not allowed to publish posts on this site.', 'shim-mcp' ),
+								'message' => __( 'You are not allowed to publish posts on this site.', 'shim-mcp' ),
 							);
 						}
 						$postarr['post_status'] = $input['status'];
@@ -600,13 +600,13 @@ class Posts {
 							if ( ! current_user_can( 'edit_others_posts' ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'Changing the author requires the ability to edit other users\' posts.', 'shim-mcp' ),
+									'message' => __( 'Changing the author requires the ability to edit other users\' posts.', 'shim-mcp' ),
 								);
 							}
 							if ( ! get_userdata( $author_id ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No user exists with that ID.', 'shim-mcp' ),
+									'message' => __( 'No user exists with that ID.', 'shim-mcp' ),
 								);
 							}
 							$postarr['post_author'] = $author_id;
@@ -619,7 +619,7 @@ class Posts {
 						if ( is_wp_error( $result ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html( $result->get_error_message() ),
+								'message' => $result->get_error_message(),
 							);
 						}
 					}
@@ -662,7 +662,7 @@ class Posts {
 					if ( ! $changed ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Nothing was supplied to change on this post.', 'shim-mcp' ),
+							'message' => __( 'Nothing was supplied to change on this post.', 'shim-mcp' ),
 						);
 					}
 
@@ -671,7 +671,7 @@ class Posts {
 						'id'      => (int) $post->ID,
 						'updated' => $changed,
 						'link'    => esc_url_raw( (string) get_permalink( $post->ID ) ),
-						'message' => esc_html__( 'The post was updated.', 'shim-mcp' ),
+						'message' => __( 'The post was updated.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -721,7 +721,7 @@ class Posts {
 					if ( ! is_array( $input ) || ! isset( $input['id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A numeric post ID is required.', 'shim-mcp' ),
+							'message' => __( 'A numeric post ID is required.', 'shim-mcp' ),
 						);
 					}
 
@@ -731,14 +731,14 @@ class Posts {
 					if ( ! $post || 'post' !== $post->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No post exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No post exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'delete_post', $post->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to delete this post.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to delete this post.', 'shim-mcp' ),
 						);
 					}
 
@@ -749,7 +749,7 @@ class Posts {
 					if ( ! $result ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress refused to remove this post.', 'shim-mcp' ),
+							'message' => __( 'WordPress refused to remove this post.', 'shim-mcp' ),
 						);
 					}
 
@@ -758,8 +758,8 @@ class Posts {
 						'id'        => (int) $post->ID,
 						'permanent' => $force,
 						'message'   => $force
-							? esc_html__( 'The post was permanently erased.', 'shim-mcp' )
-							: esc_html__( 'The post was moved to the trash.', 'shim-mcp' ),
+							? __( 'The post was permanently erased.', 'shim-mcp' )
+							: __( 'The post was moved to the trash.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -826,21 +826,21 @@ class Posts {
 					if ( ! is_array( $input ) || ! isset( $input['id'], $input['search'], $input['replace'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'A post ID, a search value and a replacement value are all required.', 'shim-mcp' ),
+							'message' => __( 'A post ID, a search value and a replacement value are all required.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! is_string( $input['search'] ) || ! is_string( $input['replace'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The search and replacement values must both be text.', 'shim-mcp' ),
+							'message' => __( 'The search and replacement values must both be text.', 'shim-mcp' ),
 						);
 					}
 
 					if ( '' === $input['search'] ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The search value cannot be empty.', 'shim-mcp' ),
+							'message' => __( 'The search value cannot be empty.', 'shim-mcp' ),
 						);
 					}
 
@@ -850,14 +850,14 @@ class Posts {
 					if ( ! $post || 'post' !== $post->post_type ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No post exists with that ID.', 'shim-mcp' ),
+							'message' => __( 'No post exists with that ID.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_post', $post->ID ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this post.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this post.', 'shim-mcp' ),
 						);
 					}
 
@@ -878,7 +878,7 @@ class Posts {
 						if ( false === $compiles ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'That regular expression is not valid and was not run.', 'shim-mcp' ),
+								'message' => __( 'That regular expression is not valid and was not run.', 'shim-mcp' ),
 							);
 						}
 
@@ -887,7 +887,7 @@ class Posts {
 						if ( null === $updated ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The regular expression failed while running against this post.', 'shim-mcp' ),
+								'message' => __( 'The regular expression failed while running against this post.', 'shim-mcp' ),
 							);
 						}
 					} else {
@@ -902,7 +902,7 @@ class Posts {
 							'id'           => (int) $post->ID,
 							'replacements' => 0,
 							'saved'        => false,
-							'message'      => esc_html__( 'Nothing in this post matched the search value.', 'shim-mcp' ),
+							'message'      => __( 'Nothing in this post matched the search value.', 'shim-mcp' ),
 						);
 					}
 
@@ -912,7 +912,7 @@ class Posts {
 							'id'           => (int) $post->ID,
 							'replacements' => (int) $count,
 							'saved'        => false,
-							'message'      => esc_html__( 'Matches were counted only; the post was left untouched.', 'shim-mcp' ),
+							'message'      => __( 'Matches were counted only; the post was left untouched.', 'shim-mcp' ),
 						);
 					}
 
@@ -927,7 +927,7 @@ class Posts {
 					if ( is_wp_error( $result ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $result->get_error_message() ),
+							'message' => $result->get_error_message(),
 						);
 					}
 
@@ -936,7 +936,7 @@ class Posts {
 						'id'           => (int) $post->ID,
 						'replacements' => (int) $count,
 						'saved'        => true,
-						'message'      => esc_html__( 'The post body was rewritten.', 'shim-mcp' ),
+						'message'      => __( 'The post body was rewritten.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
