@@ -53,10 +53,23 @@ foreach ( $tracked as $path ) {
 	if ( $skip( $path ) ) {
 		continue;
 	}
-	$zip->addFile( $root . '/' . $path, $slug . '/' . $path );
+	$file = $root . '/' . $path;
+	if ( ! is_file( $file ) || ! is_readable( $file ) || ! $zip->addFile( $file, $slug . '/' . $path ) ) {
+		$zip->unchangeAll();
+		$zip->close();
+		if ( file_exists( $out ) ) {
+			unlink( $out );
+		}
+		fwrite( STDERR, "cannot archive {$path}\n" );
+		exit( 1 );
+	}
 	++$count;
 }
-$zip->close();
+
+if ( ! $zip->close() ) {
+	fwrite( STDERR, "cannot write {$out}: {$zip->getStatusString()}\n" );
+	exit( 1 );
+}
 
 echo "built: {$out}\n";
 echo "files: {$count}\n";
