@@ -545,5 +545,151 @@ class Plugins {
 				),
 			)
 		);
+
+		wp_register_ability(
+			'shim-mcp/plugins-install',
+			array(
+				'label'               => 'Install Plugin',
+				'description'         => 'Installs a plugin from the WordPress.org Plugin Directory by its directory slug, for example hello-dolly. Only the official directory is used: URLs, file paths and uploaded archives are refused. The plugin is left inactive; switch it on with the activate ability.',
+				'category'            => 'site',
+				'input_schema'        => array(
+					'type'                 => 'object',
+					'required'             => array( 'slug' ),
+					'properties'           => array(
+						'slug' => array(
+							'type'        => 'string',
+							'description' => 'The plugin\'s WordPress.org directory slug, the last part of its wordpress.org/plugins/ address.',
+						),
+					),
+					'additionalProperties' => false,
+				),
+				'output_schema'       => array(
+					'type'       => 'object',
+					'properties' => array(
+						'success'     => array( 'type' => 'boolean' ),
+						'slug'        => array( 'type' => 'string' ),
+						'plugin_file' => array( 'type' => 'string' ),
+						'name'        => array( 'type' => 'string' ),
+						'version'     => array( 'type' => 'string' ),
+						'active'      => array( 'type' => 'boolean' ),
+						'message'     => array( 'type' => 'string' ),
+					),
+				),
+				'execute_callback'    => function ( $input = array() ): array {
+					$slug = is_array( $input ) && isset( $input['slug'] ) && is_string( $input['slug'] ) ? trim( $input['slug'] ) : '';
+
+					if ( 1 !== preg_match( '/^[a-z0-9]+(?:[-_][a-z0-9]+)*$/', $slug ) || strlen( $slug ) > 200 ) {
+						return array(
+							'success' => false,
+							'message' => __( 'Give a WordPress.org directory slug such as hello-dolly. URLs, file paths and archives are not accepted.', 'shim-mcp' ),
+						);
+					}
+
+					if ( ! current_user_can( 'install_plugins' ) ) {
+						return array(
+							'success' => false,
+							'message' => __( 'You are not allowed to install plugins on this site.', 'shim-mcp' ),
+						);
+					}
+
+					if ( ! function_exists( 'plugins_api' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+					}
+					if ( ! class_exists( 'Plugin_Upgrader' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+					}
+					if ( ! function_exists( 'get_plugins' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
+					}
+
+					foreach ( array_keys( get_plugins() ) as $installed_file ) {
+						if ( 0 === strpos( $installed_file, $slug . '/' ) ) {
+							return array(
+								'success'     => false,
+								'slug'        => $slug,
+								'plugin_file' => $installed_file,
+								'message'     => __( 'A plugin with that slug is already installed.', 'shim-mcp' ),
+							);
+						}
+					}
+
+					$api = plugins_api(
+						'plugin_information',
+						array(
+							'slug'   => $slug,
+							'fields' => array(
+								'sections' => false,
+								'banners'  => false,
+								'icons'    => false,
+							),
+						)
+					);
+
+					if ( is_wp_error( $api ) ) {
+						return array(
+							'success' => false,
+							'slug'    => $slug,
+							'message' => $api->get_error_message(),
+						);
+					}
+
+					$download = isset( $api->download_link ) ? (string) $api->download_link : '';
+					if ( 'https' !== wp_parse_url( $download, PHP_URL_SCHEME ) || 'downloads.wordpress.org' !== wp_parse_url( $download, PHP_URL_HOST ) ) {
+						return array(
+							'success' => false,
+							'slug'    => $slug,
+							'message' => __( 'The directory did not return a WordPress.org download for that plugin.', 'shim-mcp' ),
+						);
+					}
+
+					$skin      = new \WP_Ajax_Upgrader_Skin();
+					$upgrader  = new \Plugin_Upgrader( $skin );
+					$installed = $upgrader->install( $download );
+
+					$failure = null;
+					if ( is_wp_error( $installed ) ) {
+						$failure = $installed->get_error_message();
+					} elseif ( is_wp_error( $skin->result ) ) {
+						$failure = $skin->result->get_error_message();
+					} elseif ( $skin->get_errors()->has_errors() ) {
+						$failure = $skin->get_error_messages();
+					} elseif ( null === $installed ) {
+						$failure = __( 'WordPress needs filesystem credentials before it can install plugins.', 'shim-mcp' );
+					} elseif ( true !== $installed ) {
+						$failure = __( 'The plugin could not be installed.', 'shim-mcp' );
+					}
+
+					if ( null !== $failure ) {
+						return array(
+							'success' => false,
+							'slug'    => $slug,
+							'message' => $failure,
+						);
+					}
+
+					$plugin_file = (string) $upgrader->plugin_info();
+
+					return array(
+						'success'     => true,
+						'slug'        => $slug,
+						'plugin_file' => $plugin_file,
+						'name'        => (string) $api->name,
+						'version'     => (string) $api->version,
+						'active'      => false,
+						'message'     => __( 'The plugin was installed and is inactive. Activate it to switch it on.', 'shim-mcp' ),
+					);
+				},
+				'permission_callback' => function (): bool {
+					return current_user_can( 'install_plugins' );
+				},
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
+			)
+		);
 	}
 }
