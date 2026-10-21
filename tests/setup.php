@@ -88,4 +88,5 @@ wp_cli( 'plugin', 'install', plugin_zip_path(), '--activate' );
 check( 'active' === wp_cli( 'plugin', 'get', 'shim-mcp', '--field=status' ), 'the packaged plugin activates' );
 
 wp_cli( 'user', 'create', 'author', 'author@example.com', '--role=author', '--user_pass=password' );
+file_put_contents( app_password_path(), wp_cli( 'user', 'application-password', 'create', 'admin', 'shim-mcp-tests', '--porcelain' ) );
 pass( 'fixture users exist' );

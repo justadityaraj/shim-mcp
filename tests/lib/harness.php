@@ -219,3 +219,132 @@ final class StdioServer {
 		return (string) file_get_contents( $this->stderr_file );
 	}
 }
+
+function app_password_path(): string {
+	return test_root() . '/admin-application-password';
+}
+
+final class HttpServer {
+
+	private $process;
+
+	private string $log_file;
+
+	public string $endpoint;
+
+	public function __construct( int $port = 8899 ) {
+		$this->log_file = (string) tempnam( sys_get_temp_dir(), 'shim' );
+		$this->endpoint = "http://127.0.0.1:{$port}/index.php?rest_route=/mcp/shim-mcp";
+		$this->process  = proc_open(
+			array( PHP_BINARY, '-S', "127.0.0.1:{$port}", '-t', site_path() ),
+			array(
+				0 => array( 'pipe', 'r' ),
+				1 => array( 'file', $this->log_file, 'w' ),
+				2 => array( 'file', $this->log_file, 'a' ),
+			),
+			$pipes
+		);
+		for ( $attempt = 0; $attempt < 100; $attempt++ ) {
+			$socket = @fsockopen( '127.0.0.1', $port, $errno, $errstr, 0.1 );
+			if ( $socket ) {
+				fclose( $socket );
+				return;
+			}
+			usleep( 100000 );
+		}
+		fail( "start the PHP built-in server on port {$port}", (string) file_get_contents( $this->log_file ) );
+	}
+
+	public function __destruct() {
+		proc_terminate( $this->process );
+		proc_close( $this->process );
+	}
+}
+
+final class HttpClient {
+
+	private string $endpoint;
+
+	private string $authorization;
+
+	public ?string $session_id = null;
+
+	public function __construct( HttpServer $server, string $user = 'admin', ?string $password = null ) {
+		$this->endpoint      = $server->endpoint;
+		$this->authorization = 'Basic ' . base64_encode( $user . ':' . ( $password ?? trim( (string) file_get_contents( app_password_path() ) ) ) );
+	}
+
+	public function post( $body, array $headers = array() ): array {
+		$headers = array_merge(
+			array(
+				'Content-Type'  => 'application/json',
+				'Accept'        => 'application/json, text/event-stream',
+				'Authorization' => $this->authorization,
+			),
+			null === $this->session_id ? array() : array( 'Mcp-Session-Id' => $this->session_id ),
+			$headers
+		);
+		$lines = array();
+		foreach ( $headers as $name => $value ) {
+			$lines[] = "{$name}: {$value}";
+		}
+		$context  = stream_context_create(
+			array(
+				'http' => array(
+					'method'        => 'POST',
+					'header'        => implode( "\r\n", $lines ),
+					'content'       => is_string( $body ) ? $body : json_encode( $body, JSON_UNESCAPED_SLASHES ),
+					'ignore_errors' => true,
+					'timeout'       => 30,
+				),
+			)
+		);
+		$raw      = file_get_contents( $this->endpoint, false, $context );
+		$response = array(
+			'status'  => 0,
+			'headers' => array(),
+			'body'    => false === $raw ? '' : $raw,
+		);
+		foreach ( $http_response_header ?? array() as $line ) {
+			if ( preg_match( '#^HTTP/\S+ (\d{3})#', $line, $match ) ) {
+				$response['status'] = (int) $match[1];
+			} elseif ( false !== strpos( $line, ':' ) ) {
+				list( $name, $value )                              = explode( ':', $line, 2 );
+				$response['headers'][ strtolower( trim( $name ) ) ] = trim( $value );
+			}
+		}
+		$response['json'] = json_decode( $response['body'], true );
+		return $response;
+	}
+
+	public function request( string $method, array $params = array(), $id = 1 ): array {
+		return $this->post(
+			array(
+				'jsonrpc' => '2.0',
+				'id'      => $id,
+				'method'  => $method,
+				'params'  => (object) $params,
+			)
+		);
+	}
+
+	public function initialize( $id = 1 ): array {
+		$response         = $this->request(
+			'initialize',
+			array(
+				'protocolVersion' => '2025-06-18',
+				'capabilities'    => new stdClass(),
+				'clientInfo'      => array(
+					'name'    => 'shim-mcp-tests',
+					'version' => '1.0.0',
+				),
+			),
+			$id
+		);
+		$this->session_id = $response['headers']['mcp-session-id'] ?? null;
+		if ( null === $this->session_id ) {
+			fail( 'initialize over HTTP returns an Mcp-Session-Id header', $response );
+		}
+		return $response;
+	}
+}
