@@ -142,6 +142,10 @@ class StdioServerBridge {
 				return $this->create_error_response( null, -32600, 'Invalid Request', 'The JSON sent is not a valid Request object.' );
 			}
 
+			if ( isset( $request['id'] ) && ! is_int( $request['id'] ) && ! is_string( $request['id'] ) ) {
+				return $this->create_error_response( null, -32600, 'Invalid Request', 'The request id must be a string or an integer.' );
+			}
+
 			if ( ! isset( $request['jsonrpc'] ) || '2.0' !== $request['jsonrpc'] ) {
 				return $this->create_error_response( $request['id'] ?? null, -32600, 'Invalid Request', 'The JSON-RPC version must be 2.0.' );
 			}

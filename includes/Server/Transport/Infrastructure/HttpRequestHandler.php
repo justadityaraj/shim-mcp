@@ -145,6 +145,10 @@ class HttpRequestHandler {
 			return $validation;
 		}
 
+		if ( isset( $message['id'] ) && ! is_int( $message['id'] ) && ! is_string( $message['id'] ) ) {
+			return McpErrorFactory::invalid_request( null, 'The request id must be a string or an integer.' );
+		}
+
 		// Handle notifications (no response required)
 		if ( isset( $message['method'] ) && ! isset( $message['id'] ) ) {
 			return null; // Notifications don't get a response

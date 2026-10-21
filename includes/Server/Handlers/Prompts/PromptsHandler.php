@@ -39,11 +39,11 @@ class PromptsHandler {
 	/**
 	 * Handles the prompts/list request.
 	 *
-	 * @param int $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 *
 	 * @return array Response with prompts list and metadata.
 	 */
-	public function list_prompts( int $request_id = 0 ): array {
+	public function list_prompts( int|string $request_id = 0 ): array {
 		// Get the registered prompts from the MCP instance and extract only the args.
 		$prompts = array();
 		foreach ( $this->mcp->get_prompts() as $prompt ) {
@@ -63,11 +63,11 @@ class PromptsHandler {
 	 * Handles the prompts/get request.
 	 *
 	 * @param array $params     Request parameters.
-	 * @param int   $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string   $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 *
 	 * @return array Response with prompt execution results or error.
 	 */
-	public function get_prompt( array $params, int $request_id = 0 ): array {
+	public function get_prompt( array $params, int|string $request_id = 0 ): array {
 		// Extract parameters using helper method.
 		$request_params = $this->extract_params( $params );
 

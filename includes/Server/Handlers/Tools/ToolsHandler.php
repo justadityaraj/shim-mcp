@@ -38,11 +38,11 @@ class ToolsHandler {
 	/**
 	 * Handles the tools/list request.
 	 *
-	 * @param int $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 *
 	 * @return array Response with tools list and metadata.
 	 */
-	public function list_tools( int $request_id = 0 ): array {
+	public function list_tools( int|string $request_id = 0 ): array {
 		$tools     = $this->mcp->get_tools();
 		$tool_list = array();
 
@@ -62,11 +62,11 @@ class ToolsHandler {
 	/**
 	 * Handles the tools/list/all request.
 	 *
-	 * @param int $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 *
 	 * @return array Response with all tools including availability status and metadata.
 	 */
-	public function list_all_tools( int $request_id = 0 ): array {
+	public function list_all_tools( int|string $request_id = 0 ): array {
 		// Return all tools with additional details.
 		$tools     = $this->mcp->get_tools();
 		$tool_list = array();
@@ -90,11 +90,11 @@ class ToolsHandler {
 	 * Handles the tools/call request.
 	 *
 	 * @param array $message    Request message.
-	 * @param int   $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string   $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 *
 	 * @return array Response with tool execution results or error.
 	 */
-	public function call_tool( array $message, int $request_id = 0 ): array {
+	public function call_tool( array $message, int|string $request_id = 0 ): array {
 		// Extract parameters using helper method.
 		$request_params = $this->extract_params( $message );
 
@@ -212,11 +212,11 @@ class ToolsHandler {
 	 * Handles tool call request.
 	 *
 	 * @param array $params     The request parameters.
-	 * @param int   $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string   $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 *
 	 * @return array Response with tool execution results or error.
 	 */
-	public function handle_tool_call( array $params, int $request_id = 0 ): array {
+	public function handle_tool_call( array $params, int|string $request_id = 0 ): array {
 		$tool_name = $params['name'];
 		$args      = $params['arguments'] ?? array();
 

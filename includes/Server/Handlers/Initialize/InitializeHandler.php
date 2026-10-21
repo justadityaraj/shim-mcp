@@ -56,12 +56,12 @@ class InitializeHandler {
 	 * If the client requests a known version, we match it. Otherwise we fall back
 	 * to the latest version the server supports.
 	 *
-	 * @param int   $request_id Optional. The request ID for JSON-RPC. Default 0.
+	 * @param int|string   $request_id Optional. The request ID for JSON-RPC. Default 0.
 	 * @param array $params     Optional. The initialize request params from the client.
 	 *
 	 * @return array Response with server capabilities and information.
 	 */
-	public function handle( int $request_id = 0, array $params = array() ): array {
+	public function handle( int|string $request_id = 0, array $params = array() ): array {
 		$server_info = array(
 			'name'    => $this->mcp->get_server_name(),
 			'version' => $this->mcp->get_server_version(),
