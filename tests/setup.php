@@ -81,8 +81,8 @@ $config = run_command(
 );
 check( 0 === $config['exit'], 'wp-config.php is written', $config['stdout'] . $config['stderr'] );
 
-wp_cli( 'core', 'install', '--url=http://127.0.0.1:8899', '--title=Shim MCP Tests', '--admin_user=admin', '--admin_password=password', '--admin_email=admin@example.com', '--skip-email' );
-pass( 'WordPress ' . wp_cli( 'core', 'version' ) . ' is installed on PHP ' . PHP_VERSION );
+wp_cli( 'core', getenv( 'WP_MULTISITE' ) ? 'multisite-install' : 'install', '--url=http://127.0.0.1:8899', '--title=Shim MCP Tests', '--admin_user=admin', '--admin_password=password', '--admin_email=admin@example.com', '--skip-email' );
+pass( 'WordPress ' . wp_cli( 'core', 'version' ) . ' is installed on PHP ' . PHP_VERSION . ( getenv( 'WP_MULTISITE' ) ? ' as a multisite network' : '' ) );
 
 wp_cli( 'plugin', 'install', plugin_zip_path(), '--activate' );
 check( 'active' === wp_cli( 'plugin', 'get', 'shim-mcp', '--field=status' ), 'the packaged plugin activates' );

@@ -83,6 +83,14 @@ class HttpSessionValidator {
 			return McpErrorFactory::unauthorized( 0, 'User authentication required for session creation' );
 		}
 
+		if ( isset( $params['clientInfo'] ) && is_array( $params['clientInfo'] ) ) {
+			unset( $params['clientInfo']['icons'] );
+		}
+
+		if ( ! SessionManager::validate_client_params( $params ) ) {
+			return McpErrorFactory::invalid_params( 0, 'Initialization parameters exceed the session storage limit.' );
+		}
+
 		$session_id = SessionManager::create_session( $user_id, $params );
 
 		if ( ! $session_id ) {

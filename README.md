@@ -153,7 +153,7 @@ composer test:setup       # build the zip and create the test site
 composer test             # run every suite against that site
 ```
 
-`php tests/run.php stdio` runs only the suites whose name contains `stdio`. Set `WP_VERSION` before `test:setup` to test another WordPress release, and `SHIM_TEST_ROOT` to move the test site out of the system temp directory. The zip is built from `git ls-files`, so add a new file to git before rebuilding. GitHub Actions runs the same commands on every push and pull request, on the minimum supported pair (WordPress 6.9, PHP 8.0) and on the latest WordPress with PHP 8.5.
+`php tests/run.php stdio` runs only the suites whose name contains `stdio`. Set `WP_VERSION` before `test:setup` to test another WordPress release, `WP_MULTISITE=1` to install a multisite network, and `SHIM_TEST_ROOT` to move the test site out of the system temp directory. The zip is built from `git ls-files`, so add a new file to git before rebuilding. GitHub Actions runs the same commands on every push and pull request, on the minimum supported pair (WordPress 6.9, PHP 8.0), on the latest WordPress with PHP 8.5, and on a latest-WordPress multisite network.
 
 ## Maintainer
 
