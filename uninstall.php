@@ -16,7 +16,11 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 		delete_metadata( 'user', 0, 'mcp_adapter_sessions', '', true );
 
 		if ( is_multisite() ) {
-			foreach ( get_sites( array( 'fields' => 'ids', 'number' => 0 ) ) as $blog_id ) {
+			$every_site = array(
+				'fields' => 'ids',
+				'number' => 0,
+			);
+			foreach ( get_sites( $every_site ) as $blog_id ) {
 				delete_metadata( 'user', 0, 'mcp_adapter_sessions_' . $blog_id, '', true );
 			}
 		}
