@@ -18,8 +18,8 @@ The MCP protocol layer is derived from the WordPress project's own MCP Adapter (
 
 Key features:
 
-* 56 WordPress abilities organized across 9 domains
-* MCP protocol v2025-06-18 with SSE transport
+* 56 WordPress abilities organized across 13 domains
+* MCP protocol 2025-06-18 over two transports: Streamable HTTP, and stdio through WP-CLI (`wp shim-mcp serve`)
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, and Cursor
 * Conflict detection for legacy MCP plugins
@@ -93,4 +93,4 @@ Different abilities require different WordPress capabilities. For example, conte
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, Cursor
 * Conflict detection for legacy MCP plugins
-* SSE transport with MCP protocol v2025-06-18
+* MCP protocol 2025-06-18 over Streamable HTTP and WP-CLI stdio
