@@ -120,22 +120,20 @@ final class StdioServer {
 			array_splice( $command, 1, 0, array( '-d', $setting ) );
 		}
 
-		$stdin = array( 'pipe', 'r' );
+		$this->stderr_file = (string) tempnam( sys_get_temp_dir(), 'shim' );
+		$descriptors       = array(
+			0 => array( 'pipe', 'r' ),
+			1 => array( 'pipe', 'w' ),
+			2 => array( 'file', $this->stderr_file, 'w' ),
+		);
 		if ( $socket_stdin ) {
-			$pair  = stream_socket_pair( STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP );
-			$stdin = $pair[1];
+			$pair           = stream_socket_pair( STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP );
+			$descriptors[0] = $pair[1];
+			$descriptors[3] = $pair[0];
+			$command        = array_merge( array( '/bin/sh', '-c', 'exec 3<&- "$@"', 'sh' ), $command );
 		}
 
-		$this->stderr_file = (string) tempnam( sys_get_temp_dir(), 'shim' );
-		$this->process     = proc_open(
-			$command,
-			array(
-				0 => $stdin,
-				1 => array( 'pipe', 'w' ),
-				2 => array( 'file', $this->stderr_file, 'w' ),
-			),
-			$this->pipes
-		);
+		$this->process = proc_open( $command, $descriptors, $this->pipes );
 		if ( ! is_resource( $this->process ) ) {
 			fail( 'start wp shim-mcp serve' );
 		}
@@ -156,6 +154,14 @@ final class StdioServer {
 	}
 
 	public function receive(): array {
+		if ( 'Windows' !== PHP_OS_FAMILY ) {
+			$read   = array( $this->pipes[1] );
+			$write  = null;
+			$except = null;
+			if ( 0 === stream_select( $read, $write, $except, 30 ) ) {
+				fail( 'the server responds within 30 seconds', $this->stderr() );
+			}
+		}
 		$line = fgets( $this->pipes[1] );
 		if ( false === $line ) {
 			fail( 'server wrote a response before closing stdout', $this->stderr() );
@@ -225,11 +231,21 @@ final class StdioServer {
 
 	public function close(): array {
 		fclose( $this->pipes[0] );
+		$deadline = microtime( true ) + 30;
+		$status   = proc_get_status( $this->process );
+		while ( $status['running'] && microtime( true ) < $deadline ) {
+			usleep( 50000 );
+			$status = proc_get_status( $this->process );
+		}
+		if ( $status['running'] ) {
+			proc_terminate( $this->process );
+			fail( 'the server exits within 30 seconds of end of input', $this->stderr() );
+		}
 		$rest = stream_get_contents( $this->pipes[1] );
 		fclose( $this->pipes[1] );
-		$exit = proc_close( $this->process );
+		proc_close( $this->process );
 		return array(
-			'exit'   => $exit,
+			'exit'   => $status['exitcode'],
 			'stdout' => array_values( array_filter( explode( "\n", (string) $rest ), static fn( $line ) => '' !== trim( $line ) ) ),
 			'stderr' => $this->stderr(),
 		);
