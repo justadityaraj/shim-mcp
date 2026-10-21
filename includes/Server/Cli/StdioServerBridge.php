@@ -73,11 +73,22 @@ class StdioServerBridge {
 
 		$this->log_to_stderr( sprintf( 'MCP STDIO Bridge started for server: %s', $this->server->get_server_id() ) );
 
+		stream_set_blocking( STDIN, true );
+		stream_set_timeout( STDIN, -1 );
+
 		while ( $this->is_running ) {
 			try {
 				$input = fgets( STDIN );
 
 				if ( false === $input ) {
+					if ( ! empty( stream_get_meta_data( STDIN )['timed_out'] ) ) {
+						continue;
+					}
+
+					if ( ! feof( STDIN ) ) {
+						$this->log_to_stderr( 'Reading from stdin failed before end of input' );
+					}
+
 					break;
 				}
 
