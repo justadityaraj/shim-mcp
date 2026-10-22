@@ -37,6 +37,7 @@ final class DiscoverAbilitiesAbility {
 				'category'            => 'shim-mcp',
 				'input_schema'        => array(
 					'type'                 => 'object',
+					'default'              => array(),
 					'properties'           => array(
 						'category' => array(
 							'type'        => 'string',
@@ -45,12 +46,10 @@ final class DiscoverAbilitiesAbility {
 						'search'   => array(
 							'type'        => 'string',
 							'description' => 'Case-insensitive text to look for in ability names, labels and descriptions.',
-							'minLength'   => 1,
 						),
 						'limit'    => array(
 							'type'        => 'integer',
 							'description' => 'How many abilities to return at most. Leave it out for no limit.',
-							'minimum'     => 1,
 						),
 					),
 					'additionalProperties' => false,

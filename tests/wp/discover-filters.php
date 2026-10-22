@@ -41,6 +41,9 @@ same(
         'the input schema declares the category, search and limit filters'
 );
 same( array(), $schema['required'] ?? array(), 'every filter is optional' );
+same( array(), $schema['default'] ?? null, 'omitted input defaults to an empty array' );
+check( ! isset( $schema['properties']['search']['minLength'] ), 'search has no minLength bound, so an empty string reaches the callback' );
+check( ! isset( $schema['properties']['limit']['minimum'] ), 'limit has no minimum bound, so non-positive values reach the callback' );
 
 // category: only abilities in that category.
 foreach ( array( 'site', 'user', 'shim-mcp' ) as $category ) {
@@ -127,4 +130,33 @@ same(
         'wrong-typed filter values are ignored'
 );
 
+// The registered ability accepts a no-argument call: the schema default turns
+// the omitted input into an empty array, so validation passes and the callback
+// returns the unfiltered list.
+$registered = wp_get_ability( 'shim-mcp/discover-abilities' );
+check( false !== $registered, 'the discover ability is registered' );
+$no_args = $registered->execute();
+check( ! is_wp_error( $no_args ), 'a no-argument execute() call is not rejected' );
+same(
+        array_column( $all['abilities'], 'name' ),
+        array_column( $no_args['abilities'], 'name' ),
+        'a no-argument execute() call returns the unfiltered list'
+);
+
+// Empty search and a non-positive limit pass validation and are ignored by the
+// callback, matching the advertised "ignore rather than reject" contract.
+$ignored = $registered->execute(
+        array(
+                'search' => '',
+                'limit'  => 0,
+        )
+);
+check( ! is_wp_error( $ignored ), 'an empty search and a zero limit are not rejected' );
+same(
+        array_column( $all['abilities'], 'name' ),
+        array_column( $ignored['abilities'], 'name' ),
+        'an empty search and a zero limit are ignored, matching the unfiltered list'
+);
+
 echo 'discover-filters done' . PHP_EOL;
+
