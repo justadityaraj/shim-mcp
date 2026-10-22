@@ -9,8 +9,8 @@ class Search {
 		wp_register_ability(
 			'shim-mcp/content-search',
 			array(
-				'label'               => 'Search Content',
-				'description'         => 'Finds posts and pages whose title or body matches a keyword. By default it looks at posts and pages, but a caller can name any set of registered post types instead. Each hit comes back with its numeric id, post type, title, permalink and a trimmed excerpt, and the number of hits is capped by a limit the caller can raise or lower.',
+				'label'               => __( 'Search Content', 'shim-mcp' ),
+				'description'         => __( 'Finds posts and pages whose title or body matches a keyword. By default it looks at posts and pages, but a caller can name any set of registered post types instead. Each hit comes back with its numeric id, post type, title, permalink and a trimmed excerpt, and the number of hits is capped by a limit the caller can raise or lower.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -18,23 +18,23 @@ class Search {
 					'properties'           => array(
 						'keyword'    => array(
 							'type'        => 'string',
-							'description' => 'The words to look for in post titles and content.',
+							'description' => __( 'The words to look for in post titles and content.', 'shim-mcp' ),
 							'minLength'   => 1,
 						),
 						'post_types' => array(
 							'type'        => 'array',
-							'description' => 'Restrict the search to these registered post types. Leave it out to search posts and pages.',
+							'description' => __( 'Restrict the search to these registered post types. Leave it out to search posts and pages.', 'shim-mcp' ),
 							'items'       => array( 'type' => 'string' ),
 						),
 						'limit'      => array(
 							'type'        => 'integer',
-							'description' => 'How many matches to return at most. Defaults to twenty and cannot exceed one hundred.',
+							'description' => __( 'How many matches to return at most. Defaults to twenty and cannot exceed one hundred.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'maximum'     => 100,
 						),
 						'status'     => array(
 							'type'        => 'string',
-							'description' => 'Only return content in this status, for example publish, draft or pending. Leave it out to include every status the current user is allowed to see.',
+							'description' => __( 'Only return content in this status, for example publish, draft or pending. Leave it out to include every status the current user is allowed to see.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

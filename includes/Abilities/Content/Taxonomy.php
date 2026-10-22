@@ -85,19 +85,19 @@ class Taxonomy {
 			'properties'           => array(
 				'search'     => array(
 					'type'        => 'string',
-					'description' => 'Restrict the results to terms whose name or slug contains this text.',
+					'description' => __( 'Restrict the results to terms whose name or slug contains this text.', 'shim-mcp' ),
 				),
 				'hide_empty' => array(
 					'type'        => 'boolean',
-					'description' => 'Set to true to leave out terms that are not attached to any post.',
+					'description' => __( 'Set to true to leave out terms that are not attached to any post.', 'shim-mcp' ),
 				),
 				'per_page'   => array(
 					'type'        => 'integer',
-					'description' => 'How many terms to return in one response, from 1 to 200. Defaults to 50.',
+					'description' => __( 'How many terms to return in one response, from 1 to 200. Defaults to 50.', 'shim-mcp' ),
 				),
 				'page'       => array(
 					'type'        => 'integer',
-					'description' => 'Which page of results to return, counting from 1.',
+					'description' => __( 'Which page of results to return, counting from 1.', 'shim-mcp' ),
 				),
 			),
 			'additionalProperties' => false,
@@ -124,8 +124,8 @@ class Taxonomy {
 		wp_register_ability(
 			'shim-mcp/taxonomy-list-categories',
 			array(
-				'label'               => 'List Categories',
-				'description'         => 'Returns the blog categories on this site, each with its numeric id, display name, slug, description, parent id and the number of posts filed under it. Results can be searched and paged through.',
+				'label'               => __( 'List Categories', 'shim-mcp' ),
+				'description'         => __( 'Returns the blog categories on this site, each with its numeric id, display name, slug, description, parent id and the number of posts filed under it. Results can be searched and paged through.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => $list_input,
 				'output_schema'       => $list_output,
@@ -152,8 +152,8 @@ class Taxonomy {
 		wp_register_ability(
 			'shim-mcp/taxonomy-list-tags',
 			array(
-				'label'               => 'List Tags',
-				'description'         => 'Returns the post tags on this site with the same fields as the category listing: id, name, slug, description, parent id and post count. Tags are flat, so the parent id is normally zero.',
+				'label'               => __( 'List Tags', 'shim-mcp' ),
+				'description'         => __( 'Returns the post tags on this site with the same fields as the category listing: id, name, slug, description, parent id and post count. Tags are flat, so the parent id is normally zero.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => $list_input,
 				'output_schema'       => $list_output,
@@ -180,8 +180,8 @@ class Taxonomy {
 		wp_register_ability(
 			'shim-mcp/taxonomy-create-term',
 			array(
-				'label'               => 'Create Category or Tag',
-				'description'         => 'Adds a new term to either the category or the post_tag taxonomy. A name is required; slug, description and a parent category may also be supplied.',
+				'label'               => __( 'Create Category or Tag', 'shim-mcp' ),
+				'description'         => __( 'Adds a new term to either the category or the post_tag taxonomy. A name is required; slug, description and a parent category may also be supplied.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -190,23 +190,23 @@ class Taxonomy {
 						'taxonomy'    => array(
 							'type'        => 'string',
 							'enum'        => array( 'category', 'post_tag' ),
-							'description' => 'Which taxonomy the new term belongs to, either category or post_tag.',
+							'description' => __( 'Which taxonomy the new term belongs to, either category or post_tag.', 'shim-mcp' ),
 						),
 						'name'        => array(
 							'type'        => 'string',
-							'description' => 'The display name of the term as readers will see it.',
+							'description' => __( 'The display name of the term as readers will see it.', 'shim-mcp' ),
 						),
 						'slug'        => array(
 							'type'        => 'string',
-							'description' => 'A URL friendly identifier. Leave it out and WordPress derives one from the name.',
+							'description' => __( 'A URL friendly identifier. Leave it out and WordPress derives one from the name.', 'shim-mcp' ),
 						),
 						'description' => array(
 							'type'        => 'string',
-							'description' => 'Explanatory text shown on archive pages by themes that support it.',
+							'description' => __( 'Explanatory text shown on archive pages by themes that support it.', 'shim-mcp' ),
 						),
 						'parent'      => array(
 							'type'        => 'integer',
-							'description' => 'The id of an existing category to nest this term beneath. Only meaningful for categories.',
+							'description' => __( 'The id of an existing category to nest this term beneath. Only meaningful for categories.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -323,8 +323,8 @@ class Taxonomy {
 		wp_register_ability(
 			'shim-mcp/taxonomy-update-term',
 			array(
-				'label'               => 'Update Category or Tag',
-				'description'         => 'Changes the name, slug, description or parent of an existing category or tag. Identify the term by its numeric id and send only the fields you want changed.',
+				'label'               => __( 'Update Category or Tag', 'shim-mcp' ),
+				'description'         => __( 'Changes the name, slug, description or parent of an existing category or tag. Identify the term by its numeric id and send only the fields you want changed.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -332,28 +332,28 @@ class Taxonomy {
 					'properties'           => array(
 						'id'          => array(
 							'type'        => 'integer',
-							'description' => 'The numeric id of the term to modify.',
+							'description' => __( 'The numeric id of the term to modify.', 'shim-mcp' ),
 						),
 						'taxonomy'    => array(
 							'type'        => 'string',
 							'enum'        => array( 'category', 'post_tag' ),
-							'description' => 'Optionally state which taxonomy the term belongs to so the id is resolved unambiguously.',
+							'description' => __( 'Optionally state which taxonomy the term belongs to so the id is resolved unambiguously.', 'shim-mcp' ),
 						),
 						'name'        => array(
 							'type'        => 'string',
-							'description' => 'A replacement display name for the term.',
+							'description' => __( 'A replacement display name for the term.', 'shim-mcp' ),
 						),
 						'slug'        => array(
 							'type'        => 'string',
-							'description' => 'A replacement URL friendly identifier.',
+							'description' => __( 'A replacement URL friendly identifier.', 'shim-mcp' ),
 						),
 						'description' => array(
 							'type'        => 'string',
-							'description' => 'Replacement descriptive text for the term archive.',
+							'description' => __( 'Replacement descriptive text for the term archive.', 'shim-mcp' ),
 						),
 						'parent'      => array(
 							'type'        => 'integer',
-							'description' => 'The id of the category that should become the parent, or zero to move the term to the top level.',
+							'description' => __( 'The id of the category that should become the parent, or zero to move the term to the top level.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

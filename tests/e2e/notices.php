@@ -10,3 +10,4 @@ check( false === strpos( $load['stderr'], 'already registered' ), 'loading the p
 
 $plugin_diagnostics = preg_grep( '#(Notice|Warning|Deprecated|Fatal error).*plugins[/\\\\]shim-mcp#', explode( "\n", $load['stderr'] ) );
 same( array(), array_values( $plugin_diagnostics ), 'loading the plugin raises no PHP diagnostics from its own files' );
+check( false === strpos( $load['stderr'], 'shim-mcp</code> domain was triggered too early' ), 'translations for the plugin are not loaded before WordPress is ready', $load['stderr'] );

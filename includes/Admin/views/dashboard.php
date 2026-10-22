@@ -12,24 +12,26 @@ $shim_mcp_rest_base = rest_url( 'mcp/shim-mcp' );
 global $wp_version;
 $shim_mcp_checks = [
 	[
-		'label'  => 'PHP Version',
+		'label'  => __( 'PHP Version', 'shim-mcp' ),
 		'ok'     => PHP_VERSION_ID >= 80000,
-		'detail' => 'PHP ' . PHP_VERSION . ( PHP_VERSION_ID >= 80000 ? '' : ' (requires 8.0+)' ),
+		/* translators: %s: PHP version number. */
+		'detail' => sprintf( __( 'PHP %s', 'shim-mcp' ), PHP_VERSION ) . ( PHP_VERSION_ID >= 80000 ? '' : ' ' . __( '(requires 8.0 or later)', 'shim-mcp' ) ),
 	],
 	[
-		'label'  => 'WordPress Version',
-		'ok'     => version_compare( $wp_version, '6.7', '>=' ),
-		'detail' => 'WordPress ' . $wp_version . ( version_compare( $wp_version, '6.7', '>=' ) ? '' : ' (requires 6.7+)' ),
+		'label'  => __( 'WordPress Version', 'shim-mcp' ),
+		'ok'     => version_compare( $wp_version, '6.9', '>=' ),
+		/* translators: %s: WordPress version number. */
+		'detail' => sprintf( __( 'WordPress %s', 'shim-mcp' ), $wp_version ) . ( version_compare( $wp_version, '6.9', '>=' ) ? '' : ' ' . __( '(requires 6.9 or later)', 'shim-mcp' ) ),
 	],
 	[
-		'label'  => 'REST API',
+		'label'  => __( 'REST API', 'shim-mcp' ),
 		'ok'     => ! empty( rest_url() ),
-		'detail' => ! empty( rest_url() ) ? 'Enabled' : 'Disabled',
+		'detail' => ! empty( rest_url() ) ? __( 'Enabled', 'shim-mcp' ) : __( 'Disabled', 'shim-mcp' ),
 	],
 	[
-		'label'  => 'HTTPS',
+		'label'  => __( 'HTTPS', 'shim-mcp' ),
 		'ok'     => is_ssl(),
-		'detail' => is_ssl() ? 'Active' : 'Not active (recommended for production)',
+		'detail' => is_ssl() ? __( 'Active', 'shim-mcp' ) : __( 'Not active (recommended for production)', 'shim-mcp' ),
 	],
 ];
 
@@ -43,11 +45,11 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 
 <div class="wrap">
 	<h1>Shim MCP</h1>
-	<p class="mcp-subtitle">Connect WordPress to AI assistants via the Model Context Protocol.</p>
+	<p class="mcp-subtitle"><?php esc_html_e( 'Connect WordPress to AI assistants via the Model Context Protocol.', 'shim-mcp' ); ?></p>
 
 	<!-- Health Check Section -->
 	<div class="mcp-card">
-		<h2>Health Check</h2>
+		<h2><?php esc_html_e( 'Health Check', 'shim-mcp' ); ?></h2>
 		<div class="mcp-health-grid">
 			<?php foreach ( $shim_mcp_checks as $shim_mcp_check ) : ?>
 				<div class="mcp-health-item">
@@ -65,35 +67,35 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 
 	<!-- API Key Section -->
 	<div class="mcp-card">
-		<h2>API Key</h2>
-		<p>Application passwords authenticate MCP clients with your WordPress site.</p>
+		<h2><?php esc_html_e( 'API Key', 'shim-mcp' ); ?></h2>
+		<p><?php esc_html_e( 'Application passwords authenticate MCP clients with your WordPress site.', 'shim-mcp' ); ?></p>
 
 		<div id="mcp-key-status">
 			<?php if ( $shim_mcp_has_key ) : ?>
-				<span class="mcp-badge mcp-badge-active">API Key Active</span>
-				<button type="button" class="button button-secondary" id="mcp-generate-key">Generate New Key</button>
-				<button type="button" class="button button-secondary" id="mcp-revoke-key">Revoke Key</button>
+				<span class="mcp-badge mcp-badge-active"><?php esc_html_e( 'API Key Active', 'shim-mcp' ); ?></span>
+				<button type="button" class="button button-secondary" id="mcp-generate-key"><?php esc_html_e( 'Generate New Key', 'shim-mcp' ); ?></button>
+				<button type="button" class="button button-secondary" id="mcp-revoke-key"><?php esc_html_e( 'Revoke Key', 'shim-mcp' ); ?></button>
 			<?php else : ?>
-				<button type="button" class="button button-primary" id="mcp-generate-key">Generate API Key</button>
+				<button type="button" class="button button-primary" id="mcp-generate-key"><?php esc_html_e( 'Generate API Key', 'shim-mcp' ); ?></button>
 			<?php endif; ?>
 		</div>
 
 		<div id="mcp-key-output" style="display:none;">
 			<div class="notice notice-warning inline">
-				<p><strong>Copy this password now.</strong> It will not be shown again.</p>
+				<p><strong><?php esc_html_e( 'Copy this password now.', 'shim-mcp' ); ?></strong> <?php esc_html_e( 'It will not be shown again.', 'shim-mcp' ); ?></p>
 			</div>
 			<div class="mcp-key-display">
 				<code id="mcp-key-value"></code>
-				<button type="button" class="button button-small mcp-copy-btn" data-target="mcp-key-value">Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn" data-target="mcp-key-value"><?php esc_html_e( 'Copy', 'shim-mcp' ); ?></button>
 			</div>
 		</div>
 	</div>
 
 	<!-- Config Section -->
 	<div class="mcp-card">
-		<h2>Configuration</h2>
-		<p>Copy the configuration below into your AI client settings.</p>
-		<p id="mcp-config-note" class="description">WordPress cannot show an application password again after it is created. Generate a new key to fill in the credentials and export a complete configuration.</p>
+		<h2><?php esc_html_e( 'Configuration', 'shim-mcp' ); ?></h2>
+		<p><?php esc_html_e( 'Copy the configuration below into your AI client settings.', 'shim-mcp' ); ?></p>
+		<p id="mcp-config-note" class="description"><?php esc_html_e( 'WordPress cannot show an application password again after it is created. Generate a new key to fill in the credentials and export a complete configuration.', 'shim-mcp' ); ?></p>
 
 		<!-- Claude Code -->
 		<div class="mcp-config-block">
@@ -110,7 +112,7 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 	}
 	}
 }</code></pre>
-				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-claude-code" disabled>Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-claude-code" disabled><?php esc_html_e( 'Copy', 'shim-mcp' ); ?></button>
 			</div>
 		</div>
 
@@ -132,7 +134,7 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 	}
 	}
 }</code></pre>
-				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-claude-desktop" disabled>Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-claude-desktop" disabled><?php esc_html_e( 'Copy', 'shim-mcp' ); ?></button>
 			</div>
 		</div>
 
@@ -154,25 +156,30 @@ $shim_mcp_base64_placeholder = 'BASE64_ENCODED_CREDENTIALS';
 	}
 	}
 }</code></pre>
-				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-cursor" disabled>Copy</button>
+				<button type="button" class="button button-small mcp-copy-btn mcp-config-copy" data-target="mcp-config-cursor" disabled><?php esc_html_e( 'Copy', 'shim-mcp' ); ?></button>
 			</div>
 		</div>
 	</div>
 
 	<!-- Status Section -->
 	<div class="mcp-card">
-		<h2>Status</h2>
+		<h2><?php esc_html_e( 'Status', 'shim-mcp' ); ?></h2>
 		<div class="mcp-status-row">
 			<span id="mcp-connection-dot" class="mcp-dot <?php echo $shim_mcp_has_key ? 'mcp-dot-unknown' : 'mcp-dot-inactive'; ?>"></span>
-			<span id="mcp-connection-text"><?php echo $shim_mcp_has_key ? 'Key configured &mdash; run the endpoint check' : 'No API key configured'; ?></span>
+			<span id="mcp-connection-text"><?php echo esc_html( $shim_mcp_has_key ? __( 'Key configured — run the endpoint check', 'shim-mcp' ) : __( 'No API key configured', 'shim-mcp' ) ); ?></span>
 		</div>
 
 		<?php if ( null !== $shim_mcp_ability_count ) : ?>
-			<p class="mcp-ability-count"><?php echo (int) $shim_mcp_ability_count; ?> abilities registered.</p>
+			<p class="mcp-ability-count">
+				<?php
+				/* translators: %s: number of registered abilities. */
+				echo esc_html( sprintf( _n( '%s ability registered.', '%s abilities registered.', $shim_mcp_ability_count, 'shim-mcp' ), number_format_i18n( $shim_mcp_ability_count ) ) );
+				?>
+			</p>
 		<?php endif; ?>
 
 		<button type="button" class="button button-secondary" id="mcp-test-connection" <?php echo $shim_mcp_has_key ? '' : 'disabled'; ?>>
-			Check Endpoint
+			<?php esc_html_e( 'Check Endpoint', 'shim-mcp' ); ?>
 		</button>
 	</div>
 </div>

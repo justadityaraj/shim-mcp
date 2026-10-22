@@ -9,8 +9,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-list',
 			array(
-				'label'               => 'List Navigation Menus',
-				'description'         => 'Returns every navigation menu on the site together with its numeric id, display name, slug and how many items it currently holds. Takes no input.',
+				'label'               => __( 'List Navigation Menus', 'shim-mcp' ),
+				'description'         => __( 'Returns every navigation menu on the site together with its numeric id, display name, slug and how many items it currently holds. Takes no input.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -81,8 +81,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-create',
 			array(
-				'label'               => 'Create Navigation Menu',
-				'description'         => 'Creates a new empty navigation menu under the name you supply. The name has to be unique, because WordPress rejects a second menu carrying an existing name.',
+				'label'               => __( 'Create Navigation Menu', 'shim-mcp' ),
+				'description'         => __( 'Creates a new empty navigation menu under the name you supply. The name has to be unique, because WordPress rejects a second menu carrying an existing name.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -90,7 +90,7 @@ class Menus {
 					'properties'           => array(
 						'name' => array(
 							'type'        => 'string',
-							'description' => 'Display name for the new menu, for example Footer Links.',
+							'description' => __( 'Display name for the new menu, for example Footer Links.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -163,8 +163,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-list-items',
 			array(
-				'label'               => 'List Menu Items',
-				'description'         => 'Reads back the items inside one navigation menu, each with its item id, title, resolved url, the kind of thing it points at, its parent item id and its position in the menu order. Identify the menu by numeric id or by slug.',
+				'label'               => __( 'List Menu Items', 'shim-mcp' ),
+				'description'         => __( 'Reads back the items inside one navigation menu, each with its item id, title, resolved url, the kind of thing it points at, its parent item id and its position in the menu order. Identify the menu by numeric id or by slug.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -172,7 +172,7 @@ class Menus {
 					'properties'           => array(
 						'menu' => array(
 							'type'        => 'string',
-							'description' => 'Numeric id or slug of the menu whose items you want.',
+							'description' => __( 'Numeric id or slug of the menu whose items you want.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -266,8 +266,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-add-item',
 			array(
-				'label'               => 'Add Menu Item',
-				'description'         => 'Appends an entry to a navigation menu. Give it a custom title and url for a plain link, or point it at existing content by naming the object type (post_type or taxonomy) plus the object id and its post type or taxonomy name.',
+				'label'               => __( 'Add Menu Item', 'shim-mcp' ),
+				'description'         => __( 'Appends an entry to a navigation menu. Give it a custom title and url for a plain link, or point it at existing content by naming the object type (post_type or taxonomy) plus the object id and its post type or taxonomy name.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -275,44 +275,44 @@ class Menus {
 					'properties'           => array(
 						'menu'        => array(
 							'type'        => 'string',
-							'description' => 'Numeric id or slug of the menu receiving the new item.',
+							'description' => __( 'Numeric id or slug of the menu receiving the new item.', 'shim-mcp' ),
 						),
 						'title'       => array(
 							'type'        => 'string',
-							'description' => 'Label shown in the menu. Leave it out for a content reference and WordPress falls back to the object title.',
+							'description' => __( 'Label shown in the menu. Leave it out for a content reference and WordPress falls back to the object title.', 'shim-mcp' ),
 						),
 						'url'         => array(
 							'type'        => 'string',
-							'description' => 'Destination address, used when the item is a plain custom link.',
+							'description' => __( 'Destination address, used when the item is a plain custom link.', 'shim-mcp' ),
 						),
 						'item_type'   => array(
 							'type'        => 'string',
-							'description' => 'One of custom, post_type or taxonomy. Defaults to custom.',
+							'description' => __( 'One of custom, post_type or taxonomy. Defaults to custom.', 'shim-mcp' ),
 							'enum'        => array( 'custom', 'post_type', 'taxonomy' ),
 						),
 						'object'      => array(
 							'type'        => 'string',
-							'description' => 'Post type name such as page, or taxonomy name such as category, when the item references content.',
+							'description' => __( 'Post type name such as page, or taxonomy name such as category, when the item references content.', 'shim-mcp' ),
 						),
 						'object_id'   => array(
 							'type'        => 'integer',
-							'description' => 'Id of the post, page or term the item should link to.',
+							'description' => __( 'Id of the post, page or term the item should link to.', 'shim-mcp' ),
 						),
 						'parent_id'   => array(
 							'type'        => 'integer',
-							'description' => 'Menu item id to nest this entry beneath. Omit for a top level entry.',
+							'description' => __( 'Menu item id to nest this entry beneath. Omit for a top level entry.', 'shim-mcp' ),
 						),
 						'position'    => array(
 							'type'        => 'integer',
-							'description' => 'Position in the menu order. Omit to append at the end.',
+							'description' => __( 'Position in the menu order. Omit to append at the end.', 'shim-mcp' ),
 						),
 						'target'      => array(
 							'type'        => 'string',
-							'description' => 'Set to _blank to open the link in a new tab.',
+							'description' => __( 'Set to _blank to open the link in a new tab.', 'shim-mcp' ),
 						),
 						'description' => array(
 							'type'        => 'string',
-							'description' => 'Short descriptive text some themes render under the label.',
+							'description' => __( 'Short descriptive text some themes render under the label.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -510,8 +510,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-update-item',
 			array(
-				'label'               => 'Update Menu Item',
-				'description'         => 'Changes an entry that already sits in a navigation menu. Anything you leave out keeps the value it has now, so you can retitle an item or move it under a different parent without restating the rest.',
+				'label'               => __( 'Update Menu Item', 'shim-mcp' ),
+				'description'         => __( 'Changes an entry that already sits in a navigation menu. Anything you leave out keeps the value it has now, so you can retitle an item or move it under a different parent without restating the rest.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -519,31 +519,31 @@ class Menus {
 					'properties'           => array(
 						'item_id'     => array(
 							'type'        => 'integer',
-							'description' => 'Id of the menu item to change.',
+							'description' => __( 'Id of the menu item to change.', 'shim-mcp' ),
 						),
 						'title'       => array(
 							'type'        => 'string',
-							'description' => 'New label for the item.',
+							'description' => __( 'New label for the item.', 'shim-mcp' ),
 						),
 						'url'         => array(
 							'type'        => 'string',
-							'description' => 'New destination, meaningful for custom link items.',
+							'description' => __( 'New destination, meaningful for custom link items.', 'shim-mcp' ),
 						),
 						'parent_id'   => array(
 							'type'        => 'integer',
-							'description' => 'Menu item id to nest this entry beneath. Pass zero to lift it back to the top level.',
+							'description' => __( 'Menu item id to nest this entry beneath. Pass zero to lift it back to the top level.', 'shim-mcp' ),
 						),
 						'position'    => array(
 							'type'        => 'integer',
-							'description' => 'New position within the menu order.',
+							'description' => __( 'New position within the menu order.', 'shim-mcp' ),
 						),
 						'target'      => array(
 							'type'        => 'string',
-							'description' => 'Set to _blank to open in a new tab, or an empty string to open in the same tab.',
+							'description' => __( 'Set to _blank to open in a new tab, or an empty string to open in the same tab.', 'shim-mcp' ),
 						),
 						'description' => array(
 							'type'        => 'string',
-							'description' => 'New descriptive text for the item.',
+							'description' => __( 'New descriptive text for the item.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -731,8 +731,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-delete-item',
 			array(
-				'label'               => 'Delete Menu Item',
-				'description'         => 'Permanently removes one entry from a navigation menu. The post or term the entry pointed at is untouched, only the menu entry itself goes away.',
+				'label'               => __( 'Delete Menu Item', 'shim-mcp' ),
+				'description'         => __( 'Permanently removes one entry from a navigation menu. The post or term the entry pointed at is untouched, only the menu entry itself goes away.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -740,7 +740,7 @@ class Menus {
 					'properties'           => array(
 						'item_id' => array(
 							'type'        => 'integer',
-							'description' => 'Id of the menu item to remove.',
+							'description' => __( 'Id of the menu item to remove.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -816,8 +816,8 @@ class Menus {
 		wp_register_ability(
 			'shim-mcp/menus-assign-location',
 			array(
-				'label'               => 'Assign Menu To Theme Location',
-				'description'         => 'Hooks a navigation menu up to one of the display slots the active theme registers, such as the primary header slot. Pass a menu of zero to clear the slot instead.',
+				'label'               => __( 'Assign Menu To Theme Location', 'shim-mcp' ),
+				'description'         => __( 'Hooks a navigation menu up to one of the display slots the active theme registers, such as the primary header slot. Pass a menu of zero to clear the slot instead.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -825,11 +825,11 @@ class Menus {
 					'properties'           => array(
 						'location' => array(
 							'type'        => 'string',
-							'description' => 'Identifier of the theme location, as registered by the active theme.',
+							'description' => __( 'Identifier of the theme location, as registered by the active theme.', 'shim-mcp' ),
 						),
 						'menu'     => array(
 							'type'        => 'string',
-							'description' => 'Numeric id or slug of the menu to show there, or 0 to leave the location empty.',
+							'description' => __( 'Numeric id or slug of the menu to show there, or 0 to leave the location empty.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
