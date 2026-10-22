@@ -10,8 +10,8 @@ final class Options {
 		wp_register_ability(
 			'shim-mcp/options-get',
 			array(
-				'label'               => 'Read Site Option',
-				'description'         => 'Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. Options whose names look like credentials, such as API keys, secrets, tokens or passwords, are refused.',
+				'label'               => __( 'Read Site Option', 'shim-mcp' ),
+				'description'         => __( 'Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. Options whose names look like credentials, such as API keys, secrets, tokens or passwords, are refused.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,7 +19,7 @@ final class Options {
 					'properties'           => array(
 						'name' => array(
 							'type'        => 'string',
-							'description' => 'Exact option name as stored in the options table, such as blogname or timezone_string.',
+							'description' => __( 'Exact option name as stored in the options table, such as blogname or timezone_string.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
@@ -93,8 +93,8 @@ final class Options {
 		wp_register_ability(
 			'shim-mcp/options-search',
 			array(
-				'label'               => 'Search Option Names',
-				'description'         => 'Finds every option whose name contains a given fragment and returns one page of matching names with their autoload flags. Values are never included; read a specific non-credential option with the read ability.',
+				'label'               => __( 'Search Option Names', 'shim-mcp' ),
+				'description'         => __( 'Finds every option whose name contains a given fragment and returns one page of matching names with their autoload flags. Values are never included; read a specific non-credential option with the read ability.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -102,19 +102,19 @@ final class Options {
 					'properties'           => array(
 						'contains' => array(
 							'type'        => 'string',
-							'description' => 'Text to look for anywhere inside the option name. This is a plain substring match, not a regular expression.',
+							'description' => __( 'Text to look for anywhere inside the option name. This is a plain substring match, not a regular expression.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
 						'page'     => array(
 							'type'        => 'integer',
-							'description' => 'Which page of matches to return, counting from one.',
+							'description' => __( 'Which page of matches to return, counting from one.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'default'     => 1,
 						),
 						'per_page' => array(
 							'type'        => 'integer',
-							'description' => 'How many matches to return on a page, up to one hundred.',
+							'description' => __( 'How many matches to return on a page, up to one hundred.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'maximum'     => 100,
 							'default'     => 20,
@@ -222,8 +222,8 @@ final class Options {
 		wp_register_ability(
 			'shim-mcp/options-update',
 			array(
-				'label'               => 'Write Site Option',
-				'description'         => 'Stores a new value for an option and creates it when it does not exist yet. Supply a key to replace a single entry inside an option that already holds an array rather than overwriting the whole option. Options that govern the site addresses, who may register and at what role, the active plugin set, or role capability definitions are refused outright.',
+				'label'               => __( 'Write Site Option', 'shim-mcp' ),
+				'description'         => __( 'Stores a new value for an option and creates it when it does not exist yet. Supply a key to replace a single entry inside an option that already holds an array rather than overwriting the whole option. Options that govern the site addresses, who may register and at what role, the active plugin set, or role capability definitions are refused outright.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -231,17 +231,17 @@ final class Options {
 					'properties'           => array(
 						'name'  => array(
 							'type'        => 'string',
-							'description' => 'Exact option name to write.',
+							'description' => __( 'Exact option name to write.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
 						'value' => array(
 							'type'        => array( 'string', 'number', 'boolean', 'object', 'array', 'null' ),
-							'description' => 'The value to store. When a key is also given this becomes the value of that one array entry instead of the whole option.',
+							'description' => __( 'The value to store. When a key is also given this becomes the value of that one array entry instead of the whole option.', 'shim-mcp' ),
 						),
 						'key'   => array(
 							'type'        => 'string',
-							'description' => 'Optional array key inside the option. The option must already hold an array, or not exist yet, for a key to be accepted.',
+							'description' => __( 'Optional array key inside the option. The option must already hold an array, or not exist yet, for a key to be accepted.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),

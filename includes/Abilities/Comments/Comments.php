@@ -9,8 +9,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-list',
 			array(
-				'label'               => 'Browse Comments',
-				'description'         => 'Returns a page of comments. Narrow the results by approval state, by the post they belong to, by the author email address, or by a phrase to look for in the comment body.',
+				'label'               => __( 'Browse Comments', 'shim-mcp' ),
+				'description'         => __( 'Returns a page of comments. Narrow the results by approval state, by the post they belong to, by the author email address, or by a phrase to look for in the comment body.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,36 +19,36 @@ class Comments {
 						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'all', 'approve', 'hold', 'spam', 'trash' ),
-							'description' => 'Which moderation bucket to read from. Defaults to all buckets except spam and trash.',
+							'description' => __( 'Which moderation bucket to read from. Defaults to all buckets except spam and trash.', 'shim-mcp' ),
 						),
 						'post_id'      => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'Only return comments attached to this post.',
+							'description' => __( 'Only return comments attached to this post.', 'shim-mcp' ),
 						),
 						'author_email' => array(
 							'type'        => 'string',
-							'description' => 'Only return comments left by this email address.',
+							'description' => __( 'Only return comments left by this email address.', 'shim-mcp' ),
 						),
 						'search'       => array(
 							'type'        => 'string',
-							'description' => 'Free text to look for inside the comment content and author fields.',
+							'description' => __( 'Free text to look for inside the comment content and author fields.', 'shim-mcp' ),
 						),
 						'per_page'     => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'maximum'     => 100,
-							'description' => 'How many comments to return in one page. Caps at one hundred.',
+							'description' => __( 'How many comments to return in one page. Caps at one hundred.', 'shim-mcp' ),
 						),
 						'page'         => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'Which page of results to return, counting from one.',
+							'description' => __( 'Which page of results to return, counting from one.', 'shim-mcp' ),
 						),
 						'order'        => array(
 							'type'        => 'string',
 							'enum'        => array( 'ASC', 'DESC' ),
-							'description' => 'Sort direction by submission date. Newest first by default.',
+							'description' => __( 'Sort direction by submission date. Newest first by default.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -163,8 +163,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-get',
 			array(
-				'label'               => 'Read One Comment',
-				'description'         => 'Loads a single comment by its numeric identifier and returns its author details, body, moderation state and parent comment.',
+				'label'               => __( 'Read One Comment', 'shim-mcp' ),
+				'description'         => __( 'Loads a single comment by its numeric identifier and returns its author details, body, moderation state and parent comment.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -173,7 +173,7 @@ class Comments {
 						'id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The identifier of the comment to load.',
+							'description' => __( 'The identifier of the comment to load.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -236,8 +236,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-create',
 			array(
-				'label'               => 'Post a Comment',
-				'description'         => 'Adds a comment to a post. Supply the post identifier and the body text, plus an author name and email when the comment is not attributed to a logged in account. Set a parent comment identifier to file it as a reply.',
+				'label'               => __( 'Post a Comment', 'shim-mcp' ),
+				'description'         => __( 'Adds a comment to a post. Supply the post identifier and the body text, plus an author name and email when the comment is not attributed to a logged in account. Set a parent comment identifier to file it as a reply.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -246,39 +246,39 @@ class Comments {
 						'post_id'      => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The post that should receive the comment.',
+							'description' => __( 'The post that should receive the comment.', 'shim-mcp' ),
 						),
 						'content'      => array(
 							'type'        => 'string',
 							'minLength'   => 1,
-							'description' => 'The body of the comment.',
+							'description' => __( 'The body of the comment.', 'shim-mcp' ),
 						),
 						'parent_id'    => array(
 							'type'        => 'integer',
 							'minimum'     => 0,
-							'description' => 'Identifier of the comment being replied to. Leave out or pass zero for a top level comment.',
+							'description' => __( 'Identifier of the comment being replied to. Leave out or pass zero for a top level comment.', 'shim-mcp' ),
 						),
 						'author_name'  => array(
 							'type'        => 'string',
-							'description' => 'Display name shown beside the comment.',
+							'description' => __( 'Display name shown beside the comment.', 'shim-mcp' ),
 						),
 						'author_email' => array(
 							'type'        => 'string',
-							'description' => 'Email address of the comment author.',
+							'description' => __( 'Email address of the comment author.', 'shim-mcp' ),
 						),
 						'author_url'   => array(
 							'type'        => 'string',
-							'description' => 'Website address to link the author name to.',
+							'description' => __( 'Website address to link the author name to.', 'shim-mcp' ),
 						),
 						'user_id'      => array(
 							'type'        => 'integer',
 							'minimum'     => 0,
-							'description' => 'Attribute the comment to this registered account. Doing so for anyone other than yourself requires permission to edit that account.',
+							'description' => __( 'Attribute the comment to this registered account. Doing so for anyone other than yourself requires permission to edit that account.', 'shim-mcp' ),
 						),
 						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'approve', 'hold' ),
-							'description' => 'Whether the new comment goes live immediately or waits in the moderation queue.',
+							'description' => __( 'Whether the new comment goes live immediately or waits in the moderation queue.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -452,8 +452,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-set-status',
 			array(
-				'label'               => 'Moderate a Comment',
-				'description'         => 'Moves a comment between moderation states so it can be published, sent back to the queue, flagged as spam, or thrown in the trash.',
+				'label'               => __( 'Moderate a Comment', 'shim-mcp' ),
+				'description'         => __( 'Moves a comment between moderation states so it can be published, sent back to the queue, flagged as spam, or thrown in the trash.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -462,12 +462,12 @@ class Comments {
 						'id'     => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The comment to moderate.',
+							'description' => __( 'The comment to moderate.', 'shim-mcp' ),
 						),
 						'status' => array(
 							'type'        => 'string',
 							'enum'        => array( 'approve', 'hold', 'spam', 'trash' ),
-							'description' => 'The state the comment should end up in.',
+							'description' => __( 'The state the comment should end up in.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -548,8 +548,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-update',
 			array(
-				'label'               => 'Rewrite Comment Text',
-				'description'         => 'Replaces the body of an existing comment, and optionally the author name, email or website shown alongside it.',
+				'label'               => __( 'Rewrite Comment Text', 'shim-mcp' ),
+				'description'         => __( 'Replaces the body of an existing comment, and optionally the author name, email or website shown alongside it.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -558,24 +558,24 @@ class Comments {
 						'id'           => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The comment to edit.',
+							'description' => __( 'The comment to edit.', 'shim-mcp' ),
 						),
 						'content'      => array(
 							'type'        => 'string',
 							'minLength'   => 1,
-							'description' => 'The replacement body text.',
+							'description' => __( 'The replacement body text.', 'shim-mcp' ),
 						),
 						'author_name'  => array(
 							'type'        => 'string',
-							'description' => 'A new display name for the author.',
+							'description' => __( 'A new display name for the author.', 'shim-mcp' ),
 						),
 						'author_email' => array(
 							'type'        => 'string',
-							'description' => 'A new email address for the author.',
+							'description' => __( 'A new email address for the author.', 'shim-mcp' ),
 						),
 						'author_url'   => array(
 							'type'        => 'string',
-							'description' => 'A new website address for the author.',
+							'description' => __( 'A new website address for the author.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -699,8 +699,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-delete',
 			array(
-				'label'               => 'Delete a Comment',
-				'description'         => 'Removes a comment. By default it goes to the trash and can be restored; pass the permanent flag to erase it from the database instead.',
+				'label'               => __( 'Delete a Comment', 'shim-mcp' ),
+				'description'         => __( 'Removes a comment. By default it goes to the trash and can be restored; pass the permanent flag to erase it from the database instead.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -709,11 +709,11 @@ class Comments {
 						'id'        => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The comment to remove.',
+							'description' => __( 'The comment to remove.', 'shim-mcp' ),
 						),
 						'permanent' => array(
 							'type'        => 'boolean',
-							'description' => 'Set to true to erase the comment outright rather than trashing it.',
+							'description' => __( 'Set to true to erase the comment outright rather than trashing it.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

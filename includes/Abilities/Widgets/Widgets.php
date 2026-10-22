@@ -9,8 +9,8 @@ class Widgets {
 		wp_register_ability(
 			'shim-mcp/widgets-list-sidebars',
 			array(
-				'label'               => 'List Sidebars',
-				'description'         => 'Returns every widget area the current theme has registered, giving the identifier, display name and description for each one. Takes no input.',
+				'label'               => __( 'List Sidebars', 'shim-mcp' ),
+				'description'         => __( 'Returns every widget area the current theme has registered, giving the identifier, display name and description for each one. Takes no input.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -96,8 +96,8 @@ class Widgets {
 		wp_register_ability(
 			'shim-mcp/widgets-list-types',
 			array(
-				'label'               => 'List Widget Types',
-				'description'         => 'Returns the catalogue of widget types this installation offers, so a caller can see what kinds of widgets could be added to a widget area. Takes no input.',
+				'label'               => __( 'List Widget Types', 'shim-mcp' ),
+				'description'         => __( 'Returns the catalogue of widget types this installation offers, so a caller can see what kinds of widgets could be added to a widget area. Takes no input.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -207,8 +207,8 @@ class Widgets {
 		wp_register_ability(
 			'shim-mcp/widgets-list-in-sidebar',
 			array(
-				'label'               => 'List Widgets In A Sidebar',
-				'description'         => 'Reports which widgets are currently sitting in one widget area, in the order they will render. Requires the sidebar identifier, which you can obtain from the sidebar listing ability.',
+				'label'               => __( 'List Widgets In A Sidebar', 'shim-mcp' ),
+				'description'         => __( 'Reports which widgets are currently sitting in one widget area, in the order they will render. Requires the sidebar identifier, which you can obtain from the sidebar listing ability.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -216,7 +216,7 @@ class Widgets {
 					'properties'           => array(
 						'sidebar_id' => array(
 							'type'        => 'string',
-							'description' => 'Identifier of the widget area to inspect, for example sidebar-1 or footer-2.',
+							'description' => __( 'Identifier of the widget area to inspect, for example sidebar-1 or footer-2.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

@@ -9,8 +9,8 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-list',
 			array(
-				'label'               => 'List Media Library Items',
-				'description'         => 'Returns a page of attachments from the media library, newest first. You can narrow the results to a single MIME type such as image/png or to a whole family such as image.',
+				'label'               => __( 'List Media Library Items', 'shim-mcp' ),
+				'description'         => __( 'Returns a page of attachments from the media library, newest first. You can narrow the results to a single MIME type such as image/png or to a whole family such as image.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -20,22 +20,22 @@ class Media {
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'default'     => 1,
-							'description' => 'Which page of results to return, counting from one.',
+							'description' => __( 'Which page of results to return, counting from one.', 'shim-mcp' ),
 						),
 						'per_page'  => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'maximum'     => 100,
 							'default'     => 20,
-							'description' => 'How many attachments to include on the page, up to one hundred.',
+							'description' => __( 'How many attachments to include on the page, up to one hundred.', 'shim-mcp' ),
 						),
 						'mime_type' => array(
 							'type'        => 'string',
-							'description' => 'Restrict the listing to attachments of this MIME type or MIME family, for example image/jpeg or audio.',
+							'description' => __( 'Restrict the listing to attachments of this MIME type or MIME family, for example image/jpeg or audio.', 'shim-mcp' ),
 						),
 						'search'    => array(
 							'type'        => 'string',
-							'description' => 'Free text matched against attachment titles and content.',
+							'description' => __( 'Free text matched against attachment titles and content.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -121,8 +121,8 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-get',
 			array(
-				'label'               => 'Read One Media Item',
-				'description'         => 'Loads a single attachment by its numeric ID and reports its file URL, MIME type, pixel dimensions where the file is an image, alternative text, caption and description.',
+				'label'               => __( 'Read One Media Item', 'shim-mcp' ),
+				'description'         => __( 'Loads a single attachment by its numeric ID and reports its file URL, MIME type, pixel dimensions where the file is an image, alternative text, caption and description.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -131,7 +131,7 @@ class Media {
 						'id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The attachment post ID to load.',
+							'description' => __( 'The attachment post ID to load.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -224,8 +224,8 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-upload',
 			array(
-				'label'               => 'Add a File to the Media Library',
-				'description'         => 'Decodes base64 file bytes, writes them into the WordPress uploads folder under the filename you give, creates the attachment record and builds its thumbnails and metadata. Files whose extension and contents are not allowed by the site are rejected.',
+				'label'               => __( 'Add a File to the Media Library', 'shim-mcp' ),
+				'description'         => __( 'Decodes base64 file bytes, writes them into the WordPress uploads folder under the filename you give, creates the attachment record and builds its thumbnails and metadata. Files whose extension and contents are not allowed by the site are rejected.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -233,28 +233,28 @@ class Media {
 					'properties'           => array(
 						'filename'  => array(
 							'type'        => 'string',
-							'description' => 'The name to save the file under, including its extension.',
+							'description' => __( 'The name to save the file under, including its extension.', 'shim-mcp' ),
 						),
 						'data'      => array(
 							'type'        => 'string',
-							'description' => 'The raw file contents encoded as base64.',
+							'description' => __( 'The raw file contents encoded as base64.', 'shim-mcp' ),
 						),
 						'title'     => array(
 							'type'        => 'string',
-							'description' => 'Title for the new attachment. The filename is used when this is left out.',
+							'description' => __( 'Title for the new attachment. The filename is used when this is left out.', 'shim-mcp' ),
 						),
 						'caption'   => array(
 							'type'        => 'string',
-							'description' => 'Caption shown beneath the file.',
+							'description' => __( 'Caption shown beneath the file.', 'shim-mcp' ),
 						),
 						'alt_text'  => array(
 							'type'        => 'string',
-							'description' => 'Alternative text describing an image for screen readers.',
+							'description' => __( 'Alternative text describing an image for screen readers.', 'shim-mcp' ),
 						),
 						'parent_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 0,
-							'description' => 'Post ID to attach the file to. Zero leaves it unattached.',
+							'description' => __( 'Post ID to attach the file to. Zero leaves it unattached.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -448,8 +448,8 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-update',
 			array(
-				'label'               => 'Edit Media Item Details',
-				'description'         => 'Changes the stored title, caption, description or alternative text on an existing attachment. Fields you leave out keep their current values, and the file itself is untouched.',
+				'label'               => __( 'Edit Media Item Details', 'shim-mcp' ),
+				'description'         => __( 'Changes the stored title, caption, description or alternative text on an existing attachment. Fields you leave out keep their current values, and the file itself is untouched.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -458,23 +458,23 @@ class Media {
 						'id'          => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The attachment post ID to edit.',
+							'description' => __( 'The attachment post ID to edit.', 'shim-mcp' ),
 						),
 						'title'       => array(
 							'type'        => 'string',
-							'description' => 'Replacement title for the attachment.',
+							'description' => __( 'Replacement title for the attachment.', 'shim-mcp' ),
 						),
 						'caption'     => array(
 							'type'        => 'string',
-							'description' => 'Replacement caption text.',
+							'description' => __( 'Replacement caption text.', 'shim-mcp' ),
 						),
 						'description' => array(
 							'type'        => 'string',
-							'description' => 'Replacement long description stored as the attachment body.',
+							'description' => __( 'Replacement long description stored as the attachment body.', 'shim-mcp' ),
 						),
 						'alt_text'    => array(
 							'type'        => 'string',
-							'description' => 'Replacement alternative text for an image.',
+							'description' => __( 'Replacement alternative text for an image.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -585,8 +585,8 @@ class Media {
 		wp_register_ability(
 			'shim-mcp/media-delete',
 			array(
-				'label'               => 'Remove a Media Item',
-				'description'         => 'Deletes an attachment together with the file and any generated image sizes on disk. Set force to false to send it to the trash instead, where trashing attachments is enabled.',
+				'label'               => __( 'Remove a Media Item', 'shim-mcp' ),
+				'description'         => __( 'Deletes an attachment together with the file and any generated image sizes on disk. Set force to false to send it to the trash instead, where trashing attachments is enabled.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -595,12 +595,12 @@ class Media {
 						'id'    => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The attachment post ID to remove.',
+							'description' => __( 'The attachment post ID to remove.', 'shim-mcp' ),
 						),
 						'force' => array(
 							'type'        => 'boolean',
 							'default'     => true,
-							'description' => 'When true the file is erased outright rather than moved to the trash.',
+							'description' => __( 'When true the file is erased outright rather than moved to the trash.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

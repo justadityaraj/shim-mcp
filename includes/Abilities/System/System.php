@@ -13,8 +13,8 @@ class System {
 		wp_register_ability(
 			'shim-mcp/system-environment',
 			array(
-				'label'               => 'Site Environment Report',
-				'description'         => 'Reports the WordPress and PHP versions, the active theme, the site and home addresses, whether multisite is enabled, the configured PHP memory limit, and how many plugins are currently active. It takes no arguments.',
+				'label'               => __( 'Site Environment Report', 'shim-mcp' ),
+				'description'         => __( 'Reports the WordPress and PHP versions, the active theme, the site and home addresses, whether multisite is enabled, the configured PHP memory limit, and how many plugins are currently active. It takes no arguments.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -87,8 +87,8 @@ class System {
 		wp_register_ability(
 			'shim-mcp/system-read-debug-log',
 			array(
-				'label'               => 'Read Debug Log Tail',
-				'description'         => 'Returns the most recent lines of the WordPress debug log. You may choose how many lines to return and supply a plain substring that a line must contain to be included. It reports a clear failure when debug logging is switched off or the log file does not exist.',
+				'label'               => __( 'Read Debug Log Tail', 'shim-mcp' ),
+				'description'         => __( 'Returns the most recent lines of the WordPress debug log. You may choose how many lines to return and supply a plain substring that a line must contain to be included. It reports a clear failure when debug logging is switched off or the log file does not exist.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -99,11 +99,11 @@ class System {
 							'minimum'     => 1,
 							'maximum'     => 1000,
 							'default'     => 100,
-							'description' => 'How many trailing lines to return, up to one thousand.',
+							'description' => __( 'How many trailing lines to return, up to one thousand.', 'shim-mcp' ),
 						),
 						'contains' => array(
 							'type'        => 'string',
-							'description' => 'Keep only lines containing this text. Matching ignores letter case.',
+							'description' => __( 'Keep only lines containing this text. Matching ignores letter case.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -234,8 +234,8 @@ class System {
 		wp_register_ability(
 			'shim-mcp/system-set-debug-constants',
 			array(
-				'label'               => 'Change Debug Constants',
-				'description'         => 'Rewrites the WP_DEBUG, WP_DEBUG_LOG and WP_DEBUG_DISPLAY constants inside wp-config.php. Switched off unless SHIM_MCP_ALLOW_CONFIG_WRITES is defined as true in wp-config.php. Send only the constants you want changed; anything left out keeps its current value. The write is also refused when file editing has been locked down, when the file is not writable, or when the rewritten contents fail a safety check.',
+				'label'               => __( 'Change Debug Constants', 'shim-mcp' ),
+				'description'         => __( 'Rewrites the WP_DEBUG, WP_DEBUG_LOG and WP_DEBUG_DISPLAY constants inside wp-config.php. Switched off unless SHIM_MCP_ALLOW_CONFIG_WRITES is defined as true in wp-config.php. Send only the constants you want changed; anything left out keeps its current value. The write is also refused when file editing has been locked down, when the file is not writable, or when the rewritten contents fail a safety check.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -243,15 +243,15 @@ class System {
 					'properties'           => array(
 						'debug'         => array(
 							'type'        => 'boolean',
-							'description' => 'Desired value for WP_DEBUG.',
+							'description' => __( 'Desired value for WP_DEBUG.', 'shim-mcp' ),
 						),
 						'debug_log'     => array(
 							'type'        => 'boolean',
-							'description' => 'Desired value for WP_DEBUG_LOG.',
+							'description' => __( 'Desired value for WP_DEBUG_LOG.', 'shim-mcp' ),
 						),
 						'debug_display' => array(
 							'type'        => 'boolean',
-							'description' => 'Desired value for WP_DEBUG_DISPLAY.',
+							'description' => __( 'Desired value for WP_DEBUG_DISPLAY.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

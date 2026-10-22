@@ -10,8 +10,8 @@ class Posts {
 		wp_register_ability(
 			'shim-mcp/posts-list',
 			array(
-				'label'               => 'Browse Blog Posts',
-				'description'         => 'Returns a page of blog posts. You may narrow the results by publication status, author, a free-text keyword, a category or a tag, and you control the page size and which page you land on.',
+				'label'               => __( 'Browse Blog Posts', 'shim-mcp' ),
+				'description'         => __( 'Returns a page of blog posts. You may narrow the results by publication status, author, a free-text keyword, a category or a tag, and you control the page size and which page you land on.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,39 +19,39 @@ class Posts {
 					'properties'           => array(
 						'status'   => array(
 							'type'        => 'string',
-							'description' => 'Publication status to match, such as publish, draft, pending, future, private, trash, or any.',
+							'description' => __( 'Publication status to match, such as publish, draft, pending, future, private, trash, or any.', 'shim-mcp' ),
 						),
 						'author'   => array(
 							'type'        => 'integer',
-							'description' => 'Numeric user ID of the author whose posts you want.',
+							'description' => __( 'Numeric user ID of the author whose posts you want.', 'shim-mcp' ),
 						),
 						'search'   => array(
 							'type'        => 'string',
-							'description' => 'Keyword matched against post titles and bodies.',
+							'description' => __( 'Keyword matched against post titles and bodies.', 'shim-mcp' ),
 						),
 						'category' => array(
 							'type'        => 'string',
-							'description' => 'A category slug to restrict the results to.',
+							'description' => __( 'A category slug to restrict the results to.', 'shim-mcp' ),
 						),
 						'tag'      => array(
 							'type'        => 'string',
-							'description' => 'A tag slug to restrict the results to.',
+							'description' => __( 'A tag slug to restrict the results to.', 'shim-mcp' ),
 						),
 						'per_page' => array(
 							'type'        => 'integer',
-							'description' => 'How many posts to return, from 1 up to 100. Defaults to 20.',
+							'description' => __( 'How many posts to return, from 1 up to 100. Defaults to 20.', 'shim-mcp' ),
 						),
 						'page'     => array(
 							'type'        => 'integer',
-							'description' => 'Which page of results to return, starting at 1.',
+							'description' => __( 'Which page of results to return, starting at 1.', 'shim-mcp' ),
 						),
 						'orderby'  => array(
 							'type'        => 'string',
-							'description' => 'Sort field: date, modified, title, ID, or menu_order.',
+							'description' => __( 'Sort field: date, modified, title, ID, or menu_order.', 'shim-mcp' ),
 						),
 						'order'    => array(
 							'type'        => 'string',
-							'description' => 'Sort direction, either ASC or DESC.',
+							'description' => __( 'Sort direction, either ASC or DESC.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -171,8 +171,8 @@ class Posts {
 		wp_register_ability(
 			'shim-mcp/posts-get',
 			array(
-				'label'               => 'Read A Single Post',
-				'description'         => 'Loads one post by its numeric ID and hands back the full body, the excerpt, the status and the taxonomy terms it belongs to.',
+				'label'               => __( 'Read A Single Post', 'shim-mcp' ),
+				'description'         => __( 'Loads one post by its numeric ID and hands back the full body, the excerpt, the status and the taxonomy terms it belongs to.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -180,7 +180,7 @@ class Posts {
 					'properties'           => array(
 						'id' => array(
 							'type'        => 'integer',
-							'description' => 'Numeric ID of the post to load.',
+							'description' => __( 'Numeric ID of the post to load.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -277,8 +277,8 @@ class Posts {
 		wp_register_ability(
 			'shim-mcp/posts-create',
 			array(
-				'label'               => 'Publish A New Post',
-				'description'         => 'Adds a new blog post. Only the title is mandatory; everything else, including the body, excerpt, status, URL slug, categories, tags and author, is optional and falls back to sensible defaults.',
+				'label'               => __( 'Publish A New Post', 'shim-mcp' ),
+				'description'         => __( 'Adds a new blog post. Only the title is mandatory; everything else, including the body, excerpt, status, URL slug, categories, tags and author, is optional and falls back to sensible defaults.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -286,41 +286,41 @@ class Posts {
 					'properties'           => array(
 						'title'      => array(
 							'type'        => 'string',
-							'description' => 'Headline of the new post.',
+							'description' => __( 'Headline of the new post.', 'shim-mcp' ),
 						),
 						'content'    => array(
 							'type'        => 'string',
-							'description' => 'Body of the post, either block markup or plain HTML.',
+							'description' => __( 'Body of the post, either block markup or plain HTML.', 'shim-mcp' ),
 						),
 						'excerpt'    => array(
 							'type'        => 'string',
-							'description' => 'Short summary shown in listings and feeds.',
+							'description' => __( 'Short summary shown in listings and feeds.', 'shim-mcp' ),
 						),
 						'status'     => array(
 							'type'        => 'string',
-							'description' => 'Where the post should land: draft, publish, pending, private or future. Draft is used when omitted.',
+							'description' => __( 'Where the post should land: draft, publish, pending, private or future. Draft is used when omitted.', 'shim-mcp' ),
 						),
 						'slug'       => array(
 							'type'        => 'string',
-							'description' => 'Preferred URL slug. WordPress derives one from the title if you skip it.',
+							'description' => __( 'Preferred URL slug. WordPress derives one from the title if you skip it.', 'shim-mcp' ),
 						),
 						'categories' => array(
 							'type'        => 'array',
-							'description' => 'Category names or slugs to file the post under.',
+							'description' => __( 'Category names or slugs to file the post under.', 'shim-mcp' ),
 							'items'       => array( 'type' => 'string' ),
 						),
 						'tags'       => array(
 							'type'        => 'array',
-							'description' => 'Tag names to attach to the post.',
+							'description' => __( 'Tag names to attach to the post.', 'shim-mcp' ),
 							'items'       => array( 'type' => 'string' ),
 						),
 						'author'     => array(
 							'type'        => 'integer',
-							'description' => 'User ID to credit as the author. Requires permission to write on behalf of other users.',
+							'description' => __( 'User ID to credit as the author. Requires permission to write on behalf of other users.', 'shim-mcp' ),
 						),
 						'date'       => array(
 							'type'        => 'string',
-							'description' => 'Publication timestamp in Y-m-d H:i:s form, in site local time.',
+							'description' => __( 'Publication timestamp in Y-m-d H:i:s form, in site local time.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -470,8 +470,8 @@ class Posts {
 		wp_register_ability(
 			'shim-mcp/posts-update',
 			array(
-				'label'               => 'Edit An Existing Post',
-				'description'         => 'Changes one or more fields on a post that already exists. Fields you leave out keep their current values. Reassigning the post to a different author is only permitted for users who can edit other people\'s posts.',
+				'label'               => __( 'Edit An Existing Post', 'shim-mcp' ),
+				'description'         => __( 'Changes one or more fields on a post that already exists. Fields you leave out keep their current values. Reassigning the post to a different author is only permitted for users who can edit other people\'s posts.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -479,41 +479,41 @@ class Posts {
 					'properties'           => array(
 						'id'         => array(
 							'type'        => 'integer',
-							'description' => 'Numeric ID of the post being edited.',
+							'description' => __( 'Numeric ID of the post being edited.', 'shim-mcp' ),
 						),
 						'title'      => array(
 							'type'        => 'string',
-							'description' => 'Replacement headline.',
+							'description' => __( 'Replacement headline.', 'shim-mcp' ),
 						),
 						'content'    => array(
 							'type'        => 'string',
-							'description' => 'Replacement body for the post.',
+							'description' => __( 'Replacement body for the post.', 'shim-mcp' ),
 						),
 						'excerpt'    => array(
 							'type'        => 'string',
-							'description' => 'Replacement summary.',
+							'description' => __( 'Replacement summary.', 'shim-mcp' ),
 						),
 						'status'     => array(
 							'type'        => 'string',
-							'description' => 'New publication status: draft, publish, pending, private or future.',
+							'description' => __( 'New publication status: draft, publish, pending, private or future.', 'shim-mcp' ),
 						),
 						'slug'       => array(
 							'type'        => 'string',
-							'description' => 'New URL slug for the post.',
+							'description' => __( 'New URL slug for the post.', 'shim-mcp' ),
 						),
 						'categories' => array(
 							'type'        => 'array',
-							'description' => 'Category names or slugs that replace the current set.',
+							'description' => __( 'Category names or slugs that replace the current set.', 'shim-mcp' ),
 							'items'       => array( 'type' => 'string' ),
 						),
 						'tags'       => array(
 							'type'        => 'array',
-							'description' => 'Tag names that replace the current set.',
+							'description' => __( 'Tag names that replace the current set.', 'shim-mcp' ),
 							'items'       => array( 'type' => 'string' ),
 						),
 						'author'     => array(
 							'type'        => 'integer',
-							'description' => 'User ID of the new author. Needs the edit_others_posts capability.',
+							'description' => __( 'User ID of the new author. Needs the edit_others_posts capability.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -690,8 +690,8 @@ class Posts {
 		wp_register_ability(
 			'shim-mcp/posts-delete',
 			array(
-				'label'               => 'Remove A Post',
-				'description'         => 'Sends a post to the trash so it can be restored later, or erases it for good when you ask for a permanent removal.',
+				'label'               => __( 'Remove A Post', 'shim-mcp' ),
+				'description'         => __( 'Sends a post to the trash so it can be restored later, or erases it for good when you ask for a permanent removal.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -699,11 +699,11 @@ class Posts {
 					'properties'           => array(
 						'id'    => array(
 							'type'        => 'integer',
-							'description' => 'Numeric ID of the post to remove.',
+							'description' => __( 'Numeric ID of the post to remove.', 'shim-mcp' ),
 						),
 						'force' => array(
 							'type'        => 'boolean',
-							'description' => 'Set this to true to erase the post outright instead of trashing it. This cannot be undone.',
+							'description' => __( 'Set this to true to erase the post outright instead of trashing it. This cannot be undone.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -778,8 +778,8 @@ class Posts {
 		wp_register_ability(
 			'shim-mcp/posts-replace-text',
 			array(
-				'label'               => 'Find And Replace In Post Body',
-				'description'         => 'Swaps text inside a post body. By default the search string is treated literally; turn on the regex option to interpret it as a PCRE pattern instead. The reply tells you how many substitutions were made.',
+				'label'               => __( 'Find And Replace In Post Body', 'shim-mcp' ),
+				'description'         => __( 'Swaps text inside a post body. By default the search string is treated literally; turn on the regex option to interpret it as a PCRE pattern instead. The reply tells you how many substitutions were made.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -787,27 +787,27 @@ class Posts {
 					'properties'           => array(
 						'id'          => array(
 							'type'        => 'integer',
-							'description' => 'Numeric ID of the post whose body should be edited.',
+							'description' => __( 'Numeric ID of the post whose body should be edited.', 'shim-mcp' ),
 						),
 						'search'      => array(
 							'type'        => 'string',
-							'description' => 'Text to look for, or a regular expression body when regex mode is on.',
+							'description' => __( 'Text to look for, or a regular expression body when regex mode is on.', 'shim-mcp' ),
 						),
 						'replace'     => array(
 							'type'        => 'string',
-							'description' => 'Text that takes the place of each match. In regex mode backreferences such as $1 are honoured.',
+							'description' => __( 'Text that takes the place of each match. In regex mode backreferences such as $1 are honoured.', 'shim-mcp' ),
 						),
 						'regex'       => array(
 							'type'        => 'boolean',
-							'description' => 'Treat the search value as a regular expression rather than plain text. Off by default.',
+							'description' => __( 'Treat the search value as a regular expression rather than plain text. Off by default.', 'shim-mcp' ),
 						),
 						'ignore_case' => array(
 							'type'        => 'boolean',
-							'description' => 'Match without regard to letter case. Off by default.',
+							'description' => __( 'Match without regard to letter case. Off by default.', 'shim-mcp' ),
 						),
 						'dry_run'     => array(
 							'type'        => 'boolean',
-							'description' => 'Count the matches and report them without saving any change.',
+							'description' => __( 'Count the matches and report them without saving any change.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

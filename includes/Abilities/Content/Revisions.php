@@ -9,8 +9,8 @@ class Revisions {
 		wp_register_ability(
 			'shim-mcp/revisions-list',
 			array(
-				'label'               => 'List Post Revisions',
-				'description'         => 'Returns the saved revisions of a single post or page, most recent first. Give it the numeric post ID; each entry comes back with the revision ID, who saved it, and when.',
+				'label'               => __( 'List Post Revisions', 'shim-mcp' ),
+				'description'         => __( 'Returns the saved revisions of a single post or page, most recent first. Give it the numeric post ID; each entry comes back with the revision ID, who saved it, and when.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -18,11 +18,11 @@ class Revisions {
 					'properties'           => array(
 						'post_id' => array(
 							'type'        => 'integer',
-							'description' => 'Numeric ID of the parent post whose revision history you want.',
+							'description' => __( 'Numeric ID of the parent post whose revision history you want.', 'shim-mcp' ),
 						),
 						'limit'   => array(
 							'type'        => 'integer',
-							'description' => 'How many revisions to return, from 1 to 100. Defaults to 20.',
+							'description' => __( 'How many revisions to return, from 1 to 100. Defaults to 20.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'maximum'     => 100,
 						),
@@ -142,8 +142,8 @@ class Revisions {
 		wp_register_ability(
 			'shim-mcp/revisions-restore',
 			array(
-				'label'               => 'Restore Post Revision',
-				'description'         => 'Rolls a post back to one of its stored revisions. Give it the revision ID; the post it belongs to is overwritten with that revision content, and the version being replaced is itself saved as a new revision first.',
+				'label'               => __( 'Restore Post Revision', 'shim-mcp' ),
+				'description'         => __( 'Rolls a post back to one of its stored revisions. Give it the revision ID; the post it belongs to is overwritten with that revision content, and the version being replaced is itself saved as a new revision first.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -151,11 +151,11 @@ class Revisions {
 					'properties'           => array(
 						'revision_id' => array(
 							'type'        => 'integer',
-							'description' => 'Numeric ID of the revision to roll the post back to.',
+							'description' => __( 'Numeric ID of the revision to roll the post back to.', 'shim-mcp' ),
 						),
 						'post_id'     => array(
 							'type'        => 'integer',
-							'description' => 'Optional numeric ID of the parent post. When present it must match the revision parent, which guards against restoring onto the wrong post.',
+							'description' => __( 'Optional numeric ID of the parent post. When present it must match the revision parent, which guards against restoring onto the wrong post.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,

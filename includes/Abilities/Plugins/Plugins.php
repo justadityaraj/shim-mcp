@@ -10,8 +10,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-list',
 			array(
-				'label'               => 'List Installed Plugins',
-				'description'         => 'Returns every plugin present in the plugins directory together with its name, version, author, whether it is currently active and whether a newer version is waiting to be installed. Optionally narrows the result to a text match on the plugin name or folder.',
+				'label'               => __( 'List Installed Plugins', 'shim-mcp' ),
+				'description'         => __( 'Returns every plugin present in the plugins directory together with its name, version, author, whether it is currently active and whether a newer version is waiting to be installed. Optionally narrows the result to a text match on the plugin name or folder.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,16 +19,16 @@ class Plugins {
 					'properties'           => array(
 						'search'       => array(
 							'type'        => 'string',
-							'description' => 'Case-insensitive substring matched against the plugin name and its file path.',
+							'description' => __( 'Case-insensitive substring matched against the plugin name and its file path.', 'shim-mcp' ),
 						),
 						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'all', 'active', 'inactive', 'update-available' ),
-							'description' => 'Restricts the listing to plugins in the given state. Defaults to all.',
+							'description' => __( 'Restricts the listing to plugins in the given state. Defaults to all.', 'shim-mcp' ),
 						),
 						'network_wide' => array(
 							'type'        => 'boolean',
-							'description' => 'On multisite, treat network-activated plugins as active. Ignored on a single site.',
+							'description' => __( 'On multisite, treat network-activated plugins as active. Ignored on a single site.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -159,8 +159,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-activate',
 			array(
-				'label'               => 'Activate Plugin',
-				'description'         => 'Switches on an installed plugin identified by its file path relative to the plugins directory, for example akismet/akismet.php. On multisite the plugin can be turned on for the whole network.',
+				'label'               => __( 'Activate Plugin', 'shim-mcp' ),
+				'description'         => __( 'Switches on an installed plugin identified by its file path relative to the plugins directory, for example akismet/akismet.php. On multisite the plugin can be turned on for the whole network.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -168,15 +168,15 @@ class Plugins {
 					'properties'           => array(
 						'plugin_file'  => array(
 							'type'        => 'string',
-							'description' => 'Path of the main plugin file relative to wp-content/plugins, such as hello-dolly/hello.php.',
+							'description' => __( 'Path of the main plugin file relative to wp-content/plugins, such as hello-dolly/hello.php.', 'shim-mcp' ),
 						),
 						'network_wide' => array(
 							'type'        => 'boolean',
-							'description' => 'Activate across every site of the network. Only meaningful on multisite.',
+							'description' => __( 'Activate across every site of the network. Only meaningful on multisite.', 'shim-mcp' ),
 						),
 						'silent'       => array(
 							'type'        => 'boolean',
-							'description' => 'Skip the plugin activation hooks. Leave this off unless you know the plugin tolerates it.',
+							'description' => __( 'Skip the plugin activation hooks. Leave this off unless you know the plugin tolerates it.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -280,8 +280,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-deactivate',
 			array(
-				'label'               => 'Deactivate Plugin',
-				'description'         => 'Turns off a running plugin identified by its file path relative to the plugins directory. The plugin files stay on disk and its settings are untouched.',
+				'label'               => __( 'Deactivate Plugin', 'shim-mcp' ),
+				'description'         => __( 'Turns off a running plugin identified by its file path relative to the plugins directory. The plugin files stay on disk and its settings are untouched.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -289,15 +289,15 @@ class Plugins {
 					'properties'           => array(
 						'plugin_file'  => array(
 							'type'        => 'string',
-							'description' => 'Path of the main plugin file relative to wp-content/plugins.',
+							'description' => __( 'Path of the main plugin file relative to wp-content/plugins.', 'shim-mcp' ),
 						),
 						'network_wide' => array(
 							'type'        => 'boolean',
-							'description' => 'Remove the network-wide activation as well. Only meaningful on multisite.',
+							'description' => __( 'Remove the network-wide activation as well. Only meaningful on multisite.', 'shim-mcp' ),
 						),
 						'silent'       => array(
 							'type'        => 'boolean',
-							'description' => 'Skip the plugin deactivation hooks.',
+							'description' => __( 'Skip the plugin deactivation hooks.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -397,8 +397,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-delete',
 			array(
-				'label'               => 'Delete Plugin',
-				'description'         => 'Removes an installed plugin and its folder from the server permanently. An active plugin is refused unless you ask for it to be deactivated first, and the caller must confirm the removal.',
+				'label'               => __( 'Delete Plugin', 'shim-mcp' ),
+				'description'         => __( 'Removes an installed plugin and its folder from the server permanently. An active plugin is refused unless you ask for it to be deactivated first, and the caller must confirm the removal.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -406,15 +406,15 @@ class Plugins {
 					'properties'           => array(
 						'plugin_file'      => array(
 							'type'        => 'string',
-							'description' => 'Path of the main plugin file relative to wp-content/plugins.',
+							'description' => __( 'Path of the main plugin file relative to wp-content/plugins.', 'shim-mcp' ),
 						),
 						'confirm'          => array(
 							'type'        => 'boolean',
-							'description' => 'Must be true. Files are erased from disk and cannot be recovered from WordPress.',
+							'description' => __( 'Must be true. Files are erased from disk and cannot be recovered from WordPress.', 'shim-mcp' ),
 						),
 						'deactivate_first' => array(
 							'type'        => 'boolean',
-							'description' => 'Switch the plugin off before deleting it instead of refusing an active plugin.',
+							'description' => __( 'Switch the plugin off before deleting it instead of refusing an active plugin.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -549,8 +549,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-install',
 			array(
-				'label'               => 'Install Plugin',
-				'description'         => 'Installs a plugin from the WordPress.org Plugin Directory by its directory slug, for example hello-dolly. Only the official directory is used: URLs, file paths and uploaded archives are refused. The plugin is left inactive; switch it on with the activate ability.',
+				'label'               => __( 'Install Plugin', 'shim-mcp' ),
+				'description'         => __( 'Installs a plugin from the WordPress.org Plugin Directory by its directory slug, for example hello-dolly. Only the official directory is used: URLs, file paths and uploaded archives are refused. The plugin is left inactive; switch it on with the activate ability.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -558,7 +558,7 @@ class Plugins {
 					'properties'           => array(
 						'slug' => array(
 							'type'        => 'string',
-							'description' => 'The plugin\'s WordPress.org directory slug, the last part of its wordpress.org/plugins/ address.',
+							'description' => __( 'The plugin\'s WordPress.org directory slug, the last part of its wordpress.org/plugins/ address.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
