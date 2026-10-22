@@ -115,11 +115,11 @@ It is feature-complete and the abilities are documented, but it has not yet run 
 
 ### Verification
 
-Verified on WordPress 7.1 / PHP 8.5.9 — activation, the admin dashboard, the MCP handshake, all 56 abilities registering through core's native Abilities API, and a full create, update, patch, read and delete cycle.
+Every push and pull request runs the smoke tests in GitHub Actions on WordPress 6.9 with PHP 8.0, the latest WordPress with PHP 8.5, and a multisite network. They install the release zip on a fresh site and drive it over stdio and Streamable HTTP: all 57 abilities registering through core's native Abilities API, permission checks, session handling, protocol errors, and stored data coming back unchanged. See [Running the tests](#running-the-tests).
 
 | Check | Result |
 |---|---|
-| WordPress Plugin Check (all categories) | 0 errors, 0 warnings |
+| WordPress Plugin Check (all categories, including experimental and low-severity checks) | 0 errors, 0 warnings |
 | PHP_CodeSniffer, WordPress-Extra | 0 violations |
 | PHPStan level 5 with WordPress stubs | 0 issues |
 | `php -l`, all files | pass |
