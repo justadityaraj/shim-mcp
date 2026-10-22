@@ -9,8 +9,8 @@ class Search {
 		wp_register_ability(
 			'shim-mcp/content-search',
 			array(
-				'label'               => 'Search Content',
-				'description'         => 'Finds posts and pages whose title or body matches a keyword. By default it looks at posts and pages, but a caller can name any set of registered post types instead. Each hit comes back with its numeric id, post type, title, permalink and a trimmed excerpt, and the number of hits is capped by a limit the caller can raise or lower.',
+				'label'               => __( 'Search Content', 'shim-mcp' ),
+				'description'         => __( 'Finds posts and pages whose title or body matches a keyword. By default it looks at posts and pages, but a caller can name any set of registered post types instead. Each hit comes back with its numeric id, post type, title, permalink and a trimmed excerpt, and the number of hits is capped by a limit the caller can raise or lower.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -18,23 +18,23 @@ class Search {
 					'properties'           => array(
 						'keyword'    => array(
 							'type'        => 'string',
-							'description' => 'The words to look for in post titles and content.',
+							'description' => __( 'The words to look for in post titles and content.', 'shim-mcp' ),
 							'minLength'   => 1,
 						),
 						'post_types' => array(
 							'type'        => 'array',
-							'description' => 'Restrict the search to these registered post types. Leave it out to search posts and pages.',
+							'description' => __( 'Restrict the search to these registered post types. Leave it out to search posts and pages.', 'shim-mcp' ),
 							'items'       => array( 'type' => 'string' ),
 						),
 						'limit'      => array(
 							'type'        => 'integer',
-							'description' => 'How many matches to return at most. Defaults to twenty and cannot exceed one hundred.',
+							'description' => __( 'How many matches to return at most. Defaults to twenty and cannot exceed one hundred.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'maximum'     => 100,
 						),
 						'status'     => array(
 							'type'        => 'string',
-							'description' => 'Only return content in this status, for example publish, draft or pending. Leave it out to include every status the current user is allowed to see.',
+							'description' => __( 'Only return content in this status, for example publish, draft or pending. Leave it out to include every status the current user is allowed to see.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -66,7 +66,7 @@ class Search {
 					if ( ! is_array( $input ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The search request was not shaped as an object.', 'shim-mcp' ),
+							'message' => __( 'The search request was not shaped as an object.', 'shim-mcp' ),
 						);
 					}
 
@@ -75,7 +75,7 @@ class Search {
 					if ( ! is_string( $raw_keyword ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The keyword has to be given as text.', 'shim-mcp' ),
+							'message' => __( 'The keyword has to be given as text.', 'shim-mcp' ),
 						);
 					}
 
@@ -84,7 +84,7 @@ class Search {
 					if ( '' === trim( $keyword ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Give a keyword with at least one visible character.', 'shim-mcp' ),
+							'message' => __( 'Give a keyword with at least one visible character.', 'shim-mcp' ),
 						);
 					}
 
@@ -94,7 +94,7 @@ class Search {
 						if ( ! is_array( $input['post_types'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The post_types value has to be a list of post type names.', 'shim-mcp' ),
+								'message' => __( 'The post_types value has to be a list of post type names.', 'shim-mcp' ),
 							);
 						}
 
@@ -119,7 +119,7 @@ class Search {
 						if ( empty( $requested ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'None of the post types you named are registered on this site.', 'shim-mcp' ),
+								'message' => __( 'None of the post types you named are registered on this site.', 'shim-mcp' ),
 							);
 						}
 
@@ -146,7 +146,7 @@ class Search {
 						if ( ! is_string( $input['status'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The status value has to be given as text.', 'shim-mcp' ),
+								'message' => __( 'The status value has to be given as text.', 'shim-mcp' ),
 							);
 						}
 
@@ -195,22 +195,22 @@ class Search {
 
 						$results[] = array(
 							'id'        => (int) $post->ID,
-							'post_type' => esc_html( (string) $post->post_type ),
-							'title'     => esc_html( get_the_title( $post ) ),
-							'status'    => esc_html( (string) $post->post_status ),
+							'post_type' => (string) $post->post_type,
+							'title'     => $post->post_title,
+							'status'    => (string) $post->post_status,
 							'link'      => is_string( $permalink ) ? esc_url_raw( $permalink ) : '',
-							'excerpt'   => esc_html( $excerpt ),
+							'excerpt'   => $excerpt,
 						);
 					}
 
 					return array(
 						'success' => true,
-						'keyword' => esc_html( $keyword ),
+						'keyword' => $keyword,
 						'count'   => count( $results ),
 						'results' => $results,
 						'message' => empty( $results )
-							? esc_html__( 'Nothing readable matched that keyword.', 'shim-mcp' )
-							: esc_html__( 'Matching content found.', 'shim-mcp' ),
+							? __( 'Nothing readable matched that keyword.', 'shim-mcp' )
+							: __( 'Matching content found.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {

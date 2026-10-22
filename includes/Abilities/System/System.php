@@ -13,8 +13,8 @@ class System {
 		wp_register_ability(
 			'shim-mcp/system-environment',
 			array(
-				'label'               => 'Site Environment Report',
-				'description'         => 'Reports the WordPress and PHP versions, the active theme, the site and home addresses, whether multisite is enabled, the configured PHP memory limit, and how many plugins are currently active. It takes no arguments.',
+				'label'               => __( 'Site Environment Report', 'shim-mcp' ),
+				'description'         => __( 'Reports the WordPress and PHP versions, the active theme, the site and home addresses, whether multisite is enabled, the configured PHP memory limit, and how many plugins are currently active. It takes no arguments.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -57,18 +57,18 @@ class System {
 
 					return array(
 						'success'        => true,
-						'wp_version'     => esc_html( get_bloginfo( 'version' ) ),
-						'php_version'    => esc_html( PHP_VERSION ),
-						'theme_name'     => esc_html( (string) $theme->get( 'Name' ) ),
-						'theme_version'  => esc_html( (string) $theme->get( 'Version' ) ),
-						'theme_slug'     => esc_html( (string) $theme->get_stylesheet() ),
+						'wp_version'     => get_bloginfo( 'version' ),
+						'php_version'    => PHP_VERSION,
+						'theme_name'     => (string) $theme->get( 'Name' ),
+						'theme_version'  => (string) $theme->get( 'Version' ),
+						'theme_slug'     => (string) $theme->get_stylesheet(),
 						'site_url'       => esc_url_raw( site_url() ),
 						'home_url'       => esc_url_raw( home_url() ),
 						'is_multisite'   => is_multisite(),
-						'memory_limit'   => esc_html( (string) ini_get( 'memory_limit' ) ),
+						'memory_limit'   => (string) ini_get( 'memory_limit' ),
 						'active_plugins' => $count,
 						'debug_enabled'  => defined( 'WP_DEBUG' ) && WP_DEBUG,
-						'message'        => esc_html__( 'Environment details collected.', 'shim-mcp' ),
+						'message'        => __( 'Environment details collected.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -87,8 +87,8 @@ class System {
 		wp_register_ability(
 			'shim-mcp/system-read-debug-log',
 			array(
-				'label'               => 'Read Debug Log Tail',
-				'description'         => 'Returns the most recent lines of the WordPress debug log. You may choose how many lines to return and supply a plain substring that a line must contain to be included. It reports a clear failure when debug logging is switched off or the log file does not exist.',
+				'label'               => __( 'Read Debug Log Tail', 'shim-mcp' ),
+				'description'         => __( 'Returns the most recent lines of the WordPress debug log. You may choose how many lines to return and supply a plain substring that a line must contain to be included. It reports a clear failure when debug logging is switched off or the log file does not exist.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -99,11 +99,11 @@ class System {
 							'minimum'     => 1,
 							'maximum'     => 1000,
 							'default'     => 100,
-							'description' => 'How many trailing lines to return, up to one thousand.',
+							'description' => __( 'How many trailing lines to return, up to one thousand.', 'shim-mcp' ),
 						),
 						'contains' => array(
 							'type'        => 'string',
-							'description' => 'Keep only lines containing this text. Matching ignores letter case.',
+							'description' => __( 'Keep only lines containing this text. Matching ignores letter case.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -140,7 +140,7 @@ class System {
 						if ( ! is_string( $input['contains'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The filter text must be a string.', 'shim-mcp' ),
+								'message' => __( 'The filter text must be a string.', 'shim-mcp' ),
 							);
 						}
 						$needle = sanitize_text_field( $input['contains'] );
@@ -149,7 +149,7 @@ class System {
 					if ( ! defined( 'WP_DEBUG_LOG' ) || ! WP_DEBUG_LOG ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Debug logging is turned off, so there is no log to read.', 'shim-mcp' ),
+							'message' => __( 'Debug logging is turned off, so there is no log to read.', 'shim-mcp' ),
 						);
 					}
 
@@ -158,7 +158,7 @@ class System {
 					if ( ! file_exists( $path ) || ! is_readable( $path ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No readable debug log file was found at the configured location.', 'shim-mcp' ),
+							'message' => __( 'No readable debug log file was found at the configured location.', 'shim-mcp' ),
 						);
 					}
 
@@ -172,7 +172,7 @@ class System {
 					if ( false === $handle ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The debug log could not be opened for reading.', 'shim-mcp' ),
+							'message' => __( 'The debug log could not be opened for reading.', 'shim-mcp' ),
 						);
 					}
 
@@ -204,18 +204,18 @@ class System {
 						if ( '' !== $needle && false === stripos( $row, $needle ) ) {
 							continue;
 						}
-						$kept[] = esc_html( $row );
+						$kept[] = $row;
 					}
 
 					$tail = array_slice( $kept, -$limit );
 
 					return array(
 						'success'        => true,
-						'path'           => esc_html( $path ),
+						'path'           => $path,
 						'size_bytes'     => (int) $size,
 						'returned_lines' => count( $tail ),
 						'entries'        => array_values( $tail ),
-						'message'        => esc_html__( 'Debug log tail retrieved.', 'shim-mcp' ),
+						'message'        => __( 'Debug log tail retrieved.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -234,8 +234,8 @@ class System {
 		wp_register_ability(
 			'shim-mcp/system-set-debug-constants',
 			array(
-				'label'               => 'Change Debug Constants',
-				'description'         => 'Rewrites the WP_DEBUG, WP_DEBUG_LOG and WP_DEBUG_DISPLAY constants inside wp-config.php. Switched off unless SHIM_MCP_ALLOW_CONFIG_WRITES is defined as true in wp-config.php. Send only the constants you want changed; anything left out keeps its current value. The write is also refused when file editing has been locked down, when the file is not writable, or when the rewritten contents fail a safety check.',
+				'label'               => __( 'Change Debug Constants', 'shim-mcp' ),
+				'description'         => __( 'Rewrites the WP_DEBUG, WP_DEBUG_LOG and WP_DEBUG_DISPLAY constants inside wp-config.php. Switched off unless SHIM_MCP_ALLOW_CONFIG_WRITES is defined as true in wp-config.php. Send only the constants you want changed; anything left out keeps its current value. The write is also refused when file editing has been locked down, when the file is not writable, or when the rewritten contents fail a safety check.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -243,15 +243,15 @@ class System {
 					'properties'           => array(
 						'debug'         => array(
 							'type'        => 'boolean',
-							'description' => 'Desired value for WP_DEBUG.',
+							'description' => __( 'Desired value for WP_DEBUG.', 'shim-mcp' ),
 						),
 						'debug_log'     => array(
 							'type'        => 'boolean',
-							'description' => 'Desired value for WP_DEBUG_LOG.',
+							'description' => __( 'Desired value for WP_DEBUG_LOG.', 'shim-mcp' ),
 						),
 						'debug_display' => array(
 							'type'        => 'boolean',
-							'description' => 'Desired value for WP_DEBUG_DISPLAY.',
+							'description' => __( 'Desired value for WP_DEBUG_DISPLAY.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -284,14 +284,14 @@ class System {
 					if ( ! self::config_writes_allowed() ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Writing to wp-config.php is switched off. Define SHIM_MCP_ALLOW_CONFIG_WRITES as true in wp-config.php to enable it.', 'shim-mcp' ),
+							'message' => __( 'Writing to wp-config.php is switched off. Define SHIM_MCP_ALLOW_CONFIG_WRITES as true in wp-config.php to enable it.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) || ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'This site forbids editing files from the dashboard, so wp-config.php will not be touched.', 'shim-mcp' ),
+							'message' => __( 'This site forbids editing files from the dashboard, so wp-config.php will not be touched.', 'shim-mcp' ),
 						);
 					}
 
@@ -309,7 +309,7 @@ class System {
 						if ( ! is_bool( $input[ $key ] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'Each debug setting must be given as true or false.', 'shim-mcp' ),
+								'message' => __( 'Each debug setting must be given as true or false.', 'shim-mcp' ),
 							);
 						}
 						$wanted[ $constant ] = $input[ $key ];
@@ -318,7 +318,7 @@ class System {
 					if ( empty( $wanted ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Name at least one debug constant to change.', 'shim-mcp' ),
+							'message' => __( 'Name at least one debug constant to change.', 'shim-mcp' ),
 						);
 					}
 
@@ -333,7 +333,7 @@ class System {
 					if ( ! file_exists( $path ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The wp-config.php file could not be located.', 'shim-mcp' ),
+							'message' => __( 'The wp-config.php file could not be located.', 'shim-mcp' ),
 						);
 					}
 
@@ -341,7 +341,7 @@ class System {
 					if ( ! is_writable( $path ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The wp-config.php file is not writable by the web server.', 'shim-mcp' ),
+							'message' => __( 'The wp-config.php file is not writable by the web server.', 'shim-mcp' ),
 						);
 					}
 
@@ -355,7 +355,7 @@ class System {
 					if ( ! $ready || ! ( $wp_filesystem instanceof \WP_Filesystem_Base ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The WordPress filesystem layer is unavailable, so no write was attempted.', 'shim-mcp' ),
+							'message' => __( 'The WordPress filesystem layer is unavailable, so no write was attempted.', 'shim-mcp' ),
 						);
 					}
 
@@ -363,7 +363,7 @@ class System {
 					if ( ! is_string( $original ) || '' === $original ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The current contents of wp-config.php could not be read.', 'shim-mcp' ),
+							'message' => __( 'The current contents of wp-config.php could not be read.', 'shim-mcp' ),
 						);
 					}
 
@@ -381,7 +381,7 @@ class System {
 						if ( null === $result ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The configuration file could not be parsed safely, so nothing was written.', 'shim-mcp' ),
+								'message' => __( 'The configuration file could not be parsed safely, so nothing was written.', 'shim-mcp' ),
 							);
 						}
 
@@ -392,7 +392,7 @@ class System {
 							if ( null === $result || 0 === $anchored ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'No safe place was found in wp-config.php to add the missing constant.', 'shim-mcp' ),
+									'message' => __( 'No safe place was found in wp-config.php to add the missing constant.', 'shim-mcp' ),
 								);
 							}
 						}
@@ -405,24 +405,24 @@ class System {
 					if ( 0 !== strpos( ltrim( $updated ), '<?php' ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The rewritten configuration no longer starts with a PHP opening tag, so the write was cancelled.', 'shim-mcp' ),
+							'message' => __( 'The rewritten configuration no longer starts with a PHP opening tag, so the write was cancelled.', 'shim-mcp' ),
 						);
 					}
 
 					if ( strlen( $updated ) < (int) ( strlen( $original ) * 0.8 ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The rewritten configuration shrank unexpectedly, so the write was cancelled.', 'shim-mcp' ),
+							'message' => __( 'The rewritten configuration shrank unexpectedly, so the write was cancelled.', 'shim-mcp' ),
 						);
 					}
 
 					if ( $updated === $original ) {
 						return array(
 							'success' => true,
-							'path'    => esc_html( basename( $path ) ),
+							'path'    => basename( $path ),
 							'applied' => $applied,
 							'changed' => array(),
-							'message' => esc_html__( 'The requested values already matched the file, so nothing was written.', 'shim-mcp' ),
+							'message' => __( 'The requested values already matched the file, so nothing was written.', 'shim-mcp' ),
 						);
 					}
 
@@ -431,16 +431,16 @@ class System {
 					if ( ! $written ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Writing the updated wp-config.php failed and the original file is untouched.', 'shim-mcp' ),
+							'message' => __( 'Writing the updated wp-config.php failed and the original file is untouched.', 'shim-mcp' ),
 						);
 					}
 
 					return array(
 						'success' => true,
-						'path'    => esc_html( basename( $path ) ),
+						'path'    => basename( $path ),
 						'applied' => $applied,
 						'changed' => $changed,
-						'message' => esc_html__( 'The debug constants were updated in wp-config.php.', 'shim-mcp' ),
+						'message' => __( 'The debug constants were updated in wp-config.php.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => static function (): bool {

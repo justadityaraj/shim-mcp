@@ -6,13 +6,14 @@
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>bin/*</exclude-pattern>
+	<exclude-pattern>tests/*</exclude-pattern>
 
 	<arg name="extensions" value="php"/>
 	<arg name="colors"/>
 	<arg value="ps"/>
 	<arg name="parallel" value="8"/>
 
-	<config name="minimum_wp_version" value="6.7"/>
+	<config name="minimum_wp_version" value="6.9"/>
 	<config name="testVersion" value="8.0-"/>
 
 	<rule ref="WordPress-Extra">

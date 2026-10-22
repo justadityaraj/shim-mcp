@@ -32,83 +32,81 @@
     function showCopied(button) {
         var $btn = $(button);
         var original = $btn.text();
-        $btn.text('Copied!').addClass('copied');
+        $btn.text(shimMcp.i18n.copied).addClass('copied');
         setTimeout(function () {
             $btn.text(original).removeClass('copied');
         }, 2000);
     }
 
-    /**
-     * Update config blocks with real base64 credentials.
-     */
-    function updateConfigs(base64) {
-        $('.mcp-placeholder').each(function () {
-            $(this).text(base64).removeClass('mcp-placeholder');
+    function setCredential(base64) {
+        $('.mcp-credential').each(function () {
+            $(this).text(base64 || $(this).data('placeholder'));
         });
+        $('.mcp-config-copy').prop('disabled', !base64);
+        $('#mcp-config-note').toggle(!base64);
     }
 
-    /**
-     * Switch UI to "key active" state.
-     */
-    function showKeyActive() {
-        $('#mcp-key-status').html(
-            '<span class="mcp-badge mcp-badge-active">API Key Active</span>' +
-            '<button type="button" class="button button-secondary" id="mcp-revoke-key">Revoke Key</button>'
+    function showKeyActive(password, base64) {
+        $('#mcp-key-status').empty().append(
+            $('<span class="mcp-badge mcp-badge-active">').text(shimMcp.i18n.apiKeyActive),
+            $('<button type="button" class="button button-secondary" id="mcp-generate-key">').text(shimMcp.i18n.generateNewKey),
+            $('<button type="button" class="button button-secondary" id="mcp-revoke-key">').text(shimMcp.i18n.revokeKey)
         );
+        $('#mcp-key-value').text(password);
+        $('#mcp-key-output').show();
+        setCredential(base64);
         $('#mcp-test-connection').prop('disabled', false);
         $('#mcp-connection-dot').removeClass('mcp-dot-inactive mcp-dot-active').addClass('mcp-dot-unknown');
-        $('#mcp-connection-text').text('Key configured \u2014 test to verify');
+        $('#mcp-connection-text').text(shimMcp.i18n.keyConfigured);
     }
 
-    /**
-     * Switch UI to "no key" state.
-     */
     function showNoKey() {
-        $('#mcp-key-status').html(
-            '<button type="button" class="button button-primary" id="mcp-generate-key">Generate API Key</button>'
+        $('#mcp-key-status').empty().append(
+            $('<button type="button" class="button button-primary" id="mcp-generate-key">').text(shimMcp.i18n.generateKey)
         );
+        $('#mcp-key-value').text('');
         $('#mcp-key-output').hide();
+        setCredential(null);
         $('#mcp-test-connection').prop('disabled', true);
         $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-active').addClass('mcp-dot-inactive');
-        $('#mcp-connection-text').text('No API key configured');
-
-        // Reset placeholders.
-        $('.mcp-code-wrapper .mcp-placeholder').text('BASE64_ENCODED_CREDENTIALS');
+        $('#mcp-connection-text').text(shimMcp.i18n.noKey);
     }
 
     // ---- Event handlers ----
 
     $(document).on('click', '#mcp-generate-key', function () {
         var $btn = $(this);
-        $btn.prop('disabled', true).text('Generating...');
+        var label = $btn.text();
+
+        if ($('#mcp-revoke-key').length && !confirm(shimMcp.i18n.confirmRegenerate)) {
+            return;
+        }
+
+        $btn.prop('disabled', true).text(shimMcp.i18n.generating);
 
         $.post(shimMcp.ajaxUrl, {
             action: 'shim_mcp_generate_key',
             nonce: shimMcp.nonce
         }, function (response) {
             if (response.success) {
-                var data = response.data;
-                $('#mcp-key-value').text(data.password);
-                $('#mcp-key-output').show();
-                updateConfigs(data.base64);
-                showKeyActive();
+                showKeyActive(response.data.password, response.data.base64);
             } else {
-                alert('Error: ' + (response.data && response.data.message ? response.data.message : 'Unknown error'));
-                $btn.prop('disabled', false).text('Generate API Key');
+                alert(shimMcp.i18n.error.replace('%s', response.data && response.data.message ? response.data.message : shimMcp.i18n.unknownError));
+                $btn.prop('disabled', false).text(label);
             }
         }).fail(function () {
-            alert('Request failed. Please try again.');
-            $btn.prop('disabled', false).text('Generate API Key');
+            alert(shimMcp.i18n.requestFailed);
+            $btn.prop('disabled', false).text(label);
         });
     });
 
     $(document).on('click', '#mcp-revoke-key', function () {
-        if (!confirm('Are you sure you want to revoke the API key? MCP clients will stop working.')) {
+        if (!confirm(shimMcp.i18n.confirmRevoke)) {
             return;
         }
 
         var $btn = $(this);
-        $btn.prop('disabled', true).text('Revoking...');
+        $btn.prop('disabled', true).text(shimMcp.i18n.revoking);
 
         $.post(shimMcp.ajaxUrl, {
             action: 'shim_mcp_revoke_key',
@@ -117,18 +115,18 @@
             if (response.success) {
                 showNoKey();
             } else {
-                alert('Error: ' + (response.data && response.data.message ? response.data.message : 'Unknown error'));
-                $btn.prop('disabled', false).text('Revoke Key');
+                alert(shimMcp.i18n.error.replace('%s', response.data && response.data.message ? response.data.message : shimMcp.i18n.unknownError));
+                $btn.prop('disabled', false).text(shimMcp.i18n.revokeKey);
             }
         }).fail(function () {
-            alert('Request failed. Please try again.');
-            $btn.prop('disabled', false).text('Revoke Key');
+            alert(shimMcp.i18n.requestFailed);
+            $btn.prop('disabled', false).text(shimMcp.i18n.revokeKey);
         });
     });
 
     $(document).on('click', '#mcp-test-connection', function () {
         var $btn = $(this);
-        $btn.prop('disabled', true).text('Checking...');
+        $btn.prop('disabled', true).text(shimMcp.i18n.checking);
 
         $.post(shimMcp.ajaxUrl, {
             action: 'shim_mcp_test_connection',
@@ -136,16 +134,16 @@
         }, function (response) {
             if (response.success) {
                 $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-inactive').addClass('mcp-dot-active');
-                $('#mcp-connection-text').text(response.data && response.data.message ? response.data.message : 'Endpoint reachable; client credentials were not verified.');
+                $('#mcp-connection-text').text(response.data && response.data.message ? response.data.message : shimMcp.i18n.endpointUnchecked);
             } else {
                 $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-active').addClass('mcp-dot-inactive');
-                $('#mcp-connection-text').text(response.data && response.data.message ? response.data.message : 'Connection failed');
+                $('#mcp-connection-text').text(response.data && response.data.message ? response.data.message : shimMcp.i18n.connectionFailed);
             }
-            $btn.prop('disabled', false).text('Check Endpoint');
+            $btn.prop('disabled', false).text(shimMcp.i18n.checkEndpoint);
         }).fail(function () {
             $('#mcp-connection-dot').removeClass('mcp-dot-unknown mcp-dot-active').addClass('mcp-dot-inactive');
-            $('#mcp-connection-text').text('Request failed');
-            $btn.prop('disabled', false).text('Check Endpoint');
+            $('#mcp-connection-text').text(shimMcp.i18n.checkFailed);
+            $btn.prop('disabled', false).text(shimMcp.i18n.checkEndpoint);
         });
     });
 

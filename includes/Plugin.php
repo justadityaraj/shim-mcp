@@ -85,10 +85,10 @@ final class Plugin {
 	}
 
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, 'Cloning is not allowed.', '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cloning is not allowed.', 'shim-mcp' ), '1.0.0' );
 	}
 
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, 'Deserializing is not allowed.', '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Deserializing is not allowed.', 'shim-mcp' ), '1.0.0' );
 	}
 }

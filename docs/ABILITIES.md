@@ -1,6 +1,6 @@
 # Abilities Reference
 
-Shim MCP registers **56 abilities** across **13 domains**.
+Shim MCP registers **57 abilities** across **13 domains**.
 
 Every ability is exposed to MCP clients through the three meta-tools (`discover-abilities`, `get-ability-info`, `execute-ability`), so a client discovers the full set at runtime rather than needing one tool per operation.
 
@@ -17,13 +17,13 @@ Each ability declares a blanket capability in its permission callback. Abilities
 | Revisions | 2 |
 | Media | 5 |
 | Users | 6 |
-| Plugins | 4 |
+| Plugins | 5 |
 | Menus | 7 |
 | Widgets | 3 |
 | Comments | 6 |
 | Options | 3 |
 | System | 3 |
-| **Total** | **56** |
+| **Total** | **57** |
 
 ---
 
@@ -114,6 +114,7 @@ Each ability declares a blanket capability in its permission callback. Abilities
 | `shim-mcp/plugins-activate` | `activate_plugins` | no | Switches on an installed plugin identified by its file path relative to the plugins directory, for example akismet/akismet.php. On multisite the plugin can be turned on for the whole network. |
 | `shim-mcp/plugins-deactivate` | `activate_plugins` | no | Turns off a running plugin identified by its file path relative to the plugins directory. The plugin files stay on disk and its settings are untouched. |
 | `shim-mcp/plugins-delete` | `delete_plugins` | no | Removes an installed plugin and its folder from the server permanently. An active plugin is refused unless you ask for it to be deactivated first, and the caller must confirm the removal. |
+| `shim-mcp/plugins-install` | `install_plugins` | no | Installs a plugin from the WordPress.org Plugin Directory by its directory slug, for example `hello-dolly`. Metadata comes from `plugins_api()` and the package only from `downloads.wordpress.org`; URLs, file paths and uploaded archives are refused. The plugin is left inactive. On multisite only network administrators hold `install_plugins`, and `DISALLOW_FILE_MODS` turns it off. |
 
 ---
 

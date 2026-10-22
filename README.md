@@ -6,7 +6,7 @@
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/shim-mcp)](https://wordpress.org/plugins/shim-mcp/)
 [![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/justadityaraj/shim-mcp?utm_source=oss&utm_medium=github&utm_campaign=justadityaraj%2Fshim-mcp&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
 
-A self-contained **Model Context Protocol (MCP) server for WordPress**, built for developers. Install one plugin and your WordPress site becomes an MCP server that Claude Code, Claude Desktop, Cursor, Windsurf, Cline, or any MCP-compatible AI client can drive — 56 abilities across posts, pages, media, users, plugins, menus, widgets, comments, options and system management.
+A self-contained **Model Context Protocol (MCP) server for WordPress**, built for developers. Install one plugin and your WordPress site becomes an MCP server that Claude Code, Claude Desktop, Cursor, Windsurf, Cline, or any MCP-compatible AI client can drive — 57 abilities across posts, pages, media, users, plugins, menus, widgets, comments, options and system management.
 
 No companion plugins. No cloud relay. No account anywhere. Your site talks to your AI client and nothing sits in between.
 
@@ -45,10 +45,10 @@ The name is a promise about scope. It is not an AI product. It does not bundle a
 ## What makes it different
 
 - **The MCP server runs over stdio.** Others expose WP-CLI as a tool reachable through a remote HTTP connection; here WP-CLI *is* the transport, running locally with no port, no token and no HTTP layer at all.
-- **Genuinely self-contained.** The MCP server and all 56 abilities ship in one plugin. No companion plugin, no framework, no service to sign up for.
+- **Genuinely self-contained.** The MCP server and all 57 abilities ship in one plugin. No companion plugin, no framework, no service to sign up for.
 - **Abilities API native.** Every ability is registered through WordPress's own `wp_register_ability()`. Nothing lives in a private tool registry, so abilities registered by *other* plugins are exposed too, automatically, with no adapter code.
 - **Per-object permission checks, not just blanket ones.** Every ability declares a capability, and every ability that touches a specific object re-checks the per-object capability (`edit_post`, `delete_post`, `read_post`, `edit_user`, `delete_user`, `edit_comment`) against that object before reading or mutating it. A contributor's client cannot edit an editor's post. Holding `edit_posts` is not treated as permission to edit *any* post.
-- **56 abilities, deliberately.** This is not a race to the largest tool count. Every ability is documented with its required capability in the [abilities reference](docs/ABILITIES.md).
+- **57 abilities, deliberately.** This is not a race to the largest tool count. Every ability is documented with its required capability in the [abilities reference](docs/ABILITIES.md).
 - **Nothing leaves your server.** No proxy, no relay, no telemetry, no vendor account.
 - **The one dangerous ability is off by default.** Rewriting `wp-config.php` stays disabled unless you opt in explicitly with `define( 'SHIM_MCP_ALLOW_CONFIG_WRITES', true );`.
 
@@ -62,11 +62,13 @@ wp plugin activate shim-mcp
 wp shim-mcp serve --user=admin
 ```
 
-Then register it with your client. For Claude Code:
+Then register it with your client. For Claude Code on macOS or Linux:
 
 ```bash
-claude mcp add shim -- wp shim-mcp serve --user=admin --path=/full/path/to/wordpress
+claude mcp add shim-mcp -- wp shim-mcp serve --user=admin --path=/path/to/wordpress
 ```
+
+Windows, Claude Desktop and Cursor need a slightly different command; the [local setup guide](docs/SETUP.md#local-setup-stdio) has a tested configuration for each, plus a one-line check that the server answers before you connect a client.
 
 **Remote site (HTTP)**
 
@@ -85,8 +87,8 @@ wp shim-mcp list  [--format=<format>]                                # list regi
 
 ## Features
 
-- 56 WordPress abilities across content, media, users, plugins, menus, widgets, comments, options and system management
-- Plugin abilities cover listing, activating, deactivating and deleting what is already installed; installing new plugins is deliberately out of scope
+- 57 WordPress abilities across content, media, users, plugins, menus, widgets, comments, options and system management
+- Plugin abilities cover listing, activating, deactivating and deleting installed plugins, and installing from the WordPress.org directory by slug; installing from a URL or an uploaded archive is deliberately out of scope
 - MCP protocol 2024-11-05, 2025-03-26 and 2025-06-18 with automatic version negotiation
 - Two transports: stdio over WP-CLI, and Streamable HTTP
 - Admin dashboard with application password generation and revocation
@@ -102,7 +104,7 @@ wp shim-mcp list  [--format=<format>]                                # list regi
 ## Documentation
 
 - [Setup Guide](docs/SETUP.md) — installation, client configuration, troubleshooting
-- [Abilities Reference](docs/ABILITIES.md) — all 56 abilities with their required capabilities
+- [Abilities Reference](docs/ABILITIES.md) — all 57 abilities with their required capabilities
 - [Security Policy](SECURITY.md) — the trust model, and how to report a vulnerability
 
 ## Status
@@ -113,11 +115,11 @@ It is feature-complete and the abilities are documented, but it has not yet run 
 
 ### Verification
 
-Verified on WordPress 7.1 / PHP 8.5.9 — activation, the admin dashboard, the MCP handshake, all 56 abilities registering through core's native Abilities API, and a full create, update, patch, read and delete cycle.
+Every push and pull request runs the smoke tests in GitHub Actions on WordPress 6.9 with PHP 8.0, the latest WordPress with PHP 8.5, and a multisite network. They install the release zip on a fresh site and drive it over stdio and Streamable HTTP: all 57 abilities registering through core's native Abilities API, permission checks, session handling, protocol errors, and stored data coming back unchanged. See [Running the tests](#running-the-tests).
 
 | Check | Result |
 |---|---|
-| WordPress Plugin Check (all categories) | 0 errors, 0 warnings |
+| WordPress Plugin Check (all categories, including experimental and low-severity checks) | 0 errors, 0 warnings |
 | PHP_CodeSniffer, WordPress-Extra | 0 violations |
 | PHPStan level 5 with WordPress stubs | 0 issues |
 | `php -l`, all files | pass |
@@ -141,13 +143,27 @@ Clone into a directory named exactly `shim-mcp`. GitHub's "Download ZIP" button 
 
 Pre-release builds are unreleased by definition: they have not been through the release checks, and they are not on WordPress.org. Do not run them on a production site.
 
+### Running the tests
+
+The smoke tests build the release zip, install it on a disposable WordPress site that runs on SQLite, and talk to the plugin over MCP. They need PHP 8.0+ with the `pdo_sqlite` and `zip` extensions, and network access for the first run. No database server or Docker is needed.
+
+```bash
+composer install          # PHPCS, PHPStan and the WordPress stubs
+composer lint             # PHP_CodeSniffer
+composer analyse          # PHPStan
+composer test:setup       # build the zip and create the test site
+composer test             # run every suite against that site
+```
+
+`php tests/run.php stdio` runs only the suites whose name contains `stdio`. Set `WP_VERSION` before `test:setup` to test another WordPress release, `WP_MULTISITE=1` to install a multisite network, and `SHIM_TEST_ROOT` to move the test site out of the system temp directory. The zip is built from `git ls-files`, so add a new file to git before rebuilding. GitHub Actions runs the same commands on every push and pull request, on the minimum supported pair (WordPress 6.9, PHP 8.0), on the latest WordPress with PHP 8.5, and on a latest-WordPress multisite network.
+
 ## Maintainer
 
 Built and maintained by [Aditya Raj Singh](https://adityarajsingh.com) at [BNCW Enterprises](https://bncw.in).
 
 ## Credits
 
-Shim MCP builds its protocol layer on WordPress's own MCP work: everything under `includes/Server/` is derived from the [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) (GPL-2.0). The abilities are registered through WordPress's own [Abilities API](https://github.com/WordPress/abilities-api), which core ships from 6.9. The 56 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. See [CREDITS.md](CREDITS.md) for the full breakdown.
+Shim MCP builds its protocol layer on WordPress's own MCP work: everything under `includes/Server/` is derived from the [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) (GPL-2.0). The abilities are registered through WordPress's own [Abilities API](https://github.com/WordPress/abilities-api), which core ships from 6.9. The 57 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. See [CREDITS.md](CREDITS.md) for the full breakdown.
 
 ## License
 

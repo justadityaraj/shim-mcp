@@ -48,7 +48,7 @@ class McpCommand extends \WP_CLI_Command { // phpcs:ignore
 		$servers = $adapter->get_servers();
 
 		if ( empty( $servers ) ) {
-			\WP_CLI::error( 'No MCP servers are registered. Please register at least one server first.' );
+			\WP_CLI::error( __( 'No MCP servers are registered. Please register at least one server first.', 'shim-mcp' ) );
 		}
 
 		$server_id = $assoc_args['server'] ?? null;
@@ -57,18 +57,20 @@ class McpCommand extends \WP_CLI_Command { // phpcs:ignore
 		if ( $server_id ) {
 			$server = $adapter->get_server( $server_id );
 			if ( ! $server ) {
-				\WP_CLI::error( sprintf( 'Server with ID "%s" not found.', $server_id ) );
+				/* translators: %s: MCP server ID passed with --server. */
+				\WP_CLI::error( sprintf( __( 'Server with ID "%s" not found.', 'shim-mcp' ), $server_id ) );
 			}
 		} else {
 			$server    = array_values( $servers )[0];
 			$server_id = $server->get_server_id();
-			\WP_CLI::line( sprintf( 'Using server: %s', $server_id ) );
+			\WP_CLI::debug( sprintf( 'Using server: %s', $server_id ) );
 		}
 
 		if ( isset( $assoc_args['user'] ) ) {
 			$user = $this->get_user( $assoc_args['user'] );
 			if ( ! $user ) {
-				\WP_CLI::error( sprintf( 'User "%s" not found.', $assoc_args['user'] ) );
+				/* translators: %s: user login, ID or email passed with --user. */
+				\WP_CLI::error( sprintf( __( 'User "%s" not found.', 'shim-mcp' ), $assoc_args['user'] ) );
 			}
 
 			wp_set_current_user( $user->ID );
@@ -85,7 +87,8 @@ class McpCommand extends \WP_CLI_Command { // phpcs:ignore
 		} catch ( \RuntimeException $e ) {
 			\WP_CLI::error( $e->getMessage() );
 		} catch ( \Throwable $e ) {
-			\WP_CLI::error( 'Failed to start STDIO bridge: ' . $e->getMessage() );
+			/* translators: %s: error message. */
+			\WP_CLI::error( sprintf( __( 'Failed to start STDIO bridge: %s', 'shim-mcp' ), $e->getMessage() ) );
 		}
 	}
 
@@ -118,7 +121,7 @@ class McpCommand extends \WP_CLI_Command { // phpcs:ignore
 		$servers = $adapter->get_servers();
 
 		if ( empty( $servers ) ) {
-			\WP_CLI::line( 'No MCP servers registered.' );
+			\WP_CLI::line( __( 'No MCP servers registered.', 'shim-mcp' ) );
 			return;
 		}
 

@@ -3,23 +3,23 @@ Contributors: justadityaraj
 Tags: mcp, ai, claude, model-context-protocol, automation
 Requires at least: 6.9
 Tested up to: 7.1
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Connect WordPress to AI in one click. Full MCP server with 56 abilities.
+Connect WordPress to AI in one click. Full MCP server with 57 abilities.
 
 == Description ==
 
-Shim MCP is a self-contained MCP (Model Context Protocol) server plugin for WordPress. It provides 56 abilities that let any MCP-compatible AI client manage your WordPress site -- posts, pages, media, users, plugins, menus, widgets, comments, options, and system settings. The MCP server and every ability ship in the one plugin, so no companion plugins are required.
+Shim MCP is a self-contained MCP (Model Context Protocol) server plugin for WordPress. It provides 57 abilities that let any MCP-compatible AI client manage your WordPress site -- posts, pages, media, users, plugins, menus, widgets, comments, options, and system settings. The MCP server and every ability ship in the one plugin, so no companion plugins are required.
 
 The MCP protocol layer is derived from the WordPress project's own MCP Adapter (GPL-2.0), and abilities are registered through WordPress's Abilities API, which core ships from 6.9. See the Credits section below.
 
 Key features:
 
-* 56 WordPress abilities organized across 9 domains
-* MCP protocol v2025-06-18 with SSE transport
+* 57 WordPress abilities organized across 13 domains
+* MCP protocol 2025-06-18 over two transports: Streamable HTTP, and stdio through WP-CLI (`wp shim-mcp serve`)
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, and Cursor
 * Conflict detection for legacy MCP plugins
@@ -37,7 +37,7 @@ Shim MCP builds its MCP protocol layer on two GPL-2.0 projects published by the 
 * [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) - everything under `includes/Server/` (transport, JSON-RPC routing, session management, tools/resources/prompts handlers, schema transformation, error and observability infrastructure) is derived from it.
 * [WordPress Abilities API](https://github.com/WordPress/abilities-api) - every ability is registered through this core API, which WordPress ships from 6.9.
 
-The 56 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. Full breakdown in CREDITS.md.
+The 57 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. Full breakdown in CREDITS.md.
 
 == Frequently Asked Questions ==
 
@@ -57,6 +57,10 @@ Only if you let it. The ability that rewrites the WP_DEBUG constants is switched
 
 Two MCP server plugins running at once can register competing abilities and endpoints, which produces confusing results for the connected AI client. If Shim MCP detects another MCP server or a standalone Abilities API plugin, it shows a notice suggesting you run only one. This is a compatibility warning, not a judgement about the other plugin.
 
+= Can I connect without an application password? =
+
+Yes, on a site you have locally. `wp shim-mcp serve --user=admin --path=/path/to/wordpress` runs the MCP server over WP-CLI and stdio, with no URL, port or password. The setup guide in docs/SETUP.md has tested configurations for Claude Code, Claude Desktop and Cursor.
+
 = What AI clients are supported? =
 
 Any MCP-compatible client works. The admin dashboard provides ready-made config snippets for Claude Code, Claude Desktop, and Cursor.
@@ -71,10 +75,32 @@ Different abilities require different WordPress capabilities. For example, conte
 
 == Changelog ==
 
-= 1.0.3 =
+= 1.1.0 =
 
-* `tools/list` descriptors now match the MCP Tool schema. The non-standard `type` field is gone and the optional `title` field is preserved. Contributed by @mikemikimike.
+New
 
+* Install plugins from the WordPress.org Plugin Directory by slug with `shim-mcp/plugins-install`. URLs, file paths and uploaded archives are still refused, and the plugin is left inactive until you activate it.
+* Every ability label, description and message, the dashboard and the WP-CLI command can now be translated.
+* A complete stdio setup guide for Claude Code, Claude Desktop and Cursor on macOS, Linux and Windows.
+
+Fixed
+
+* Ability results return values exactly as WordPress stores them. They were HTML-escaped, so `Rock & Roll` came back as `Rock &amp; Roll`.
+* Posts keep iframes, embeds, scripts and block markup for users allowed to post unfiltered HTML, and search-and-replace no longer re-filters the whole post. Backslashes in post, page and media content are no longer stripped, so block attributes survive.
+* The stdio transport keeps STDOUT for JSON-RPC only: no `Using server` line, and output from an ability is moved to STDERR. It also no longer exits after an idle socket timeout.
+* String JSON-RPC request ids work over both transports.
+* Both transports validate JSON-RPC messages the same way, and malformed requests get `-32600` or `-32602` instead of a server error.
+* Streamable HTTP answers notifications with 202 and an unknown or expired session with 404, so clients reconnect on their own.
+* HTTP sessions are no longer lost when requests arrive at the same moment, are kept separate per site on multisite, and refuse oversized initialization data.
+* `initialize` only advertises capabilities the server implements, and `resources/templates/list` is answered.
+* `tools/list` descriptors match the MCP Tool schema. Contributed by @mikemikimike.
+* The dashboard never exports a revoked or placeholder credential, and an active key can be replaced with Generate New Key.
+* No more "already registered" notices for the site and user ability categories.
+
+Development
+
+* Smoke tests and GitHub Actions CI on WordPress 6.9 with PHP 8.0, the latest WordPress with PHP 8.5, and a multisite network.
+* The release build fails instead of skipping a file it cannot archive.
 
 = 1.0.2 =
 
@@ -93,4 +119,9 @@ Different abilities require different WordPress capabilities. For example, conte
 * Admin dashboard with API key generation
 * Config export for Claude Code, Claude Desktop, Cursor
 * Conflict detection for legacy MCP plugins
-* SSE transport with MCP protocol v2025-06-18
+* MCP protocol 2025-06-18 over Streamable HTTP and WP-CLI stdio
+
+== Upgrade Notice ==
+
+= 1.1.0 =
+Ability results and saved post content are no longer altered, stdio and HTTP follow the MCP spec more strictly, and plugins can be installed from WordPress.org by slug.

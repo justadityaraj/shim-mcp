@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace ShimMcp\Server\Cli;
 
 use ShimMcp\Server\McpServer;
+use ShimMcp\Server\Transport\Infrastructure\JsonRpcMessageValidator;
 use ShimMcp\Server\Transport\Infrastructure\RequestRouter;
 
 /**
@@ -72,11 +73,22 @@ class StdioServerBridge {
 
 		$this->log_to_stderr( sprintf( 'MCP STDIO Bridge started for server: %s', $this->server->get_server_id() ) );
 
+		stream_set_blocking( STDIN, true );
+		stream_set_timeout( STDIN, -1 );
+
 		while ( $this->is_running ) {
 			try {
 				$input = fgets( STDIN );
 
 				if ( false === $input ) {
+					if ( ! empty( stream_get_meta_data( STDIN )['timed_out'] ) ) {
+						continue;
+					}
+
+					if ( ! feof( STDIN ) ) {
+						$this->log_to_stderr( 'Reading from stdin failed before end of input' );
+					}
+
 					break;
 				}
 
@@ -138,34 +150,28 @@ class StdioServerBridge {
 				return $this->create_error_response( null, -32700, 'Parse error', 'Invalid JSON was received by the server.' );
 			}
 
-			if ( ! is_array( $request ) ) {
-				return $this->create_error_response( null, -32600, 'Invalid Request', 'The JSON sent is not a valid Request object.' );
+			$invalid = JsonRpcMessageValidator::validate( $request );
+			if ( null !== $invalid ) {
+				return $this->format_response( array( 'error' => $invalid['error'] ), $invalid['id'] );
 			}
 
-			if ( ! isset( $request['jsonrpc'] ) || '2.0' !== $request['jsonrpc'] ) {
-				return $this->create_error_response( $request['id'] ?? null, -32600, 'Invalid Request', 'The JSON-RPC version must be 2.0.' );
-			}
-
-			$method = $request['method'] ?? null;
-			$params = $request['params'] ?? array();
-			$id     = $request['id'] ?? null;
-
-			if ( ! is_string( $method ) ) {
-				return $this->create_error_response( $id, -32600, 'Invalid Request', 'Method must be a string.' );
-			}
-
-			if ( is_object( $params ) ) {
-				$params = (array) $params;
-			}
-
-			if ( ! is_array( $params ) ) {
-				$params = array();
-			}
-
-			$result = $this->request_router->route_request( $method, $params, $id, 'stdio' );
-
-			if ( null === $id ) {
+			if ( ! JsonRpcMessageValidator::is_request( $request ) ) {
 				return '';
+			}
+
+			$method = $request['method'];
+			$params = $request['params'] ?? array();
+			$id     = $request['id'];
+
+			ob_start();
+			try {
+				$result = $this->request_router->route_request( $method, $params, $id, 'stdio' );
+			} finally {
+				$stray_output = (string) ob_get_clean();
+			}
+
+			if ( '' !== $stray_output ) {
+				$this->log_to_stderr( sprintf( 'Discarded %d bytes written to stdout while handling %s: %s', strlen( $stray_output ), $method, $stray_output ) );
 			}
 
 			return $this->format_response( $result, $id );

@@ -16,7 +16,7 @@ class Ajax {
 		check_ajax_referer( 'shim-mcp', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( [ 'message' => 'Insufficient permissions.' ] );
+			wp_send_json_error( [ 'message' => __( 'Insufficient permissions.', 'shim-mcp' ) ] );
 		}
 
 		$user_id = get_current_user_id();
@@ -60,14 +60,14 @@ class Ajax {
 		check_ajax_referer( 'shim-mcp', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( [ 'message' => 'Insufficient permissions.' ] );
+			wp_send_json_error( [ 'message' => __( 'Insufficient permissions.', 'shim-mcp' ) ] );
 		}
 
 		$user_id = get_current_user_id();
 		$uuid    = get_user_meta( $user_id, 'shim_mcp_app_password', true );
 
 		if ( ! $uuid ) {
-			wp_send_json_error( [ 'message' => 'No API key found.' ] );
+			wp_send_json_error( [ 'message' => __( 'No API key found.', 'shim-mcp' ) ] );
 		}
 
 		$deleted = WP_Application_Passwords::delete_application_password( $user_id, $uuid );
@@ -78,21 +78,21 @@ class Ajax {
 
 		delete_user_meta( $user_id, 'shim_mcp_app_password' );
 
-		wp_send_json_success( [ 'message' => 'API key revoked.' ] );
+		wp_send_json_success( [ 'message' => __( 'API key revoked.', 'shim-mcp' ) ] );
 	}
 
 	public static function test_connection(): void {
 		check_ajax_referer( 'shim-mcp', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( [ 'message' => 'Insufficient permissions.' ] );
+			wp_send_json_error( [ 'message' => __( 'Insufficient permissions.', 'shim-mcp' ) ] );
 		}
 
 		$user_id = get_current_user_id();
 		$uuid    = get_user_meta( $user_id, 'shim_mcp_app_password', true );
 
 		if ( ! $uuid ) {
-			wp_send_json_error( [ 'message' => 'No API key configured. Generate one first.' ] );
+			wp_send_json_error( [ 'message' => __( 'No API key configured. Generate one first.', 'shim-mcp' ) ] );
 		}
 
 		$passwords = WP_Application_Passwords::get_user_application_passwords( $user_id );
@@ -107,13 +107,13 @@ class Ajax {
 
 		if ( ! $app_pass ) {
 			delete_user_meta( $user_id, 'shim_mcp_app_password' );
-			wp_send_json_error( [ 'message' => 'Application password not found. Please generate a new key.' ] );
+			wp_send_json_error( [ 'message' => __( 'Application password not found. Please generate a new key.', 'shim-mcp' ) ] );
 		}
 
 		$response = wp_remote_get( rest_url( 'mcp/shim-mcp' ), [ 'timeout' => 10 ] );
 
 		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( [ 'message' => 'Endpoint unreachable: ' . $response->get_error_message() ] );
+			wp_send_json_error( [ 'message' => sprintf( /* translators: %s: error message returned by the HTTP request. */ __( 'Endpoint unreachable: %s', 'shim-mcp' ), $response->get_error_message() ) ] );
 		}
 
 		$code = wp_remote_retrieve_response_code( $response );
@@ -121,7 +121,7 @@ class Ajax {
 		if ( 401 === $code || 403 === $code ) {
 			wp_send_json_success(
 				[
-					'message' => 'Endpoint reachable and rejecting unauthenticated requests. Client credentials were not verified by this check.',
+					'message' => __( 'Endpoint reachable and rejecting unauthenticated requests. Client credentials were not verified by this check.', 'shim-mcp' ),
 					'status'  => $code,
 				]
 			);
@@ -130,7 +130,7 @@ class Ajax {
 		if ( 404 === $code ) {
 			wp_send_json_error(
 				[
-					'message' => 'Endpoint not found. Re-save Settings > Permalinks, then try again.',
+					'message' => __( 'Endpoint not found. Re-save Settings > Permalinks, then try again.', 'shim-mcp' ),
 					'status'  => $code,
 				]
 			);
@@ -139,7 +139,7 @@ class Ajax {
 		if ( $code >= 200 && $code < 300 ) {
 			wp_send_json_error(
 				[
-					'message' => 'Endpoint answered an unauthenticated request. Something is bypassing REST authentication.',
+					'message' => __( 'Endpoint answered an unauthenticated request. Something is bypassing REST authentication.', 'shim-mcp' ),
 					'status'  => $code,
 				]
 			);
@@ -147,7 +147,7 @@ class Ajax {
 
 		wp_send_json_error(
 			[
-				'message' => 'Unexpected response (HTTP ' . $code . ').',
+				'message' => sprintf( /* translators: %d: HTTP status code. */ __( 'Unexpected response (HTTP %d).', 'shim-mcp' ), $code ),
 				'status'  => $code,
 			]
 		);

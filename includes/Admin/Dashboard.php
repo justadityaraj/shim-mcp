@@ -51,6 +51,28 @@ class Dashboard {
 				'nonce'   => wp_create_nonce( 'shim-mcp' ),
 				'restUrl' => rest_url( 'mcp/shim-mcp' ),
 				'siteUrl' => site_url(),
+				'i18n'    => [
+					'apiKeyActive'      => __( 'API Key Active', 'shim-mcp' ),
+					'generateNewKey'    => __( 'Generate New Key', 'shim-mcp' ),
+					'generateKey'       => __( 'Generate API Key', 'shim-mcp' ),
+					'revokeKey'         => __( 'Revoke Key', 'shim-mcp' ),
+					'generating'        => __( 'Generating…', 'shim-mcp' ),
+					'revoking'          => __( 'Revoking…', 'shim-mcp' ),
+					'checking'          => __( 'Checking…', 'shim-mcp' ),
+					'checkEndpoint'     => __( 'Check Endpoint', 'shim-mcp' ),
+					'copied'            => __( 'Copied!', 'shim-mcp' ),
+					'keyConfigured'     => __( 'Key configured — run the endpoint check', 'shim-mcp' ),
+					'noKey'             => __( 'No API key configured', 'shim-mcp' ),
+					'confirmRegenerate' => __( 'Generating a new key revokes the current one. MCP clients using it will stop working.', 'shim-mcp' ),
+					'confirmRevoke'     => __( 'Are you sure you want to revoke the API key? MCP clients will stop working.', 'shim-mcp' ),
+					'requestFailed'     => __( 'Request failed. Please try again.', 'shim-mcp' ),
+					'unknownError'      => __( 'Unknown error', 'shim-mcp' ),
+					'endpointUnchecked' => __( 'Endpoint reachable; client credentials were not verified.', 'shim-mcp' ),
+					'connectionFailed'  => __( 'Connection failed', 'shim-mcp' ),
+					'checkFailed'       => __( 'Request failed', 'shim-mcp' ),
+					/* translators: %s: error message from the server. */
+					'error'             => __( 'Error: %s', 'shim-mcp' ),
+				],
 			]
 		);
 	}

@@ -9,8 +9,8 @@ class Widgets {
 		wp_register_ability(
 			'shim-mcp/widgets-list-sidebars',
 			array(
-				'label'               => 'List Sidebars',
-				'description'         => 'Returns every widget area the current theme has registered, giving the identifier, display name and description for each one. Takes no input.',
+				'label'               => __( 'List Sidebars', 'shim-mcp' ),
+				'description'         => __( 'Returns every widget area the current theme has registered, giving the identifier, display name and description for each one. Takes no input.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -66,10 +66,10 @@ class Widgets {
 						$assigned = isset( $placement[ $id ] ) && is_array( $placement[ $id ] ) ? $placement[ $id ] : array();
 
 						$sidebars[] = array(
-							'id'           => esc_html( $id ),
-							'name'         => esc_html( isset( $sidebar['name'] ) ? (string) $sidebar['name'] : '' ),
-							'description'  => esc_html( isset( $sidebar['description'] ) ? (string) $sidebar['description'] : '' ),
-							'class'        => esc_html( isset( $sidebar['class'] ) ? (string) $sidebar['class'] : '' ),
+							'id'           => $id,
+							'name'         => isset( $sidebar['name'] ) ? (string) $sidebar['name'] : '',
+							'description'  => isset( $sidebar['description'] ) ? (string) $sidebar['description'] : '',
+							'class'        => isset( $sidebar['class'] ) ? (string) $sidebar['class'] : '',
 							'widget_count' => count( $assigned ),
 						);
 					}
@@ -96,8 +96,8 @@ class Widgets {
 		wp_register_ability(
 			'shim-mcp/widgets-list-types',
 			array(
-				'label'               => 'List Widget Types',
-				'description'         => 'Returns the catalogue of widget types this installation offers, so a caller can see what kinds of widgets could be added to a widget area. Takes no input.',
+				'label'               => __( 'List Widget Types', 'shim-mcp' ),
+				'description'         => __( 'Returns the catalogue of widget types this installation offers, so a caller can see what kinds of widgets could be added to a widget area. Takes no input.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -129,7 +129,7 @@ class Widgets {
 					if ( ! function_exists( 'wp_get_widget_defaults' ) && ! class_exists( 'WP_Widget_Factory' ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The widget subsystem is not loaded on this request.', 'shim-mcp' ),
+							'message' => __( 'The widget subsystem is not loaded on this request.', 'shim-mcp' ),
 						);
 					}
 
@@ -147,10 +147,10 @@ class Widgets {
 							$id_base     = (string) $widget->id_base;
 
 							$types[ $id_base ] = array(
-								'id_base'     => esc_html( $id_base ),
-								'name'        => esc_html( isset( $widget->name ) ? (string) $widget->name : $id_base ),
-								'description' => esc_html( isset( $options['description'] ) ? (string) $options['description'] : '' ),
-								'classname'   => esc_html( isset( $options['classname'] ) ? (string) $options['classname'] : '' ),
+								'id_base'     => $id_base,
+								'name'        => isset( $widget->name ) ? (string) $widget->name : $id_base,
+								'description' => isset( $options['description'] ) ? (string) $options['description'] : '',
+								'classname'   => isset( $options['classname'] ) ? (string) $options['classname'] : '',
 							);
 						}
 					}
@@ -168,8 +168,8 @@ class Widgets {
 							}
 
 							$types[ $id_base ] = array(
-								'id_base'     => esc_html( $id_base ),
-								'name'        => esc_html( isset( $control['name'] ) ? (string) $control['name'] : $id_base ),
+								'id_base'     => $id_base,
+								'name'        => isset( $control['name'] ) ? (string) $control['name'] : $id_base,
 								'description' => '',
 								'classname'   => '',
 							);
@@ -207,8 +207,8 @@ class Widgets {
 		wp_register_ability(
 			'shim-mcp/widgets-list-in-sidebar',
 			array(
-				'label'               => 'List Widgets In A Sidebar',
-				'description'         => 'Reports which widgets are currently sitting in one widget area, in the order they will render. Requires the sidebar identifier, which you can obtain from the sidebar listing ability.',
+				'label'               => __( 'List Widgets In A Sidebar', 'shim-mcp' ),
+				'description'         => __( 'Reports which widgets are currently sitting in one widget area, in the order they will render. Requires the sidebar identifier, which you can obtain from the sidebar listing ability.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -216,7 +216,7 @@ class Widgets {
 					'properties'           => array(
 						'sidebar_id' => array(
 							'type'        => 'string',
-							'description' => 'Identifier of the widget area to inspect, for example sidebar-1 or footer-2.',
+							'description' => __( 'Identifier of the widget area to inspect, for example sidebar-1 or footer-2.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -247,7 +247,7 @@ class Widgets {
 					if ( ! is_array( $input ) || ! isset( $input['sidebar_id'] ) || ! is_string( $input['sidebar_id'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Give me a sidebar identifier as a string.', 'shim-mcp' ),
+							'message' => __( 'Give me a sidebar identifier as a string.', 'shim-mcp' ),
 						);
 					}
 
@@ -256,7 +256,7 @@ class Widgets {
 					if ( '' === $sidebar_id ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The sidebar identifier cannot be empty.', 'shim-mcp' ),
+							'message' => __( 'The sidebar identifier cannot be empty.', 'shim-mcp' ),
 						);
 					}
 
@@ -265,7 +265,7 @@ class Widgets {
 					if ( ! is_array( $wp_registered_sidebars ) || ! isset( $wp_registered_sidebars[ $sidebar_id ] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No widget area with that identifier is registered by the active theme.', 'shim-mcp' ),
+							'message' => __( 'No widget area with that identifier is registered by the active theme.', 'shim-mcp' ),
 						);
 					}
 
@@ -307,9 +307,9 @@ class Widgets {
 						}
 
 						$widgets[] = array(
-							'widget_id' => esc_html( $widget_id ),
-							'id_base'   => esc_html( $id_base ),
-							'name'      => esc_html( $name ),
+							'widget_id' => $widget_id,
+							'id_base'   => $id_base,
+							'name'      => $name,
 							'position'  => $position,
 						);
 
@@ -318,8 +318,8 @@ class Widgets {
 
 					return array(
 						'success'      => true,
-						'sidebar_id'   => esc_html( $sidebar_id ),
-						'sidebar_name' => esc_html( isset( $sidebar['name'] ) ? (string) $sidebar['name'] : '' ),
+						'sidebar_id'   => $sidebar_id,
+						'sidebar_name' => isset( $sidebar['name'] ) ? (string) $sidebar['name'] : '',
 						'count'        => count( $widgets ),
 						'widgets'      => $widgets,
 					);

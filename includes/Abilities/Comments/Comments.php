@@ -9,8 +9,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-list',
 			array(
-				'label'               => 'Browse Comments',
-				'description'         => 'Returns a page of comments. Narrow the results by approval state, by the post they belong to, by the author email address, or by a phrase to look for in the comment body.',
+				'label'               => __( 'Browse Comments', 'shim-mcp' ),
+				'description'         => __( 'Returns a page of comments. Narrow the results by approval state, by the post they belong to, by the author email address, or by a phrase to look for in the comment body.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,36 +19,36 @@ class Comments {
 						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'all', 'approve', 'hold', 'spam', 'trash' ),
-							'description' => 'Which moderation bucket to read from. Defaults to all buckets except spam and trash.',
+							'description' => __( 'Which moderation bucket to read from. Defaults to all buckets except spam and trash.', 'shim-mcp' ),
 						),
 						'post_id'      => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'Only return comments attached to this post.',
+							'description' => __( 'Only return comments attached to this post.', 'shim-mcp' ),
 						),
 						'author_email' => array(
 							'type'        => 'string',
-							'description' => 'Only return comments left by this email address.',
+							'description' => __( 'Only return comments left by this email address.', 'shim-mcp' ),
 						),
 						'search'       => array(
 							'type'        => 'string',
-							'description' => 'Free text to look for inside the comment content and author fields.',
+							'description' => __( 'Free text to look for inside the comment content and author fields.', 'shim-mcp' ),
 						),
 						'per_page'     => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'maximum'     => 100,
-							'description' => 'How many comments to return in one page. Caps at one hundred.',
+							'description' => __( 'How many comments to return in one page. Caps at one hundred.', 'shim-mcp' ),
 						),
 						'page'         => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'Which page of results to return, counting from one.',
+							'description' => __( 'Which page of results to return, counting from one.', 'shim-mcp' ),
 						),
 						'order'        => array(
 							'type'        => 'string',
 							'enum'        => array( 'ASC', 'DESC' ),
-							'description' => 'Sort direction by submission date. Newest first by default.',
+							'description' => __( 'Sort direction by submission date. Newest first by default.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -163,8 +163,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-get',
 			array(
-				'label'               => 'Read One Comment',
-				'description'         => 'Loads a single comment by its numeric identifier and returns its author details, body, moderation state and parent comment.',
+				'label'               => __( 'Read One Comment', 'shim-mcp' ),
+				'description'         => __( 'Loads a single comment by its numeric identifier and returns its author details, body, moderation state and parent comment.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -173,7 +173,7 @@ class Comments {
 						'id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The identifier of the comment to load.',
+							'description' => __( 'The identifier of the comment to load.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -195,7 +195,7 @@ class Comments {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide a positive comment identifier.', 'shim-mcp' ),
+							'message' => __( 'Provide a positive comment identifier.', 'shim-mcp' ),
 						);
 					}
 
@@ -203,7 +203,7 @@ class Comments {
 					if ( ! $comment ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No comment exists with that identifier.', 'shim-mcp' ),
+							'message' => __( 'No comment exists with that identifier.', 'shim-mcp' ),
 						);
 					}
 
@@ -211,7 +211,7 @@ class Comments {
 					if ( $post_id > 0 && ! current_user_can( 'read_post', $post_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to read the post this comment belongs to.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to read the post this comment belongs to.', 'shim-mcp' ),
 						);
 					}
 
@@ -236,8 +236,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-create',
 			array(
-				'label'               => 'Post a Comment',
-				'description'         => 'Adds a comment to a post. Supply the post identifier and the body text, plus an author name and email when the comment is not attributed to a logged in account. Set a parent comment identifier to file it as a reply.',
+				'label'               => __( 'Post a Comment', 'shim-mcp' ),
+				'description'         => __( 'Adds a comment to a post. Supply the post identifier and the body text, plus an author name and email when the comment is not attributed to a logged in account. Set a parent comment identifier to file it as a reply.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -246,39 +246,39 @@ class Comments {
 						'post_id'      => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The post that should receive the comment.',
+							'description' => __( 'The post that should receive the comment.', 'shim-mcp' ),
 						),
 						'content'      => array(
 							'type'        => 'string',
 							'minLength'   => 1,
-							'description' => 'The body of the comment.',
+							'description' => __( 'The body of the comment.', 'shim-mcp' ),
 						),
 						'parent_id'    => array(
 							'type'        => 'integer',
 							'minimum'     => 0,
-							'description' => 'Identifier of the comment being replied to. Leave out or pass zero for a top level comment.',
+							'description' => __( 'Identifier of the comment being replied to. Leave out or pass zero for a top level comment.', 'shim-mcp' ),
 						),
 						'author_name'  => array(
 							'type'        => 'string',
-							'description' => 'Display name shown beside the comment.',
+							'description' => __( 'Display name shown beside the comment.', 'shim-mcp' ),
 						),
 						'author_email' => array(
 							'type'        => 'string',
-							'description' => 'Email address of the comment author.',
+							'description' => __( 'Email address of the comment author.', 'shim-mcp' ),
 						),
 						'author_url'   => array(
 							'type'        => 'string',
-							'description' => 'Website address to link the author name to.',
+							'description' => __( 'Website address to link the author name to.', 'shim-mcp' ),
 						),
 						'user_id'      => array(
 							'type'        => 'integer',
 							'minimum'     => 0,
-							'description' => 'Attribute the comment to this registered account. Doing so for anyone other than yourself requires permission to edit that account.',
+							'description' => __( 'Attribute the comment to this registered account. Doing so for anyone other than yourself requires permission to edit that account.', 'shim-mcp' ),
 						),
 						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'approve', 'hold' ),
-							'description' => 'Whether the new comment goes live immediately or waits in the moderation queue.',
+							'description' => __( 'Whether the new comment goes live immediately or waits in the moderation queue.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -300,7 +300,7 @@ class Comments {
 					if ( $post_id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide the identifier of the post to comment on.', 'shim-mcp' ),
+							'message' => __( 'Provide the identifier of the post to comment on.', 'shim-mcp' ),
 						);
 					}
 
@@ -308,21 +308,21 @@ class Comments {
 					if ( ! $post ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No post exists with that identifier.', 'shim-mcp' ),
+							'message' => __( 'No post exists with that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'read_post', $post_id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to read that post.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to read that post.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! isset( $input['content'] ) || ! is_string( $input['content'] ) || '' === trim( $input['content'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The comment body cannot be empty.', 'shim-mcp' ),
+							'message' => __( 'The comment body cannot be empty.', 'shim-mcp' ),
 						);
 					}
 
@@ -332,13 +332,13 @@ class Comments {
 						if ( ! $parent ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The comment being replied to does not exist.', 'shim-mcp' ),
+								'message' => __( 'The comment being replied to does not exist.', 'shim-mcp' ),
 							);
 						}
 						if ( (int) $parent->comment_post_ID !== $post_id ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The comment being replied to belongs to a different post.', 'shim-mcp' ),
+								'message' => __( 'The comment being replied to belongs to a different post.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -350,7 +350,7 @@ class Comments {
 						if ( ! current_user_can( 'edit_user', $user_id ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'You are not allowed to attribute a comment to that account.', 'shim-mcp' ),
+								'message' => __( 'You are not allowed to attribute a comment to that account.', 'shim-mcp' ),
 							);
 						}
 					}
@@ -364,7 +364,7 @@ class Comments {
 						if ( ! $user ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'No account exists with that identifier.', 'shim-mcp' ),
+								'message' => __( 'No account exists with that identifier.', 'shim-mcp' ),
 							);
 						}
 						$author_name  = $user->display_name;
@@ -385,7 +385,7 @@ class Comments {
 							if ( ! is_email( $supplied ) ) {
 								return array(
 									'success' => false,
-									'message' => esc_html__( 'The author email address is not valid.', 'shim-mcp' ),
+									'message' => __( 'The author email address is not valid.', 'shim-mcp' ),
 								);
 							}
 							$author_email = $supplied;
@@ -399,7 +399,7 @@ class Comments {
 					if ( '' === $author_name ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'An author name is required when the comment is not tied to an account.', 'shim-mcp' ),
+							'message' => __( 'An author name is required when the comment is not tied to an account.', 'shim-mcp' ),
 						);
 					}
 
@@ -425,7 +425,7 @@ class Comments {
 					if ( ! $comment_id ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The comment could not be saved.', 'shim-mcp' ),
+							'message' => __( 'The comment could not be saved.', 'shim-mcp' ),
 						);
 					}
 
@@ -452,8 +452,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-set-status',
 			array(
-				'label'               => 'Moderate a Comment',
-				'description'         => 'Moves a comment between moderation states so it can be published, sent back to the queue, flagged as spam, or thrown in the trash.',
+				'label'               => __( 'Moderate a Comment', 'shim-mcp' ),
+				'description'         => __( 'Moves a comment between moderation states so it can be published, sent back to the queue, flagged as spam, or thrown in the trash.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -462,12 +462,12 @@ class Comments {
 						'id'     => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The comment to moderate.',
+							'description' => __( 'The comment to moderate.', 'shim-mcp' ),
 						),
 						'status' => array(
 							'type'        => 'string',
 							'enum'        => array( 'approve', 'hold', 'spam', 'trash' ),
-							'description' => 'The state the comment should end up in.',
+							'description' => __( 'The state the comment should end up in.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -489,7 +489,7 @@ class Comments {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide a positive comment identifier.', 'shim-mcp' ),
+							'message' => __( 'Provide a positive comment identifier.', 'shim-mcp' ),
 						);
 					}
 
@@ -497,7 +497,7 @@ class Comments {
 					if ( ! in_array( $status, array( 'approve', 'hold', 'spam', 'trash' ), true ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That moderation state is not one this ability understands.', 'shim-mcp' ),
+							'message' => __( 'That moderation state is not one this ability understands.', 'shim-mcp' ),
 						);
 					}
 
@@ -505,14 +505,14 @@ class Comments {
 					if ( ! $comment ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No comment exists with that identifier.', 'shim-mcp' ),
+							'message' => __( 'No comment exists with that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_comment', $id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to moderate this comment.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to moderate this comment.', 'shim-mcp' ),
 						);
 					}
 
@@ -520,7 +520,7 @@ class Comments {
 					if ( is_wp_error( $changed ) || false === $changed ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The moderation state could not be changed.', 'shim-mcp' ),
+							'message' => __( 'The moderation state could not be changed.', 'shim-mcp' ),
 						);
 					}
 
@@ -548,8 +548,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-update',
 			array(
-				'label'               => 'Rewrite Comment Text',
-				'description'         => 'Replaces the body of an existing comment, and optionally the author name, email or website shown alongside it.',
+				'label'               => __( 'Rewrite Comment Text', 'shim-mcp' ),
+				'description'         => __( 'Replaces the body of an existing comment, and optionally the author name, email or website shown alongside it.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -558,24 +558,24 @@ class Comments {
 						'id'           => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The comment to edit.',
+							'description' => __( 'The comment to edit.', 'shim-mcp' ),
 						),
 						'content'      => array(
 							'type'        => 'string',
 							'minLength'   => 1,
-							'description' => 'The replacement body text.',
+							'description' => __( 'The replacement body text.', 'shim-mcp' ),
 						),
 						'author_name'  => array(
 							'type'        => 'string',
-							'description' => 'A new display name for the author.',
+							'description' => __( 'A new display name for the author.', 'shim-mcp' ),
 						),
 						'author_email' => array(
 							'type'        => 'string',
-							'description' => 'A new email address for the author.',
+							'description' => __( 'A new email address for the author.', 'shim-mcp' ),
 						),
 						'author_url'   => array(
 							'type'        => 'string',
-							'description' => 'A new website address for the author.',
+							'description' => __( 'A new website address for the author.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -597,7 +597,7 @@ class Comments {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide a positive comment identifier.', 'shim-mcp' ),
+							'message' => __( 'Provide a positive comment identifier.', 'shim-mcp' ),
 						);
 					}
 
@@ -605,14 +605,14 @@ class Comments {
 					if ( ! $comment ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No comment exists with that identifier.', 'shim-mcp' ),
+							'message' => __( 'No comment exists with that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_comment', $id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to edit this comment.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to edit this comment.', 'shim-mcp' ),
 						);
 					}
 
@@ -622,7 +622,7 @@ class Comments {
 						if ( ! is_string( $input['content'] ) || '' === trim( $input['content'] ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The replacement body cannot be empty.', 'shim-mcp' ),
+								'message' => __( 'The replacement body cannot be empty.', 'shim-mcp' ),
 							);
 						}
 						$fields['comment_content'] = wp_kses_post( $input['content'] );
@@ -633,7 +633,7 @@ class Comments {
 						if ( '' === $name ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The author name cannot be blank.', 'shim-mcp' ),
+								'message' => __( 'The author name cannot be blank.', 'shim-mcp' ),
 							);
 						}
 						$fields['comment_author'] = $name;
@@ -644,7 +644,7 @@ class Comments {
 						if ( '' !== $email && ! is_email( $email ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'The author email address is not valid.', 'shim-mcp' ),
+								'message' => __( 'The author email address is not valid.', 'shim-mcp' ),
 							);
 						}
 						$fields['comment_author_email'] = $email;
@@ -657,7 +657,7 @@ class Comments {
 					if ( 1 === count( $fields ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Supply at least one field to change.', 'shim-mcp' ),
+							'message' => __( 'Supply at least one field to change.', 'shim-mcp' ),
 						);
 					}
 
@@ -665,14 +665,14 @@ class Comments {
 					if ( is_wp_error( $updated ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $updated->get_error_message() ),
+							'message' => $updated->get_error_message(),
 						);
 					}
 
 					if ( 0 === $updated ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The comment could not be saved.', 'shim-mcp' ),
+							'message' => __( 'The comment could not be saved.', 'shim-mcp' ),
 						);
 					}
 
@@ -699,8 +699,8 @@ class Comments {
 		wp_register_ability(
 			'shim-mcp/comments-delete',
 			array(
-				'label'               => 'Delete a Comment',
-				'description'         => 'Removes a comment. By default it goes to the trash and can be restored; pass the permanent flag to erase it from the database instead.',
+				'label'               => __( 'Delete a Comment', 'shim-mcp' ),
+				'description'         => __( 'Removes a comment. By default it goes to the trash and can be restored; pass the permanent flag to erase it from the database instead.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -709,11 +709,11 @@ class Comments {
 						'id'        => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
-							'description' => 'The comment to remove.',
+							'description' => __( 'The comment to remove.', 'shim-mcp' ),
 						),
 						'permanent' => array(
 							'type'        => 'boolean',
-							'description' => 'Set to true to erase the comment outright rather than trashing it.',
+							'description' => __( 'Set to true to erase the comment outright rather than trashing it.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -736,7 +736,7 @@ class Comments {
 					if ( $id < 1 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide a positive comment identifier.', 'shim-mcp' ),
+							'message' => __( 'Provide a positive comment identifier.', 'shim-mcp' ),
 						);
 					}
 
@@ -744,14 +744,14 @@ class Comments {
 					if ( ! $comment ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No comment exists with that identifier.', 'shim-mcp' ),
+							'message' => __( 'No comment exists with that identifier.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'edit_comment', $id ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to remove this comment.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to remove this comment.', 'shim-mcp' ),
 						);
 					}
 
@@ -761,7 +761,7 @@ class Comments {
 					if ( ! $removed ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'The comment could not be removed.', 'shim-mcp' ),
+							'message' => __( 'The comment could not be removed.', 'shim-mcp' ),
 						);
 					}
 
@@ -791,13 +791,13 @@ class Comments {
 			'post_id'      => (int) $comment->comment_post_ID,
 			'parent_id'    => (int) $comment->comment_parent,
 			'user_id'      => (int) $comment->user_id,
-			'author_name'  => esc_html( $comment->comment_author ),
-			'author_email' => esc_html( $comment->comment_author_email ),
+			'author_name'  => $comment->comment_author,
+			'author_email' => $comment->comment_author_email,
 			'author_url'   => esc_url_raw( $comment->comment_author_url ),
 			'content'      => $comment->comment_content,
-			'status'       => esc_html( wp_get_comment_status( $comment->comment_ID ) ),
-			'type'         => esc_html( $comment->comment_type ),
-			'date_gmt'     => esc_html( $comment->comment_date_gmt ),
+			'status'       => wp_get_comment_status( $comment->comment_ID ),
+			'type'         => $comment->comment_type,
+			'date_gmt'     => $comment->comment_date_gmt,
 			'link'         => esc_url_raw( get_comment_link( $comment ) ),
 		);
 	}

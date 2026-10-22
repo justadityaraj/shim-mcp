@@ -44,7 +44,7 @@ class HttpSessionValidator {
 
 		// Validate session using SessionManager
 		if ( ! SessionManager::validate_session( $user_id, $session_id ) ) {
-			return McpErrorFactory::invalid_params( 0, 'Invalid or expired session' );
+			return McpErrorFactory::session_not_found( 0, 'Invalid or expired session' );
 		}
 
 		return true;
@@ -81,6 +81,14 @@ class HttpSessionValidator {
 		$user_id = get_current_user_id();
 		if ( ! $user_id ) {
 			return McpErrorFactory::unauthorized( 0, 'User authentication required for session creation' );
+		}
+
+		if ( isset( $params['clientInfo'] ) && is_array( $params['clientInfo'] ) ) {
+			unset( $params['clientInfo']['icons'] );
+		}
+
+		if ( ! SessionManager::validate_client_params( $params ) ) {
+			return McpErrorFactory::invalid_params( 0, 'Initialization parameters exceed the session storage limit.' );
 		}
 
 		$session_id = SessionManager::create_session( $user_id, $params );

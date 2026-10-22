@@ -10,8 +10,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-list',
 			array(
-				'label'               => 'List Installed Plugins',
-				'description'         => 'Returns every plugin present in the plugins directory together with its name, version, author, whether it is currently active and whether a newer version is waiting to be installed. Optionally narrows the result to a text match on the plugin name or folder.',
+				'label'               => __( 'List Installed Plugins', 'shim-mcp' ),
+				'description'         => __( 'Returns every plugin present in the plugins directory together with its name, version, author, whether it is currently active and whether a newer version is waiting to be installed. Optionally narrows the result to a text match on the plugin name or folder.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,16 +19,16 @@ class Plugins {
 					'properties'           => array(
 						'search'       => array(
 							'type'        => 'string',
-							'description' => 'Case-insensitive substring matched against the plugin name and its file path.',
+							'description' => __( 'Case-insensitive substring matched against the plugin name and its file path.', 'shim-mcp' ),
 						),
 						'status'       => array(
 							'type'        => 'string',
 							'enum'        => array( 'all', 'active', 'inactive', 'update-available' ),
-							'description' => 'Restricts the listing to plugins in the given state. Defaults to all.',
+							'description' => __( 'Restricts the listing to plugins in the given state. Defaults to all.', 'shim-mcp' ),
 						),
 						'network_wide' => array(
 							'type'        => 'boolean',
-							'description' => 'On multisite, treat network-activated plugins as active. Ignored on a single site.',
+							'description' => __( 'On multisite, treat network-activated plugins as active. Ignored on a single site.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -123,10 +123,10 @@ class Plugins {
 
 						$rows[] = array(
 							'plugin_file'      => $plugin_file,
-							'name'             => esc_html( $name ),
+							'name'             => $name,
 							'version'          => isset( $data['Version'] ) ? (string) $data['Version'] : '',
-							'author'           => isset( $data['Author'] ) ? esc_html( wp_strip_all_tags( (string) $data['Author'] ) ) : '',
-							'description'      => isset( $data['Description'] ) ? esc_html( wp_strip_all_tags( (string) $data['Description'] ) ) : '',
+							'author'           => isset( $data['Author'] ) ? wp_strip_all_tags( (string) $data['Author'] ) : '',
+							'description'      => isset( $data['Description'] ) ? wp_strip_all_tags( (string) $data['Description'] ) : '',
 							'plugin_uri'       => isset( $data['PluginURI'] ) ? esc_url_raw( (string) $data['PluginURI'] ) : '',
 							'requires_wp'      => isset( $data['RequiresWP'] ) ? (string) $data['RequiresWP'] : '',
 							'requires_php'     => isset( $data['RequiresPHP'] ) ? (string) $data['RequiresPHP'] : '',
@@ -159,8 +159,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-activate',
 			array(
-				'label'               => 'Activate Plugin',
-				'description'         => 'Switches on an installed plugin identified by its file path relative to the plugins directory, for example akismet/akismet.php. On multisite the plugin can be turned on for the whole network.',
+				'label'               => __( 'Activate Plugin', 'shim-mcp' ),
+				'description'         => __( 'Switches on an installed plugin identified by its file path relative to the plugins directory, for example akismet/akismet.php. On multisite the plugin can be turned on for the whole network.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -168,15 +168,15 @@ class Plugins {
 					'properties'           => array(
 						'plugin_file'  => array(
 							'type'        => 'string',
-							'description' => 'Path of the main plugin file relative to wp-content/plugins, such as hello-dolly/hello.php.',
+							'description' => __( 'Path of the main plugin file relative to wp-content/plugins, such as hello-dolly/hello.php.', 'shim-mcp' ),
 						),
 						'network_wide' => array(
 							'type'        => 'boolean',
-							'description' => 'Activate across every site of the network. Only meaningful on multisite.',
+							'description' => __( 'Activate across every site of the network. Only meaningful on multisite.', 'shim-mcp' ),
 						),
 						'silent'       => array(
 							'type'        => 'boolean',
-							'description' => 'Skip the plugin activation hooks. Leave this off unless you know the plugin tolerates it.',
+							'description' => __( 'Skip the plugin activation hooks. Leave this off unless you know the plugin tolerates it.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -195,7 +195,7 @@ class Plugins {
 					if ( ! is_array( $input ) || ! isset( $input['plugin_file'] ) || ! is_string( $input['plugin_file'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Name the plugin file you want to activate.', 'shim-mcp' ),
+							'message' => __( 'Name the plugin file you want to activate.', 'shim-mcp' ),
 						);
 					}
 
@@ -208,7 +208,7 @@ class Plugins {
 					if ( 0 !== validate_file( $plugin_file ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That plugin path is not allowed.', 'shim-mcp' ),
+							'message' => __( 'That plugin path is not allowed.', 'shim-mcp' ),
 						);
 					}
 
@@ -216,14 +216,14 @@ class Plugins {
 					if ( ! isset( $installed[ $plugin_file ] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No installed plugin matches that path.', 'shim-mcp' ),
+							'message' => __( 'No installed plugin matches that path.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'activate_plugin', $plugin_file ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to activate this plugin.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to activate this plugin.', 'shim-mcp' ),
 						);
 					}
 
@@ -233,7 +233,7 @@ class Plugins {
 					if ( $network_wide && ! current_user_can( 'manage_network_plugins' ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to activate plugins across the network.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to activate plugins across the network.', 'shim-mcp' ),
 						);
 					}
 
@@ -241,9 +241,9 @@ class Plugins {
 						return array(
 							'success'     => true,
 							'plugin_file' => $plugin_file,
-							'name'        => esc_html( (string) $installed[ $plugin_file ]['Name'] ),
+							'name'        => (string) $installed[ $plugin_file ]['Name'],
 							'active'      => true,
-							'message'     => esc_html__( 'That plugin was already running.', 'shim-mcp' ),
+							'message'     => __( 'That plugin was already running.', 'shim-mcp' ),
 						);
 					}
 
@@ -252,16 +252,16 @@ class Plugins {
 					if ( is_wp_error( $result ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $result->get_error_message() ),
+							'message' => $result->get_error_message(),
 						);
 					}
 
 					return array(
 						'success'     => true,
 						'plugin_file' => $plugin_file,
-						'name'        => esc_html( (string) $installed[ $plugin_file ]['Name'] ),
+						'name'        => (string) $installed[ $plugin_file ]['Name'],
 						'active'      => true,
-						'message'     => esc_html__( 'The plugin is now active.', 'shim-mcp' ),
+						'message'     => __( 'The plugin is now active.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -280,8 +280,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-deactivate',
 			array(
-				'label'               => 'Deactivate Plugin',
-				'description'         => 'Turns off a running plugin identified by its file path relative to the plugins directory. The plugin files stay on disk and its settings are untouched.',
+				'label'               => __( 'Deactivate Plugin', 'shim-mcp' ),
+				'description'         => __( 'Turns off a running plugin identified by its file path relative to the plugins directory. The plugin files stay on disk and its settings are untouched.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -289,15 +289,15 @@ class Plugins {
 					'properties'           => array(
 						'plugin_file'  => array(
 							'type'        => 'string',
-							'description' => 'Path of the main plugin file relative to wp-content/plugins.',
+							'description' => __( 'Path of the main plugin file relative to wp-content/plugins.', 'shim-mcp' ),
 						),
 						'network_wide' => array(
 							'type'        => 'boolean',
-							'description' => 'Remove the network-wide activation as well. Only meaningful on multisite.',
+							'description' => __( 'Remove the network-wide activation as well. Only meaningful on multisite.', 'shim-mcp' ),
 						),
 						'silent'       => array(
 							'type'        => 'boolean',
-							'description' => 'Skip the plugin deactivation hooks.',
+							'description' => __( 'Skip the plugin deactivation hooks.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -316,7 +316,7 @@ class Plugins {
 					if ( ! is_array( $input ) || ! isset( $input['plugin_file'] ) || ! is_string( $input['plugin_file'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Name the plugin file you want to switch off.', 'shim-mcp' ),
+							'message' => __( 'Name the plugin file you want to switch off.', 'shim-mcp' ),
 						);
 					}
 
@@ -327,7 +327,7 @@ class Plugins {
 					if ( 0 !== validate_file( $plugin_file ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That plugin path is not allowed.', 'shim-mcp' ),
+							'message' => __( 'That plugin path is not allowed.', 'shim-mcp' ),
 						);
 					}
 
@@ -335,14 +335,14 @@ class Plugins {
 					if ( ! isset( $installed[ $plugin_file ] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No installed plugin matches that path.', 'shim-mcp' ),
+							'message' => __( 'No installed plugin matches that path.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'deactivate_plugin', $plugin_file ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to deactivate this plugin.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to deactivate this plugin.', 'shim-mcp' ),
 						);
 					}
 
@@ -351,7 +351,7 @@ class Plugins {
 					if ( $network_wide && ! current_user_can( 'manage_network_plugins' ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to change network plugin activation.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to change network plugin activation.', 'shim-mcp' ),
 						);
 					}
 
@@ -361,9 +361,9 @@ class Plugins {
 						return array(
 							'success'     => true,
 							'plugin_file' => $plugin_file,
-							'name'        => esc_html( (string) $installed[ $plugin_file ]['Name'] ),
+							'name'        => (string) $installed[ $plugin_file ]['Name'],
 							'active'      => false,
-							'message'     => esc_html__( 'That plugin was already switched off.', 'shim-mcp' ),
+							'message'     => __( 'That plugin was already switched off.', 'shim-mcp' ),
 						);
 					}
 
@@ -374,11 +374,11 @@ class Plugins {
 					return array(
 						'success'     => ! $still_active,
 						'plugin_file' => $plugin_file,
-						'name'        => esc_html( (string) $installed[ $plugin_file ]['Name'] ),
+						'name'        => (string) $installed[ $plugin_file ]['Name'],
 						'active'      => $still_active,
 						'message'     => $still_active
-							? esc_html__( 'WordPress reports the plugin is still active.', 'shim-mcp' )
-							: esc_html__( 'The plugin is now switched off.', 'shim-mcp' ),
+							? __( 'WordPress reports the plugin is still active.', 'shim-mcp' )
+							: __( 'The plugin is now switched off.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -397,8 +397,8 @@ class Plugins {
 		wp_register_ability(
 			'shim-mcp/plugins-delete',
 			array(
-				'label'               => 'Delete Plugin',
-				'description'         => 'Removes an installed plugin and its folder from the server permanently. An active plugin is refused unless you ask for it to be deactivated first, and the caller must confirm the removal.',
+				'label'               => __( 'Delete Plugin', 'shim-mcp' ),
+				'description'         => __( 'Removes an installed plugin and its folder from the server permanently. An active plugin is refused unless you ask for it to be deactivated first, and the caller must confirm the removal.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -406,15 +406,15 @@ class Plugins {
 					'properties'           => array(
 						'plugin_file'      => array(
 							'type'        => 'string',
-							'description' => 'Path of the main plugin file relative to wp-content/plugins.',
+							'description' => __( 'Path of the main plugin file relative to wp-content/plugins.', 'shim-mcp' ),
 						),
 						'confirm'          => array(
 							'type'        => 'boolean',
-							'description' => 'Must be true. Files are erased from disk and cannot be recovered from WordPress.',
+							'description' => __( 'Must be true. Files are erased from disk and cannot be recovered from WordPress.', 'shim-mcp' ),
 						),
 						'deactivate_first' => array(
 							'type'        => 'boolean',
-							'description' => 'Switch the plugin off before deleting it instead of refusing an active plugin.',
+							'description' => __( 'Switch the plugin off before deleting it instead of refusing an active plugin.', 'shim-mcp' ),
 						),
 					),
 					'additionalProperties' => false,
@@ -433,14 +433,14 @@ class Plugins {
 					if ( ! is_array( $input ) || ! isset( $input['plugin_file'] ) || ! is_string( $input['plugin_file'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Name the plugin file you want to remove.', 'shim-mcp' ),
+							'message' => __( 'Name the plugin file you want to remove.', 'shim-mcp' ),
 						);
 					}
 
 					if ( empty( $input['confirm'] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Set confirm to true to erase the plugin files.', 'shim-mcp' ),
+							'message' => __( 'Set confirm to true to erase the plugin files.', 'shim-mcp' ),
 						);
 					}
 
@@ -456,7 +456,7 @@ class Plugins {
 					if ( 0 !== validate_file( $plugin_file ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'That plugin path is not allowed.', 'shim-mcp' ),
+							'message' => __( 'That plugin path is not allowed.', 'shim-mcp' ),
 						);
 					}
 
@@ -464,18 +464,18 @@ class Plugins {
 					if ( ! isset( $installed[ $plugin_file ] ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'No installed plugin matches that path.', 'shim-mcp' ),
+							'message' => __( 'No installed plugin matches that path.', 'shim-mcp' ),
 						);
 					}
 
 					if ( ! current_user_can( 'delete_plugins' ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'You are not allowed to delete plugins on this site.', 'shim-mcp' ),
+							'message' => __( 'You are not allowed to delete plugins on this site.', 'shim-mcp' ),
 						);
 					}
 
-					$name       = esc_html( (string) $installed[ $plugin_file ]['Name'] );
+					$name       = (string) $installed[ $plugin_file ]['Name'];
 					$was_active = is_plugin_active( $plugin_file ) || is_plugin_active_for_network( $plugin_file );
 
 					if ( $was_active ) {
@@ -485,14 +485,14 @@ class Plugins {
 								'plugin_file' => $plugin_file,
 								'name'        => $name,
 								'deleted'     => false,
-								'message'     => esc_html__( 'This plugin is running. Deactivate it first or pass deactivate_first.', 'shim-mcp' ),
+								'message'     => __( 'This plugin is running. Deactivate it first or pass deactivate_first.', 'shim-mcp' ),
 							);
 						}
 
 						if ( ! current_user_can( 'deactivate_plugin', $plugin_file ) ) {
 							return array(
 								'success' => false,
-								'message' => esc_html__( 'You are not allowed to deactivate this plugin.', 'shim-mcp' ),
+								'message' => __( 'You are not allowed to deactivate this plugin.', 'shim-mcp' ),
 							);
 						}
 
@@ -504,14 +504,14 @@ class Plugins {
 					if ( is_wp_error( $result ) ) {
 						return array(
 							'success' => false,
-							'message' => esc_html( $result->get_error_message() ),
+							'message' => $result->get_error_message(),
 						);
 					}
 
 					if ( null === $result ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'WordPress needs filesystem credentials before it can remove plugin files.', 'shim-mcp' ),
+							'message' => __( 'WordPress needs filesystem credentials before it can remove plugin files.', 'shim-mcp' ),
 						);
 					}
 
@@ -521,7 +521,7 @@ class Plugins {
 							'plugin_file' => $plugin_file,
 							'name'        => $name,
 							'deleted'     => false,
-							'message'     => esc_html__( 'The plugin folder could not be removed.', 'shim-mcp' ),
+							'message'     => __( 'The plugin folder could not be removed.', 'shim-mcp' ),
 						);
 					}
 
@@ -530,7 +530,7 @@ class Plugins {
 						'plugin_file' => $plugin_file,
 						'name'        => $name,
 						'deleted'     => true,
-						'message'     => esc_html__( 'The plugin was removed from the server.', 'shim-mcp' ),
+						'message'     => __( 'The plugin was removed from the server.', 'shim-mcp' ),
 					);
 				},
 				'permission_callback' => function (): bool {
@@ -540,6 +540,153 @@ class Plugins {
 					'annotations' => array(
 						'readonly'    => false,
 						'destructive' => true,
+						'idempotent'  => false,
+					),
+				),
+			)
+		);
+
+		wp_register_ability(
+			'shim-mcp/plugins-install',
+			array(
+				'label'               => __( 'Install Plugin', 'shim-mcp' ),
+				'description'         => __( 'Installs a plugin from the WordPress.org Plugin Directory by its directory slug, for example hello-dolly. Only the official directory is used: URLs, file paths and uploaded archives are refused. The plugin is left inactive; switch it on with the activate ability.', 'shim-mcp' ),
+				'category'            => 'site',
+				'input_schema'        => array(
+					'type'                 => 'object',
+					'required'             => array( 'slug' ),
+					'properties'           => array(
+						'slug' => array(
+							'type'        => 'string',
+							'description' => __( 'The plugin\'s WordPress.org directory slug, the last part of its wordpress.org/plugins/ address.', 'shim-mcp' ),
+						),
+					),
+					'additionalProperties' => false,
+				),
+				'output_schema'       => array(
+					'type'       => 'object',
+					'properties' => array(
+						'success'     => array( 'type' => 'boolean' ),
+						'slug'        => array( 'type' => 'string' ),
+						'plugin_file' => array( 'type' => 'string' ),
+						'name'        => array( 'type' => 'string' ),
+						'version'     => array( 'type' => 'string' ),
+						'active'      => array( 'type' => 'boolean' ),
+						'message'     => array( 'type' => 'string' ),
+					),
+				),
+				'execute_callback'    => function ( $input = array() ): array {
+					$slug = is_array( $input ) && isset( $input['slug'] ) && is_string( $input['slug'] ) ? trim( $input['slug'] ) : '';
+
+					if ( 1 !== preg_match( '/^[a-z0-9]+(?:[-_][a-z0-9]+)*$/', $slug ) || strlen( $slug ) > 200 ) {
+						return array(
+							'success' => false,
+							'message' => __( 'Give a WordPress.org directory slug such as hello-dolly. URLs, file paths and archives are not accepted.', 'shim-mcp' ),
+						);
+					}
+
+					if ( ! current_user_can( 'install_plugins' ) ) {
+						return array(
+							'success' => false,
+							'message' => __( 'You are not allowed to install plugins on this site.', 'shim-mcp' ),
+						);
+					}
+
+					if ( ! function_exists( 'plugins_api' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+					}
+					if ( ! class_exists( 'Plugin_Upgrader' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+					}
+					if ( ! function_exists( 'get_plugins' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin.php';
+					}
+
+					foreach ( array_keys( get_plugins() ) as $installed_file ) {
+						if ( 0 === strpos( $installed_file, $slug . '/' ) ) {
+							return array(
+								'success'     => false,
+								'slug'        => $slug,
+								'plugin_file' => $installed_file,
+								'message'     => __( 'A plugin with that slug is already installed.', 'shim-mcp' ),
+							);
+						}
+					}
+
+					$api = plugins_api(
+						'plugin_information',
+						array(
+							'slug'   => $slug,
+							'fields' => array(
+								'sections' => false,
+								'banners'  => false,
+								'icons'    => false,
+							),
+						)
+					);
+
+					if ( is_wp_error( $api ) ) {
+						return array(
+							'success' => false,
+							'slug'    => $slug,
+							'message' => $api->get_error_message(),
+						);
+					}
+
+					$info     = is_array( $api ) ? $api : get_object_vars( $api );
+					$download = (string) ( $info['download_link'] ?? '' );
+					if ( 'https' !== wp_parse_url( $download, PHP_URL_SCHEME ) || 'downloads.wordpress.org' !== wp_parse_url( $download, PHP_URL_HOST ) ) {
+						return array(
+							'success' => false,
+							'slug'    => $slug,
+							'message' => __( 'The directory did not return a WordPress.org download for that plugin.', 'shim-mcp' ),
+						);
+					}
+
+					$skin      = new \WP_Ajax_Upgrader_Skin();
+					$upgrader  = new \Plugin_Upgrader( $skin );
+					$installed = $upgrader->install( $download );
+
+					$failure = null;
+					if ( is_wp_error( $installed ) ) {
+						$failure = $installed->get_error_message();
+					} elseif ( is_wp_error( $skin->result ) ) {
+						$failure = $skin->result->get_error_message();
+					} elseif ( $skin->get_errors()->has_errors() ) {
+						$failure = $skin->get_error_messages();
+					} elseif ( null === $installed ) {
+						$failure = __( 'WordPress needs filesystem credentials before it can install plugins.', 'shim-mcp' );
+					} elseif ( true !== $installed ) {
+						$failure = __( 'The plugin could not be installed.', 'shim-mcp' );
+					}
+
+					if ( null !== $failure ) {
+						return array(
+							'success' => false,
+							'slug'    => $slug,
+							'message' => $failure,
+						);
+					}
+
+					$plugin_file = (string) $upgrader->plugin_info();
+
+					return array(
+						'success'     => true,
+						'slug'        => $slug,
+						'plugin_file' => $plugin_file,
+						'name'        => (string) ( $info['name'] ?? $slug ),
+						'version'     => (string) ( $info['version'] ?? '' ),
+						'active'      => false,
+						'message'     => __( 'The plugin was installed and is inactive. Activate it to switch it on.', 'shim-mcp' ),
+					);
+				},
+				'permission_callback' => function (): bool {
+					return current_user_can( 'install_plugins' );
+				},
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
 						'idempotent'  => false,
 					),
 				),

@@ -10,8 +10,8 @@ final class Options {
 		wp_register_ability(
 			'shim-mcp/options-get',
 			array(
-				'label'               => 'Read Site Option',
-				'description'         => 'Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. Options whose names look like credentials, such as API keys, secrets, tokens or passwords, are refused.',
+				'label'               => __( 'Read Site Option', 'shim-mcp' ),
+				'description'         => __( 'Returns the stored value of one WordPress option looked up by its exact name, together with a flag saying whether the option exists at all. Options whose names look like credentials, such as API keys, secrets, tokens or passwords, are refused.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -19,7 +19,7 @@ final class Options {
 					'properties'           => array(
 						'name' => array(
 							'type'        => 'string',
-							'description' => 'Exact option name as stored in the options table, such as blogname or timezone_string.',
+							'description' => __( 'Exact option name as stored in the options table, such as blogname or timezone_string.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
@@ -43,7 +43,7 @@ final class Options {
 					if ( '' === $name ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide the option name you want to read as a non-empty string of at most 191 characters.', 'shim-mcp' ),
+							'message' => __( 'Provide the option name you want to read as a non-empty string of at most 191 characters.', 'shim-mcp' ),
 						);
 					}
 
@@ -51,7 +51,7 @@ final class Options {
 						return array(
 							'success' => false,
 							'name'    => $name,
-							'message' => esc_html__( 'That option name looks like it stores a credential, so this ability will not read it. Secrets stay on the server.', 'shim-mcp' ),
+							'message' => __( 'That option name looks like it stores a credential, so this ability will not read it. Secrets stay on the server.', 'shim-mcp' ),
 						);
 					}
 
@@ -65,7 +65,7 @@ final class Options {
 							'exists'   => false,
 							'autoload' => '',
 							'value'    => null,
-							'message'  => esc_html__( 'Nothing is stored under that option name.', 'shim-mcp' ),
+							'message'  => __( 'Nothing is stored under that option name.', 'shim-mcp' ),
 						);
 					}
 
@@ -93,8 +93,8 @@ final class Options {
 		wp_register_ability(
 			'shim-mcp/options-search',
 			array(
-				'label'               => 'Search Option Names',
-				'description'         => 'Finds every option whose name contains a given fragment and returns one page of matching names with their autoload flags. Values are never included; read a specific non-credential option with the read ability.',
+				'label'               => __( 'Search Option Names', 'shim-mcp' ),
+				'description'         => __( 'Finds every option whose name contains a given fragment and returns one page of matching names with their autoload flags. Values are never included; read a specific non-credential option with the read ability.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -102,19 +102,19 @@ final class Options {
 					'properties'           => array(
 						'contains' => array(
 							'type'        => 'string',
-							'description' => 'Text to look for anywhere inside the option name. This is a plain substring match, not a regular expression.',
+							'description' => __( 'Text to look for anywhere inside the option name. This is a plain substring match, not a regular expression.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
 						'page'     => array(
 							'type'        => 'integer',
-							'description' => 'Which page of matches to return, counting from one.',
+							'description' => __( 'Which page of matches to return, counting from one.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'default'     => 1,
 						),
 						'per_page' => array(
 							'type'        => 'integer',
-							'description' => 'How many matches to return on a page, up to one hundred.',
+							'description' => __( 'How many matches to return on a page, up to one hundred.', 'shim-mcp' ),
 							'minimum'     => 1,
 							'maximum'     => 100,
 							'default'     => 20,
@@ -155,7 +155,7 @@ final class Options {
 					if ( '' === $fragment || strlen( $fragment ) > 191 ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide a fragment of one to 191 characters to search option names for.', 'shim-mcp' ),
+							'message' => __( 'Provide a fragment of one to 191 characters to search option names for.', 'shim-mcp' ),
 						);
 					}
 
@@ -222,8 +222,8 @@ final class Options {
 		wp_register_ability(
 			'shim-mcp/options-update',
 			array(
-				'label'               => 'Write Site Option',
-				'description'         => 'Stores a new value for an option and creates it when it does not exist yet. Supply a key to replace a single entry inside an option that already holds an array rather than overwriting the whole option. Options that govern the site addresses, who may register and at what role, the active plugin set, or role capability definitions are refused outright.',
+				'label'               => __( 'Write Site Option', 'shim-mcp' ),
+				'description'         => __( 'Stores a new value for an option and creates it when it does not exist yet. Supply a key to replace a single entry inside an option that already holds an array rather than overwriting the whole option. Options that govern the site addresses, who may register and at what role, the active plugin set, or role capability definitions are refused outright.', 'shim-mcp' ),
 				'category'            => 'site',
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -231,17 +231,17 @@ final class Options {
 					'properties'           => array(
 						'name'  => array(
 							'type'        => 'string',
-							'description' => 'Exact option name to write.',
+							'description' => __( 'Exact option name to write.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
 						'value' => array(
 							'type'        => array( 'string', 'number', 'boolean', 'object', 'array', 'null' ),
-							'description' => 'The value to store. When a key is also given this becomes the value of that one array entry instead of the whole option.',
+							'description' => __( 'The value to store. When a key is also given this becomes the value of that one array entry instead of the whole option.', 'shim-mcp' ),
 						),
 						'key'   => array(
 							'type'        => 'string',
-							'description' => 'Optional array key inside the option. The option must already hold an array, or not exist yet, for a key to be accepted.',
+							'description' => __( 'Optional array key inside the option. The option must already hold an array, or not exist yet, for a key to be accepted.', 'shim-mcp' ),
 							'minLength'   => 1,
 							'maxLength'   => 191,
 						),
@@ -266,7 +266,7 @@ final class Options {
 					if ( '' === $name ) {
 						return array(
 							'success' => false,
-							'message' => esc_html__( 'Provide the option name you want to write as a non-empty string of at most 191 characters.', 'shim-mcp' ),
+							'message' => __( 'Provide the option name you want to write as a non-empty string of at most 191 characters.', 'shim-mcp' ),
 						);
 					}
 
@@ -274,7 +274,7 @@ final class Options {
 						return array(
 							'success' => false,
 							'name'    => $name,
-							'message' => esc_html__( 'That option is protected. Changing it can lock people out of the site or hand out capabilities, so this ability will not write it.', 'shim-mcp' ),
+							'message' => __( 'That option is protected. Changing it can lock people out of the site or hand out capabilities, so this ability will not write it.', 'shim-mcp' ),
 						);
 					}
 
@@ -282,7 +282,7 @@ final class Options {
 						return array(
 							'success' => false,
 							'name'    => $name,
-							'message' => esc_html__( 'That option name looks like it stores a credential. Rotating or planting credentials is out of scope for this ability, so it will not write it.', 'shim-mcp' ),
+							'message' => __( 'That option name looks like it stores a credential. Rotating or planting credentials is out of scope for this ability, so it will not write it.', 'shim-mcp' ),
 						);
 					}
 
@@ -290,7 +290,7 @@ final class Options {
 						return array(
 							'success' => false,
 							'name'    => $name,
-							'message' => esc_html__( 'Include a value to store, even when that value is null.', 'shim-mcp' ),
+							'message' => __( 'Include a value to store, even when that value is null.', 'shim-mcp' ),
 						);
 					}
 
@@ -308,7 +308,7 @@ final class Options {
 							return array(
 								'success' => false,
 								'name'    => $name,
-								'message' => esc_html__( 'The array key is longer than 191 characters.', 'shim-mcp' ),
+								'message' => __( 'The array key is longer than 191 characters.', 'shim-mcp' ),
 							);
 						}
 
@@ -317,7 +317,7 @@ final class Options {
 								'success' => false,
 								'name'    => $name,
 								'key'     => $key,
-								'message' => esc_html__( 'That option does not hold an array, so a single key inside it cannot be replaced. Write the whole option instead.', 'shim-mcp' ),
+								'message' => __( 'That option does not hold an array, so a single key inside it cannot be replaced. Write the whole option instead.', 'shim-mcp' ),
 							);
 						}
 
@@ -335,7 +335,7 @@ final class Options {
 							'created'   => false,
 							'unchanged' => true,
 							'value'     => $new_value,
-							'message'   => esc_html__( 'The option already held that value, so nothing was written.', 'shim-mcp' ),
+							'message'   => __( 'The option already held that value, so nothing was written.', 'shim-mcp' ),
 						);
 					}
 
@@ -344,7 +344,7 @@ final class Options {
 							'success' => false,
 							'name'    => $name,
 							'key'     => $key,
-							'message' => esc_html__( 'WordPress declined to save the option. Check that the value can be serialised and that no filter is blocking the write.', 'shim-mcp' ),
+							'message' => __( 'WordPress declined to save the option. Check that the value can be serialised and that no filter is blocking the write.', 'shim-mcp' ),
 						);
 					}
 

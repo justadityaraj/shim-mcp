@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint and static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          coverage: none
+          tools: composer
+      - run: composer install --no-interaction --no-progress
+      - name: PHP syntax
+        run: git ls-files -z '*.php' | xargs -0 -n1 php -l
+      - name: PHPCS
+        run: vendor/bin/phpcs
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit=2G --no-progress
+
+  smoke:
+    name: Smoke (WordPress ${{ matrix.wp }}, PHP ${{ matrix.php }}${{ matrix.multisite && ', multisite' || '' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - wp: '6.9'
+            php: '8.0'
+          - wp: latest
+            php: '8.5'
+          - wp: latest
+            php: '8.4'
+            multisite: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          extensions: pdo_sqlite, zip
+      - name: Create a disposable WordPress site from the release zip
+        env:
+          WP_VERSION: ${{ matrix.wp }}
+          WP_MULTISITE: ${{ matrix.multisite }}
+        run: php tests/setup.php
+      - name: Run the smoke suites
+        run: php tests/run.php

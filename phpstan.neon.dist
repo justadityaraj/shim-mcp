@@ -1,0 +1,25 @@
+parameters:
+	level: 5
+	paths:
+		- shim-mcp.php
+		- uninstall.php
+		- includes
+	scanFiles:
+		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+		- vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
+		- vendor/php-stubs/wp-cli-stubs/wp-cli-commands-stubs.php
+	bootstrapFiles:
+		- tests/phpstan-constants.php
+	dynamicConstantNames:
+		- WP_DEBUG
+		- WP_DEBUG_LOG
+		- WP_DEBUG_DISPLAY
+		- DISALLOW_FILE_EDIT
+		- DISALLOW_FILE_MODS
+		- WP_CLI
+	treatPhpDocTypesAsCertain: false
+	ignoreErrors:
+		-
+			identifiers:
+				- requireOnce.fileNotFound
+				- include.fileNotFound
