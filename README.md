@@ -26,9 +26,9 @@ wp shim-mcp serve --user=admin
 
 That runs the MCP server as a plain stdio process: JSON-RPC in on STDIN, responses out on STDOUT. No HTTP, no ports, no tunnel, no application password, no OAuth dance. Point Claude Code or Cursor at that command and it connects the way any other local MCP server does.
 
-Worth being precise about what's different here, because several WordPress MCP plugins mention WP-CLI. In those, WP-CLI is a *tool the AI can call* — the model asks the remote server to run a `wp` command on your behalf, over an authenticated HTTP connection. Useful, but the connection is still remote, still HTTP, still needs a token.
+Some WordPress MCP plugins go further and let the AI run WP-CLI commands on your server through an authenticated HTTP connection. Shim never runs WP-CLI commands for the AI.
 
-Shim uses WP-CLI as the **transport itself**. The server runs as a local process on your machine and speaks MCP over a pipe. There is no HTTP request, no token to issue or revoke, and nothing listening on a port. For a site you have checked out locally, that removes the entire authentication surface rather than securing it.
+Shim uses WP-CLI only to start the MCP server itself, the same way the official MCP Adapter's `wp mcp-adapter serve` does. The server runs as a local process on your machine and speaks MCP over a pipe. There is no HTTP request, no token to issue or revoke, and nothing listening on a port. For a site you have checked out locally, that removes the entire authentication surface rather than securing it.
 
 **2. Remote, over HTTP** — for sites you aren't sitting in front of.
 
@@ -44,7 +44,7 @@ The name is a promise about scope. It is not an AI product. It does not bundle a
 
 ## What makes it different
 
-- **The MCP server runs over stdio.** Others expose WP-CLI as a tool reachable through a remote HTTP connection; here WP-CLI *is* the transport, running locally with no port, no token and no HTTP layer at all.
+- **Local use needs no password and no port.** `wp shim-mcp serve` runs the MCP server over stdio through WP-CLI, with no HTTP layer and no token, and Shim never runs WP-CLI commands on the AI's behalf.
 - **Genuinely self-contained.** The MCP server and all 57 abilities ship in one plugin. No companion plugin, no framework, no service to sign up for.
 - **Abilities API native.** Every ability is registered through WordPress's own `wp_register_ability()`. Nothing lives in a private tool registry, so abilities registered by *other* plugins are exposed too, automatically, with no adapter code.
 - **Per-object permission checks, not just blanket ones.** Every ability declares a capability, and every ability that touches a specific object re-checks the per-object capability (`edit_post`, `delete_post`, `read_post`, `edit_user`, `delete_user`, `edit_comment`) against that object before reading or mutating it. A contributor's client cannot edit an editor's post. Holding `edit_posts` is not treated as permission to edit *any* post.
