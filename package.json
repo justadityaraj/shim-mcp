@@ -1,6 +1,6 @@
 {
   "name": "shim-mcp",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Connect WordPress to AI via MCP. 57 WordPress abilities for any MCP-compatible AI client.",
   "author": "Aditya Raj Singh",
   "license": "GPL-2.0-or-later",
