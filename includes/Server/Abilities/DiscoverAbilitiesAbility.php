@@ -33,8 +33,28 @@ final class DiscoverAbilitiesAbility {
 			'shim-mcp/discover-abilities',
 			array(
 				'label'               => 'Discover Abilities',
-				'description'         => 'Discover all available WordPress abilities in the system. Returns a list of all registered abilities with their basic information.',
+				'description'         => 'Discover all available WordPress abilities in the system. Returns a list of all registered abilities with their basic information. Optionally narrow the list by category, by a case-insensitive search over name, label and description, or by a maximum number of results.',
 				'category'            => 'shim-mcp',
+				'input_schema'        => array(
+					'type'                 => 'object',
+					'properties'           => array(
+						'category' => array(
+							'type'        => 'string',
+							'description' => 'Only return abilities filed under this category, for example site or user. An unknown category returns an empty list.',
+						),
+						'search'   => array(
+							'type'        => 'string',
+							'description' => 'Case-insensitive text to look for in ability names, labels and descriptions.',
+							'minLength'   => 1,
+						),
+						'limit'    => array(
+							'type'        => 'integer',
+							'description' => 'How many abilities to return at most. Leave it out for no limit.',
+							'minimum'     => 1,
+						),
+					),
+					'additionalProperties' => false,
+				),
 				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
@@ -108,9 +128,18 @@ final class DiscoverAbilitiesAbility {
 	/**
 	 * Execute the discover abilities functionality.
 	 *
-	 * Enforces security checks and mcp.public filtering.
+	 * Enforces security checks and mcp.public filtering, then applies the
+	 * optional category, search and limit filters. Filters combine with AND:
+	 * an ability is returned only when it matches every given filter. A call
+	 * with no filters returns exactly the unfiltered 1.1.0 list.
 	 *
-	 * @param array $input Input parameters (unused for this ability).
+	 * @param array $input {
+	 *     Optional filters. Wrong-typed values are ignored.
+	 *
+	 *     @type string $category Only abilities filed under this category.
+	 *     @type string $search   Case-insensitive match on name, label and description.
+	 *     @type int    $limit    Maximum number of abilities to return.
+	 * }
 	 *
 	 * @return array Array containing public MCP abilities.
 	 */
@@ -122,6 +151,11 @@ final class DiscoverAbilitiesAbility {
 				'error' => $permission_check->get_error_message(),
 			);
 		}
+
+		// Read the optional filters, tolerating absent or wrong-typed values.
+		$category = ( isset( $input['category'] ) && is_string( $input['category'] ) && '' !== $input['category'] ) ? $input['category'] : null;
+		$search   = ( isset( $input['search'] ) && is_string( $input['search'] ) && '' !== $input['search'] ) ? $input['search'] : null;
+		$limit    = ( isset( $input['limit'] ) && is_int( $input['limit'] ) && $input['limit'] > 0 ) ? $input['limit'] : null;
 
 		// Get all abilities and filter for publicly exposed ones
 		$abilities = wp_get_abilities();
@@ -140,11 +174,29 @@ final class DiscoverAbilitiesAbility {
 				continue;
 			}
 
+			if ( null !== $category && $ability->get_category() !== $category ) {
+				continue;
+			}
+
+			$label       = $ability->get_label();
+			$description = $ability->get_description();
+
+			if ( null !== $search ) {
+				$haystack = $ability_name . "\n" . $label . "\n" . $description;
+				if ( false === stripos( $haystack, $search ) ) {
+					continue;
+				}
+			}
+
 			$ability_list[] = array(
 				'name'        => $ability_name,
-				'label'       => $ability->get_label(),
-				'description' => $ability->get_description(),
+				'label'       => $label,
+				'description' => $description,
 			);
+
+			if ( null !== $limit && count( $ability_list ) >= $limit ) {
+				break;
+			}
 		}
 
 		return array(
