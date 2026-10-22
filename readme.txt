@@ -32,12 +32,14 @@ Key features:
 
 == Credits ==
 
-Shim MCP builds its MCP protocol layer on two GPL-2.0 projects published by the WordPress project:
+Shim MCP builds on three GPL projects:
 
-* [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) - everything under `includes/Server/` (transport, JSON-RPC routing, session management, tools/resources/prompts handlers, schema transformation, error and observability infrastructure) is derived from it.
-* [WordPress Abilities API](https://github.com/WordPress/abilities-api) - every ability is registered through this core API, which WordPress ships from 6.9.
+* [WP MCP Ultimate](https://github.com/AgriciDaniel/wp-mcp-ultimate) by Daniel Agrici (GPL-2.0-or-later) - the first version of Shim MCP was built by an autonomous fleet of coding agents that took a good part of their code from it: the plugin bootstrap, the admin dashboard, the WP-CLI command and the layout of the ability classes.
 
-The 57 abilities, the admin dashboard, the WP-CLI stdio bridge and the packaging are original to this plugin. Full breakdown in CREDITS.md.
+* [WordPress MCP Adapter](https://github.com/WordPress/mcp-adapter) (GPL-2.0) - everything under `includes/Server/` (transport, JSON-RPC routing, session management, tools/resources/prompts handlers, schema transformation, error and observability infrastructure) is derived from it.
+* [WordPress Abilities API](https://github.com/WordPress/abilities-api) (GPL-2.0) - every ability is registered through this core API, which WordPress ships from 6.9.
+
+Most of the ability code, the tests and the 1.1.0 changes were written for this plugin. Full breakdown in CREDITS.md.
 
 == Frequently Asked Questions ==
 
