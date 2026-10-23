@@ -128,17 +128,9 @@ final class DiscoverAbilitiesAbility {
 	 * Execute the discover abilities functionality.
 	 *
 	 * Enforces security checks and mcp.public filtering, then applies the
-	 * optional category, search and limit filters. Filters combine with AND:
-	 * an ability is returned only when it matches every given filter. A call
-	 * with no filters returns exactly the unfiltered 1.1.0 list.
+	 * optional category, search and limit filters.
 	 *
-	 * @param array $input {
-	 *     Optional filters. Wrong-typed values are ignored.
-	 *
-	 *     @type string $category Only abilities filed under this category.
-	 *     @type string $search   Case-insensitive match on name, label and description.
-	 *     @type int    $limit    Maximum number of abilities to return.
-	 * }
+	 * @param array $input Optional category, search and limit filters.
 	 *
 	 * @return array Array containing public MCP abilities.
 	 */
@@ -151,7 +143,6 @@ final class DiscoverAbilitiesAbility {
 			);
 		}
 
-		// Read the optional filters, tolerating absent or wrong-typed values.
 		$category = ( isset( $input['category'] ) && is_string( $input['category'] ) && '' !== $input['category'] ) ? $input['category'] : null;
 		$search   = ( isset( $input['search'] ) && is_string( $input['search'] ) && '' !== $input['search'] ) ? $input['search'] : null;
 		$limit    = ( isset( $input['limit'] ) && is_int( $input['limit'] ) && $input['limit'] > 0 ) ? $input['limit'] : null;
