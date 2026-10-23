@@ -129,17 +129,17 @@ Plugin Check is an automated scan of the directory's coding requirements. Passin
 
 ## Development version
 
-Stable releases come from `main` and are what the [WordPress.org listing](https://wordpress.org/plugins/shim-mcp/) serves. Work in progress lives on `dev`.
+Work lands on `main` through pull requests, so `main` can be ahead of the latest release. Stable releases are tagged from `main` and are what the [WordPress.org listing](https://wordpress.org/plugins/shim-mcp/) serves.
 
 If you want to try unreleased changes, take the newest **pre-release** from the [releases page](https://github.com/justadityaraj/shim-mcp/releases) — those are built the same way as stable releases and install normally through **Plugins → Add New → Upload Plugin**.
 
-To track `dev` directly instead:
+To track `main` directly instead:
 
 ```bash
-git clone -b dev https://github.com/justadityaraj/shim-mcp.git wp-content/plugins/shim-mcp
+git clone https://github.com/justadityaraj/shim-mcp.git wp-content/plugins/shim-mcp
 ```
 
-Clone into a directory named exactly `shim-mcp`. GitHub's "Download ZIP" button produces a `shim-mcp-dev` folder, which WordPress treats as a second, separate plugin.
+Clone into a directory named exactly `shim-mcp`. GitHub's "Download ZIP" button produces a `shim-mcp-main` folder, which WordPress treats as a second, separate plugin.
 
 Pre-release builds are unreleased by definition: they have not been through the release checks, and they are not on WordPress.org. Do not run them on a production site.
 
