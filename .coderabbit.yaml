@@ -22,7 +22,6 @@ reviews:
     enabled: true
     auto_incremental_review: true
     base_branches:
-      - "dev"
       - "main"
     drafts: false
 
